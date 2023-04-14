@@ -78,6 +78,8 @@ The following tools were used in this project:
 - [TypeScript](https://www.typescriptlang.org/)
 - [Bootstrap](https://getbootstrap.com)
 - [React Bootstrap](https://react-bootstrap.github.io)
+- [Solr](https://solr.apache.org)
+- [Tagify](https://github.com/yairEO/tagify)
 
 ## :white_check_mark: Requirements
 

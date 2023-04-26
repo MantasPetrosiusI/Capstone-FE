@@ -1,0 +1,185 @@
+body {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 31px;
+}
+.navbar {
+  position: relative;
+  width: 100%;
+  top: 0px;
+  background-color: #597e9f;
+  height: 5.063rem;
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+}
+.navbar-toggler {
+  border: none;
+}
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+.navbar-toggler-icon {
+  position: absolute;
+  left: 3%;
+  top: 35%;
+}
+#login {
+  position: absolute;
+  width: 10.061rem;
+  height: 2.938rem;
+  right: 18rem;
+  top: 1rem;
+  border: none;
+  background: #e9e1df;
+}
+#register {
+  position: absolute;
+  width: 10.061rem;
+  height: 2.938rem;
+  right: 3.35rem;
+  top: 1rem;
+  border: none;
+  background: #e99374;
+}
+.debugforce {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 39px;
+  line-height: 47px;
+}
+#midScreen {
+  position: absolute;
+  left: 1rem;
+  top: 1.2rem;
+}
+#midScreenSmall {
+  position: absolute;
+  display: none;
+  left: 5rem;
+  top: 1.2rem;
+}
+.navbar-nav {
+  position: absolute;
+  top: 1rem;
+  left: 6rem;
+  border: 1px solid;
+  border-radius: 0% 5% 5% 0%;
+  padding-left: 1rem;
+  border-top: none;
+  border-left: none;
+  padding-right: 1rem;
+}
+@media only screen and (max-width: 430px) {
+  #login {
+    width: 3.75rem;
+    height: 1.938rem;
+    right: 7rem;
+    top: 0.75rem;
+  }
+  #register {
+    width: 3.75rem;
+    height: 1.938rem;
+    right: 1.55rem;
+    top: 0.75rem;
+  }
+  #login,
+  #register {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .navbar {
+    height: 3.438rem;
+  }
+  .navbar-toggler-icon {
+    top: 23%;
+  }
+  #midScreen,
+  #midScreenSmall {
+    display: none;
+  }
+}
+@media only screen and (min-width: 430px) and (max-width: 660px) {
+  #login {
+    width: 5.848rem;
+    height: 2.938rem;
+    right: 12rem;
+    top: 1rem;
+  }
+  #register {
+    width: 5.848rem;
+    height: 2.938rem;
+    right: 2.7rem;
+    top: 1rem;
+  }
+  #login,
+  #register {
+    font-size: 18px;
+    line-height: 22px;
+  }
+  .navbar {
+    height: 5.063rem;
+  }
+  .navbar-toggler-icon {
+    top: 27%;
+    width: 3.5rem;
+    height: 2.5rem;
+  }
+  #midScreenSmall {
+    display: block;
+  }
+  #midScreen {
+    display: none;
+  }
+}
+@media only screen and (max-width: 992px) and (min-width: 660px) {
+  #login {
+    width: 5.848rem;
+    height: 2.938rem;
+    right: 12rem;
+    top: 1rem;
+  }
+  #register {
+    width: 5.848rem;
+    height: 2.938rem;
+    right: 2.7rem;
+    top: 1rem;
+  }
+  #login,
+  #register {
+    font-size: 18px;
+    line-height: 22px;
+  }
+  .navbar {
+    height: 5.063rem;
+  }
+  .navbar-toggler-icon {
+    top: 27%;
+    width: 3.5rem;
+    height: 2.5rem;
+  }
+  #midScreen {
+    display: block;
+    left: 8rem;
+  }
+  #midScreenSmall {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #bigScreen {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 31px;
+    color: #e9e1df;
+    position: absolute;
+    top: -3.2rem;
+    left: 25rem;
+    margin-right: 0.3rem;
+    margin-left: 0.3rem;
+  }
+}

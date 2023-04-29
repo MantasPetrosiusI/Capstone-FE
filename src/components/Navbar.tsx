@@ -2,8 +2,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../css/navbar.css";
+import { Link } from "react-router-dom";
 
-const Register = () => {
+const CustomNavbar = () => {
   return (
     <Navbar collapseOnSelect expand="lg">
       <Container>
@@ -24,10 +25,24 @@ const Register = () => {
           <span style={{ color: "#E99374" }}>F</span>
         </pre>
 
-        <button id="login">Login</button>
-        <button id="register">Register</button>
+        <button id="login">
+          <Link
+            to={"/login"}
+            style={{ color: "#000000", textDecoration: "none" }}
+          >
+            Login
+          </Link>
+        </button>
+        <button id="register">
+          <Link
+            to={"register"}
+            style={{ color: "#000000", textDecoration: "none" }}
+          >
+            Register
+          </Link>
+        </button>
       </Container>
     </Navbar>
   );
 };
-export default Register;
+export default CustomNavbar;

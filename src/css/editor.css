@@ -1,0 +1,23 @@
+.editor.container {
+  margin: 0;
+  padding: 0;
+}
+
+.editor.container > div.row {
+  width: 100%;
+  margin-top: 5rem;
+  margin-left: 5rem;
+}
+.editor.container > div.row div.col {
+  width: 50%;
+}
+div.monaco-editor {
+  width: 50vw;
+  height: 50vh;
+}
+.minimap {
+  display: none;
+}
+#editorRun {
+  margin-left: 15rem;
+}

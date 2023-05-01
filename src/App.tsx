@@ -4,6 +4,7 @@ import CustomNavbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import MainPage from "./components/MainPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/" element={<MainPage />} />
       </Routes>
     </div>
   );

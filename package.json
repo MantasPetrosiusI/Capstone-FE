@@ -4,26 +4,31 @@
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.5.0",
+    "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
+    "@types/react-redux": "^7.1.25",
     "@yaireo/tagify": "^4.17.8",
     "aws-sdk": "^2.1368.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "codemirror": "^6.0.1",
+    "js-cookie": "^3.0.5",
     "monaco-editor": "^0.37.1",
     "monaco-editor-core": "^0.37.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.2",
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "^18.16.1",
     "dotenv": "^16.0.3"
   }

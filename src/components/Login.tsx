@@ -1,15 +1,18 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../css/login.css";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { setCurrentUser } from "../redux/actions";
+import { useAppDispatch } from "../redux/hooks";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const dispatch = useAppDispatch();
   const login = async (e: FormEvent) => {
     try {
       e.preventDefault();
@@ -17,15 +20,13 @@ const Login = () => {
         `${process.env.REACT_APP_BACKEND}/users/login`,
         { username, password }
       );
-      console.log(data);
-
-      localStorage.setItem("accessToken", data.accessToken);
+      Cookies.set("accessToken", data.token, { expires: 1 });
+      await dispatch(setCurrentUser());
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <>
       <Container className="regLog">

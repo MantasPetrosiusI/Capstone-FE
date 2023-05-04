@@ -72,6 +72,31 @@ body {
   border-left: none;
   padding-right: 1rem;
 }
+#profileDown {
+  right: 2%;
+  top: 6%;
+  position: absolute;
+}
+#profileBtn {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+  border-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+
+#userAvatar {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 50%;
+}
 @media only screen and (max-width: 430px) {
   #login {
     width: 3.75rem;
@@ -99,6 +124,11 @@ body {
   #midScreen,
   #midScreenSmall {
     display: none;
+  }
+  #profileBtn,
+  #userAvatar {
+    height: 3rem;
+    width: 3rem;
   }
 }
 @media only screen and (min-width: 430px) and (max-width: 660px) {

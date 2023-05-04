@@ -2,6 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import MonacoEditor from "./MonacoEditor";
 import { useState } from "react";
 import "../css/editor.css";
+import "../css/mainPage.css";
 
 const MainPage = () => {
   const [result, setResult] = useState("");

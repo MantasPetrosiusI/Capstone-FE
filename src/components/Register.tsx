@@ -12,6 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const registration = async (e: FormEvent) => {
+    e.preventDefault();
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND}/users/register`,

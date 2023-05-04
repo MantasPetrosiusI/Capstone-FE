@@ -21,7 +21,7 @@ body {
 }
 .navbar-toggler-icon {
   position: absolute;
-  left: 3%;
+  left: 4rem;
   top: 35%;
 }
 #login {
@@ -42,35 +42,24 @@ body {
   border: none;
   background: #e99374;
 }
-.debugforce {
+.debugForce {
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 39px;
   line-height: 47px;
 }
-#midScreen {
-  position: absolute;
-  left: 1rem;
-  top: 1.2rem;
-}
-#midScreenSmall {
-  position: absolute;
-  display: none;
-  left: 5rem;
-  top: 1.2rem;
-}
+
 .navbar-nav {
-  display: none;
   position: absolute;
   top: 1rem;
   left: 6rem;
-  border: 1px solid;
   border-radius: 0% 5% 5% 0%;
   padding-left: 1rem;
   border-top: none;
   border-left: none;
   padding-right: 1rem;
+  z-index: 1;
 }
 #profileDown {
   right: 2%;
@@ -97,6 +86,12 @@ body {
   width: 4.5rem;
   border-radius: 50%;
 }
+.debugForce #one {
+  color: #2c3b56;
+}
+.debugForce #two {
+  color: #e99374;
+}
 @media only screen and (max-width: 430px) {
   #login {
     width: 3.75rem;
@@ -115,20 +110,13 @@ body {
     font-size: 12px;
     line-height: 15px;
   }
-  .navbar {
-    height: 3.438rem;
+  .navbar-nav {
+    border: 1px solid #2c3b56;
+    top: 2rem;
+    background-color: rgba(255, 255, 255, 0.652);
   }
-  .navbar-toggler-icon {
-    top: 23%;
-  }
-  #midScreen,
-  #midScreenSmall {
+  .debugForce {
     display: none;
-  }
-  #profileBtn,
-  #userAvatar {
-    height: 3rem;
-    width: 3rem;
   }
 }
 @media only screen and (min-width: 430px) and (max-width: 660px) {
@@ -182,35 +170,17 @@ body {
     font-size: 18px;
     line-height: 22px;
   }
-  .navbar {
-    height: 5.063rem;
-  }
-  .navbar-toggler-icon {
-    top: 27%;
-    width: 3.5rem;
-    height: 2.5rem;
-  }
-  #midScreen {
-    display: block;
-    left: 8rem;
-  }
-  #midScreenSmall {
-    display: none;
+  .navbar-nav {
+    top: 1.2rem;
   }
 }
-
 @media only screen and (min-width: 992px) {
-  #bigScreen {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 300;
-    font-size: 26px;
-    line-height: 31px;
-    color: #e9e1df;
+  .navbar-nav {
+    top: 1.3rem;
+    left: 14rem;
+  }
+  .debugForce {
     position: absolute;
-    top: -3.2rem;
-    left: 25rem;
-    margin-right: 0.3rem;
-    margin-left: 0.3rem;
+    left: 1rem;
   }
 }

@@ -3,6 +3,8 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import "../css/profile.css";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { editAvatar } from "../redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfile: React.FC = () => {
   const user = useAppSelector((state) => state.df.currentUser);
@@ -33,13 +35,20 @@ const UserProfile: React.FC = () => {
               style={{ width: "150px" }}
             />
             <label>
-              <img
-                src={user.avatar}
-                alt="avatar"
-                className="img-fluid img-thumbnail mt-4 mb-2"
-                style={{ width: "80%", zIndex: 1 }}
-                onClick={handleAvatarClick}
-              />
+              <div>
+                <img
+                  src={user.avatar}
+                  alt="avatar"
+                  className="img-fluid img-thumbnail mt-4 mb-2"
+                  style={{ width: "80%", zIndex: 1 }}
+                  onClick={handleAvatarClick}
+                />
+                <div id="avatarChange">
+                  <FontAwesomeIcon icon={faCamera} />
+                  <h4 style={{ fontWeight: "800" }}>Change Avatar</h4>
+                </div>
+              </div>
+
               <input
                 type="file"
                 accept="image/*"

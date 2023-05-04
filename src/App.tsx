@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import UserProfile from "./components/UserProfile";
+import Editor from "./components/Editor";
+import { useState } from "react";
 
 function App() {
   const accessToken = Cookies.get("accessToken");
@@ -22,6 +24,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<MainPage />} />
+            <Route path="/editor" element={<Editor />} />
           </Routes>
         </div>
       </Provider>

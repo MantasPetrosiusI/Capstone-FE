@@ -61,6 +61,7 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
     "@types/node": "^18.16.1",
+    "@types/yaireo__tagify": "^4.17.0",
     "dotenv": "^16.0.3"
   }
 }

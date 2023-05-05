@@ -1,37 +1,38 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import "../css/register.css";
+import "../../css/login.css";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { setCurrentUser } from "../../redux/actions";
+import { useAppDispatch } from "../../redux/hooks";
 
-const Register = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-  const registration = async (e: FormEvent) => {
-    e.preventDefault();
+  const dispatch = useAppDispatch();
+  const login = async (e: FormEvent) => {
     try {
+      e.preventDefault();
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND}/users/register`,
-        { username, email, password }
+        `${process.env.REACT_APP_BACKEND}/users/login`,
+        { username, password }
       );
-
-      localStorage.setItem("accessToken", data.accessToken);
-      navigate("/login");
+      Cookies.set("accessToken", data.token, { expires: 1 });
+      await dispatch(setCurrentUser());
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <>
       <Container className="regLog">
         <Row className="d-flex fluid">
           <Col>
-            <Form onSubmit={registration}>
+            <Form onSubmit={login}>
               <Form.Group>
                 <Form.Label>Username</Form.Label>
                 <Form.Control
@@ -39,15 +40,6 @@ const Register = () => {
                   placeholder="Enter your username here"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter your email here"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
               <Form.Group>
@@ -59,8 +51,8 @@ const Register = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
-              <Button className="reg" type="submit">
-                Register
+              <Button className="log" type="submit">
+                Login
               </Button>
             </Form>
           </Col>
@@ -74,7 +66,7 @@ const Register = () => {
                   src="https://res.cloudinary.com/dlfkpg7my/image/upload/v1682775839/Capstone/google-icon-logo-png-transparent_ljbiwg.png"
                   alt="googlelogo"
                 />{" "}
-                Register with Google
+                Login with Google
               </a>
             </Button>
             <Button className="auth">
@@ -84,23 +76,23 @@ const Register = () => {
                   src="https://res.cloudinary.com/dlfkpg7my/image/upload/v1682775837/Capstone/25231_gfxqn2.png"
                   alt="githublogo"
                 />{" "}
-                Register with GitHub
+                Login with GitHub
               </a>
             </Button>
           </Col>
         </Row>
         <Row>
           <span id="regLogSpan">
-            Already a member?{" "}
+            Not a member?{" "}
             <Link
-              to={"/login"}
+              to={"/register"}
               style={{
                 fontWeight: "bold",
                 color: "#2C3B56",
                 textDecoration: "none",
               }}
             >
-              Login!
+              Register!
             </Link>
           </span>
         </Row>
@@ -108,4 +100,4 @@ const Register = () => {
     </>
   );
 };
-export default Register;
+export default Login;

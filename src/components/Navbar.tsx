@@ -34,7 +34,7 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
   const user = useAppSelector((state) => state.df.currentUser);
   function logout() {
     Cookies.remove("accessToken");
-
+    logout();
     window.location.href = "/";
   }
 
@@ -99,12 +99,12 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <Link to="/" className="nav-link">
+                  <Link to="/myQuestions" className="nav-link">
                     My questions
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <Link to="/" className="nav-link">
+                  <Link to="/myAnswers" className="nav-link">
                     My answers
                   </Link>
                 </Dropdown.Item>

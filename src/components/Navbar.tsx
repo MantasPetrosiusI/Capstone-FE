@@ -98,16 +98,33 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
                     Profile
                   </Link>
                 </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link to="/myQuestions" className="nav-link">
-                    My questions
-                  </Link>
-                </Dropdown.Item>
+                <hr />
+                <div id="questionDiv">
+                  <Dropdown>
+                    <Dropdown.Toggle className="nav-link questions">
+                      My questions
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu align="start">
+                      <Dropdown.Item>
+                        <Link to="/myAnswered" className="nav-link">
+                          Answered
+                        </Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <Link to="/myUnanswered" className="nav-link">
+                          Unanswered
+                        </Link>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+
                 <Dropdown.Item>
                   <Link to="/myAnswers" className="nav-link">
                     My answers
                   </Link>
                 </Dropdown.Item>
+                <hr />
                 <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

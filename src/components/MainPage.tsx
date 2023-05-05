@@ -1,24 +1,10 @@
-import { Col, Container, Row } from "react-bootstrap";
-import MonacoEditor from "./MonacoEditor";
-import { useState } from "react";
-import "../css/editor.css";
+import { Container } from "react-bootstrap";
 import "../css/mainPage.css";
 
 const MainPage = () => {
-  const [result, setResult] = useState("");
-  const hanldeResultChange = (newResult: string) => {
-    setResult(newResult);
-  };
   return (
-    <Container className="editor">
-      <Row>
-        <Col>
-          <MonacoEditor onResultChange={hanldeResultChange}></MonacoEditor>
-        </Col>
-        <Col>
-          <div>{result}</div>
-        </Col>
-      </Row>
+    <Container id="hero" className="fluid mt-4">
+      <div></div>
     </Container>
   );
 };

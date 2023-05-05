@@ -92,6 +92,20 @@ body {
 .debugForce #two {
   color: #e99374;
 }
+button.questions {
+  background-color: transparent !important;
+  border: none !important;
+  color: black !important;
+  margin-left: 1rem;
+}
+#questionDiv {
+  height: 38.98px;
+  display: flex;
+  align-items: center;
+}
+#questionDiv:hover {
+  background-color: #e9ecef;
+}
 @media only screen and (max-width: 430px) {
   #login {
     width: 3.75rem;

@@ -1,10 +1,9 @@
 import { Col, Container, Row } from "react-bootstrap";
 import MonacoEditor from "./MonacoEditor";
 import { useState } from "react";
-import "../css/editor.css";
-import "../css/mainPage.css";
+import "../../css/editor.css";
 
-const Editor = () => {
+const EditorPage = () => {
   const [result, setResult] = useState("");
   const hanldeResultChange = (newResult: string) => {
     setResult(newResult);
@@ -22,4 +21,4 @@ const Editor = () => {
     </Container>
   );
 };
-export default Editor;
+export default EditorPage;

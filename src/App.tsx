@@ -4,13 +4,13 @@ import CustomNavbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import Register from "./components/LoginRegister/Register";
 import Login from "./components/LoginRegister/Login";
-import MainPage from "./components/MainPage";
+import EditorPage from "./components/Editor/EditorPage";
 import UserProfile from "./components/UserProfile/UserProfile";
-import Editor from "./components/Editor";
-
 import QuestionsForm from "./components/QuestionsForm";
-import UserQuestions from "./components/UserQuestions";
 import { useAppSelector } from "./redux/hooks";
+import MainPage from "./components/MainPage";
+import UserUnanswered from "./components/UserQuestions/UserUnanswered";
+import UserAnswered from "./components/UserQuestions/UserAnswered";
 
 function App() {
   const currentUser = useAppSelector((state) => state.df.currentUser);
@@ -24,10 +24,13 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/profile" element={<UserProfile />} />
-        <Route path="/" element={<MainPage />} />
-        <Route path="/editor" element={<Editor />} />
+        <Route path="/myAnswered" element={<UserAnswered />} />
+        <Route path="/myUnanswered" element={<UserUnanswered />} />
+      </Routes>
+      <Routes>
+        <Route path="/editor" element={<EditorPage />} />
         <Route path="/questionForm" element={<QuestionsForm />} />
-        <Route path="/myQuestions" element={<UserQuestions />} />
+        <Route path="/" element={<MainPage />} />
       </Routes>
     </div>
   );

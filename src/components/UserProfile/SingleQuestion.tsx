@@ -11,14 +11,17 @@ export function SingleQuestion(props: SQuestionProps) {
   return (
     <Card className="border-opacity-25 shadow">
       <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex justify-content-center align-items-center mb-3">
           <Card.Title as="h1" className="header-text">
             {props.question.title}
           </Card.Title>
         </div>
         <div className="d-flex justify-content-start align-items-center tags">
+          <span>{props.question.language}</span>
+        </div>
+        <div className="d-flex justify-content-start align-items-center tags">
           {props.question.tags.map((tag, i) => (
-            <span key={i} className="badge  text-bg-warning">
+            <span key={i} className="badge  text-bg-secondary">
               {tag}
             </span>
           ))}
@@ -29,7 +32,14 @@ export function SingleQuestion(props: SQuestionProps) {
             <span className="text-muted"> ...</span>
           )}
         </Card.Text>
-        <Card.Footer className="d-flex justify-content-between align-items-center">
+        <Card.Footer className="d-flex justify-content-end align-items-center">
+          {props.question.answered ? (
+            <span className="badge rounded-pill text-bg-success ">
+              Answered
+            </span>
+          ) : (
+            ""
+          )}
           <small className="footer-text">
             {props.question.updatedAt
               ? (() => {
@@ -62,11 +72,6 @@ export function SingleQuestion(props: SQuestionProps) {
                 })()
               : ""}
           </small>
-          {props.question.answered ? (
-            <span className="badge rounded-pill text-bg-success">Answered</span>
-          ) : (
-            ""
-          )}
         </Card.Footer>
       </Card.Body>
     </Card>

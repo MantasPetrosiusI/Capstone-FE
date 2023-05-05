@@ -1,5 +1,4 @@
-@media only screen and (max-width: 992px) {
-  .editor.container {
-    display: none;
-  }
+#hero {
+  height: 34vh;
+  background-color: black;
 }

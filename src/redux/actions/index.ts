@@ -1,12 +1,17 @@
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
-import { Question } from "../interfaces";
+import { Answer, Question } from "../interfaces";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const EDIT_AVATAR = "EDIT_AVATAR";
 export const FETCH_USER_QUESTIONS = "FETCH_USER_QUESTIONS";
 export const ADD_QUESTION = "ADD_QUESTION";
+export const ADD_ANSWER = "ADD_ANSWER";
 export const SET_QUESTIONS = "SET_QUESTIONS";
+export const FETCH_USER = "FETCH_USER";
+export const FETCH_QUESTION_ANSWERS = "FETCH_QUESTION_ANSWERS";
+export const FETCH_ANSWER = "FETCH_ANSWER";
+export const RESET_ANSWER = "RESET_ANSWER";
 
 export const setCurrentUser = () => {
   return async (dispatch: Dispatch) => {
@@ -33,9 +38,22 @@ export const setCurrentUser = () => {
     }
   };
 };
-export const logout = () => {
-  return {
-    type: "LOGOUT",
+export const fetchUser = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/${id}`, {
+        method: "GET",
+      });
+      if (res.ok) {
+        const user = await res.json();
+        dispatch({
+          type: "FETCH_USER",
+          payload: user,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 export const editAvatar = (newAvatar: File) => {
@@ -73,15 +91,12 @@ export const fetchUserQuestions = () => {
       if (Cookies.get("accessToken")) {
         token = Cookies.get("accessToken")!;
       }
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/users/me/questions`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/questions/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (res.ok) {
         const questions = await res.json();
         dispatch({
@@ -102,7 +117,7 @@ export const newQuestion = (question: Question) => {
         token = Cookies.get("accessToken")!;
       }
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/users/me/newQuestion`,
+        `${process.env.REACT_APP_BACKEND}/questions/me/newQuestion`,
         {
           method: "POST",
           headers: {
@@ -121,14 +136,76 @@ export const newQuestion = (question: Question) => {
 export const setQuestions = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/users/questions`
-      );
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/questions`);
       if (res.ok) {
         const allQuestions = await res.json();
         dispatch({
           type: SET_QUESTIONS,
           payload: allQuestions,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const newAnswer = (answer: Answer, questionId: string) => {
+  return async () => {
+    try {
+      console.log(questionId);
+      let token = "";
+      if (Cookies.get("accessToken")) {
+        token = Cookies.get("accessToken")!;
+      }
+      console.log(questionId);
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}/newAnswer`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(answer),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const questionAnswers = (questionId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}`
+      );
+      if (res.ok) {
+        const answers = await res.json();
+        dispatch({
+          type: FETCH_QUESTION_ANSWERS,
+          payload: answers,
+        });
+      }
+    } catch (error) {}
+  };
+};
+export const fetchAnswer = (questionId: string, answerId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}/${answerId}`
+      );
+      console.log(res);
+      if (res.ok) {
+        const answer = await res.json();
+        dispatch({
+          type: FETCH_ANSWER,
+          payload: answer,
+        });
+      } else {
+        dispatch({
+          type: RESET_ANSWER,
         });
       }
     } catch (error) {

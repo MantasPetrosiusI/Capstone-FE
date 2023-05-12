@@ -2,30 +2,32 @@ import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../../css/profile.css";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  editAvatar,
-  fetchUserQuestions,
-  setQuestions,
-} from "../../redux/actions";
+import { editAvatar } from "../../redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { SingleQuestion } from "./SingleQuestion";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../redux/interfaces";
 
 const UserProfile: React.FC = () => {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(setQuestions());
-    dispatch(fetchUserQuestions());
-  }, [dispatch]);
-  const user = useAppSelector((state) => state.df.currentUser);
+  const user = useAppSelector((state: RootState) => state.df.currentUser);
   const userQuestions = useAppSelector(
-    (state) => state.df.questionState
+    (state: RootState) => state.df.userQuestionState
   ).questions;
-  const sortedQuestions = [...userQuestions];
-  sortedQuestions.sort(
-    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-  );
-  const slicedArray = sortedQuestions.slice(0, 3);
+  let slicedArray = [];
+  if (userQuestions.length > 1) {
+    const sortedQuestions = [...userQuestions];
+
+    sortedQuestions.sort(
+      (a, b) =>
+        new Date(b.updatedAt!)?.getTime() - new Date(a.updatedAt!).getTime()
+    );
+    slicedArray = sortedQuestions.slice(0, 3);
+  } else {
+    const sortedQuestions = [...userQuestions];
+    slicedArray = sortedQuestions.slice(0, 1);
+  }
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +44,7 @@ const UserProfile: React.FC = () => {
     }
   };
   useEffect(() => {}, [newAvatar]);
+  const navigate = useNavigate();
   return (
     <Container className="py-5 h-100">
       <Row className="d-flex justify-content-center align-items-center h-100">
@@ -96,7 +99,7 @@ const UserProfile: React.FC = () => {
                 <p className="small text-muted mb-0">Answered </p>
               </div>
               <div>
-                <p className="mb-1">{userQuestions.length}</p>
+                <p className="mb-1">{slicedArray.length}</p>
                 <p className="small text-muted mb-0">Asked</p>
               </div>
             </div>
@@ -104,17 +107,13 @@ const UserProfile: React.FC = () => {
           <Card.Body className="p-4 text-black">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
-              <p className="mb-0">
-                <a
-                  href="/myQuestions"
-                  className="text-muted text-decoration-none"
-                >
-                  Show all
-                </a>
-              </p>
             </div>
             {slicedArray.map((question, i) => (
-              <Row key={i} className="g-2 mt-2">
+              <Row
+                key={i}
+                className="g-2 mt-2"
+                onClick={() => navigate("/Question", { state: { question } })}
+              >
                 <SingleQuestion question={question} />
               </Row>
             ))}

@@ -2,13 +2,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../css/navbar.css";
-import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { useAppSelector } from "../redux/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
+import { RootState } from "../redux/interfaces";
 
 type CustomNavbarProps = {
   isLoggedIn: boolean;
@@ -31,11 +32,19 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
     document.body.addEventListener("click", closeNav);
     return () => document.body.removeEventListener("click", closeNav);
   }, []);
-  const user = useAppSelector((state) => state.df.currentUser);
+  const navigate = useNavigate();
+  const user = useAppSelector((state: RootState) => state.df.currentUser);
   function logout() {
-    Cookies.remove("accessToken");
-    logout();
-    window.location.href = "/";
+    fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, { method: "POST" })
+      .then(() => {
+        setLoggedIn(false);
+        user.online = false;
+        Cookies.remove("accessToken");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error during logout: ", error);
+      });
   }
 
   useEffect(() => {
@@ -85,6 +94,7 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/editor">Editor</Nav.Link>
               <Nav.Link href="/questions">Questions</Nav.Link>
+              <Nav.Link href="/questionForm">New Question</Nav.Link>
             </Nav>
           </Navbar.Collapse>
           {loggedIn && (

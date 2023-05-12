@@ -9,7 +9,8 @@ import "@yaireo/tagify/dist/tagify.css";
 
 import { newQuestion } from "../redux/actions";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Question } from "../redux/interfaces";
+import { Question, RootState } from "../redux/interfaces";
+import { Editor } from "@monaco-editor/react";
 
 const QuestionForm = () => {
   const [qTitle, setQTitle] = useState("");
@@ -17,7 +18,7 @@ const QuestionForm = () => {
   const [progLang, setProgLang] = useState("");
   const [qTags, setQTags] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.df.currentUser);
+  const user = useAppSelector((state: RootState) => state.df.currentUser);
   const tagsRef = useRef<HTMLInputElement>(null);
   const tagifyRef = useRef<Tagify>();
 
@@ -65,12 +66,18 @@ const QuestionForm = () => {
           role: user.role,
         },
         answered: false,
+        answers: [],
       };
       dispatch(newQuestion(question));
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+  const onChange = (value?: string) => {
+    setQDesc(value || "");
+  };
+  const navigate = useNavigate();
   return (
     <>
       <Container className="regLog" style={{ border: "1px solid #2c3b56" }}>
@@ -126,12 +133,11 @@ const QuestionForm = () => {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Question Description</Form.Label>
-                <Form.Control
-                  type="textarea"
-                  placeholder="Be as descriptive as possible"
+                <Editor
+                  onChange={onChange}
                   value={qDesc}
-                  onChange={(e) => setQDesc(e.target.value)}
-                  required
+                  language="text"
+                  height={"25vh"}
                 />
               </Form.Group>
               <Form.Group>

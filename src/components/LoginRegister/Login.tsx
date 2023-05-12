@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../../css/login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { setCurrentUser } from "../../redux/actions";
+import { fetchUserQuestions, setCurrentUser } from "../../redux/actions";
 import { useAppDispatch } from "../../redux/hooks";
 
 const Login = () => {
@@ -22,6 +22,7 @@ const Login = () => {
       );
       Cookies.set("accessToken", data.token, { expires: 1 });
       await dispatch(setCurrentUser());
+      dispatch(fetchUserQuestions());
       navigate("/");
     } catch (error) {
       console.log(error);

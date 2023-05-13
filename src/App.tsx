@@ -7,7 +7,7 @@ import Login from "./components/LoginRegister/Login";
 import EditorPage from "./components/Editor/EditorPage";
 import UserProfile from "./components/UserProfile/UserProfile";
 import QuestionsForm from "./components/QuestionsForm";
-import MainPage from "./components/MainPage";
+import { MainPage } from "./components";
 import UserUnanswered from "./components/UserQuestions/UserUnanswered";
 import UserAnswered from "./components/UserQuestions/UserAnswered";
 import Question from "./components/Question";

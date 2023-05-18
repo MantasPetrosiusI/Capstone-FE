@@ -22,9 +22,14 @@ const AnswersForm = () => {
       e.preventDefault();
       const answer: Answer = {
         user: {
+          _id: user._id,
           username: user.username,
+          avatar: user.avatar,
+          online: user.online,
+          email: user.email,
           reputation: user.reputation,
           role: user.role,
+          answers: user.answers,
         },
         body: aDesc,
         pending: true,

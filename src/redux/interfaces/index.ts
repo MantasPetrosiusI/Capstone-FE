@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface RootState {
   df: dfState;
 }
@@ -11,7 +13,9 @@ export interface dfState {
     reputation: number;
     role: string;
     online: boolean;
+    answers: Answer[];
   };
+  allUsers: User[];
   questionState: {
     questions: Question[];
     currentQuestion: Question;
@@ -28,6 +32,7 @@ export interface dfState {
     reputation: number;
     role: string;
     online: boolean;
+    answers: Answer[];
   };
   fetchedAnswer: {
     user: User;
@@ -37,6 +42,7 @@ export interface dfState {
     selected: boolean;
     rejected: boolean;
   };
+  allSearch: Question[];
 }
 export interface resetAnswer {
   type: "RESET_ANSWER";
@@ -48,10 +54,14 @@ export interface setCurrentUser {
 }
 export interface fetchUser {
   type: "FETCH_USER";
-  payload: User;
+  payload: User & { answers: Answer[] };
+}
+export interface fetchUsers {
+  type: "FETCH_USERS";
+  payload: User[];
 }
 export interface logout {
-  type: "LOGOUT";
+  type: "LOGOUT_USER";
 }
 export interface editAvatar {
   type: "EDIT_AVATAR";
@@ -64,6 +74,10 @@ export interface newQuestion {
 export interface newAnswer {
   type: "ADD_ANSWER";
   payload: any;
+}
+export interface searchQuestions {
+  type: "SET_SEARCH_QUESTIONS";
+  payload: Question[];
 }
 export interface setQuestions {
   type: "SET_QUESTIONS";
@@ -81,6 +95,10 @@ export interface fetchAnswer {
   type: "FETCH_ANSWER";
   payload: Answer;
 }
+export interface fetchUserAnswers {
+  type: "FETCH_USER_ANSWERS";
+  payload: Answer[];
+}
 export interface User {
   _id: string;
   username: string;
@@ -89,6 +107,7 @@ export interface User {
   reputation: number;
   role: string;
   online: boolean;
+  answers: Answer[];
 }
 export interface Question {
   _id: string;
@@ -96,14 +115,15 @@ export interface Question {
   description: string;
   language: string;
   tags: string[];
-  user: QuestionUser;
-  createdAt?: Date;
-  updatedAt?: Date;
+  user: User;
+  noOfLikes: number;
+  createdAt: Date;
+  updatedAt: Date;
   answered: boolean;
   answers: Answer[];
 }
 export interface Answer {
-  user: QuestionUser;
+  user: User;
   question: string;
   body: string;
   pending: boolean;

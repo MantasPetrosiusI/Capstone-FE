@@ -11,10 +11,13 @@ import {
   questionAnswers,
   fetchAnswer,
   resetAnswer,
+  fetchUsers,
+  searchQuestions,
 } from "../interfaces/index";
 
 type Action =
   | setCurrentUser
+  | fetchUsers
   | editAvatar
   | newQuestion
   | newAnswer
@@ -24,6 +27,7 @@ type Action =
   | questionAnswers
   | logout
   | fetchUser
+  | searchQuestions
   | resetAnswer;
 
 const initialState: dfState = {
@@ -35,7 +39,20 @@ const initialState: dfState = {
     reputation: 0,
     role: "",
     online: false,
+    answers: [],
   },
+  allUsers: [
+    {
+      _id: "",
+      username: "",
+      email: "",
+      avatar: "",
+      reputation: 0,
+      role: "",
+      online: false,
+      answers: [],
+    },
+  ],
   questionState: {
     questions: [],
     currentQuestion: {
@@ -45,10 +62,18 @@ const initialState: dfState = {
       language: "",
       tags: [],
       user: {
+        _id: "",
         username: "",
+        email: "",
+        avatar: "",
         reputation: 0,
         role: "",
+        online: false,
+        answers: [],
       },
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+      noOfLikes: 0,
       answered: false,
       answers: [],
     },
@@ -62,10 +87,18 @@ const initialState: dfState = {
       language: "",
       tags: [],
       user: {
+        _id: "",
         username: "",
+        email: "",
+        avatar: "",
         reputation: 0,
         role: "",
+        online: false,
+        answers: [],
       },
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+      noOfLikes: 0,
       answered: false,
       answers: [],
     },
@@ -78,6 +111,7 @@ const initialState: dfState = {
     reputation: 0,
     role: "",
     online: false,
+    answers: [],
   },
   fetchedAnswer: {
     user: {
@@ -88,6 +122,7 @@ const initialState: dfState = {
       reputation: 0,
       role: "",
       online: false,
+      answers: [],
     },
     question: "",
     body: "",
@@ -95,6 +130,7 @@ const initialState: dfState = {
     selected: false,
     rejected: false,
   },
+  allSearch: [],
 };
 
 const dfReducer = (state = initialState, action: Action) => {
@@ -114,7 +150,12 @@ const dfReducer = (state = initialState, action: Action) => {
           ...action.payload,
         },
       };
-    case "LOGOUT":
+    case "FETCH_USERS":
+      return {
+        ...state,
+        allUsers: action.payload,
+      };
+    case "LOGOUT_USER":
       return {
         ...state,
         currentUser: {
@@ -140,6 +181,11 @@ const dfReducer = (state = initialState, action: Action) => {
         },
       };
     }
+    case "SET_SEARCH_QUESTIONS":
+      return {
+        ...state,
+        allSearch: action.payload,
+      };
     case "ADD_QUESTION":
       return {
         ...state,

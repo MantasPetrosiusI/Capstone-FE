@@ -9,9 +9,13 @@ export const ADD_QUESTION = "ADD_QUESTION";
 export const ADD_ANSWER = "ADD_ANSWER";
 export const SET_QUESTIONS = "SET_QUESTIONS";
 export const FETCH_USER = "FETCH_USER";
+export const FETCH_USERS = "FETCH_USERS";
 export const FETCH_QUESTION_ANSWERS = "FETCH_QUESTION_ANSWERS";
 export const FETCH_ANSWER = "FETCH_ANSWER";
 export const RESET_ANSWER = "RESET_ANSWER";
+export const FETCH_USER_ANSWERS = "FETCH_USER_ANSWERS";
+export const SET_SEARCH_QUESTIONS = "SET_SEARCH_QUESTIONS";
+export const LOGOUT_USER = "LOGOUT_USER";
 
 export const setCurrentUser = () => {
   return async (dispatch: Dispatch) => {
@@ -31,6 +35,24 @@ export const setCurrentUser = () => {
         dispatch({
           type: SET_CURRENT_USER,
           payload: user,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const fetchUsers = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/`, {
+        method: "GET",
+      });
+      if (res.ok) {
+        const users = await res.json();
+        dispatch({
+          type: "FETCH_USERS",
+          payload: users,
         });
       }
     } catch (error) {
@@ -79,6 +101,15 @@ export const editAvatar = (newAvatar: File) => {
         type: EDIT_AVATAR,
         payload: data.avatar,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const logoutUser = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: LOGOUT_USER, payload: false });
     } catch (error) {
       console.log(error);
     }
@@ -149,6 +180,28 @@ export const setQuestions = () => {
     }
   };
 };
+export const searchQuestions = (
+  searchCategory: string,
+  searchQuery: string
+) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/questions/search?&${searchCategory}=${searchQuery}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        dispatch({
+          type: SET_SEARCH_QUESTIONS,
+          payload: data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export const newAnswer = (answer: Answer, questionId: string) => {
   return async () => {
     try {
@@ -206,6 +259,24 @@ export const fetchAnswer = (questionId: string, answerId: string) => {
       } else {
         dispatch({
           type: RESET_ANSWER,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const fetchUserAnswers = (userId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/answers/${userId}/answers`
+      );
+      if (res.ok) {
+        const userAnswers = res.json();
+        dispatch({
+          type: FETCH_USER_ANSWERS,
+          payload: userAnswers,
         });
       }
     } catch (error) {

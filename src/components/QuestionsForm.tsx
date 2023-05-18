@@ -1,6 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../css/login.css";
 import "../css/questionForm.css";
@@ -28,7 +27,7 @@ const QuestionForm = () => {
         enforceWhitelist: true,
         whitelist: programmingLanguages,
         dropdown: {
-          enabled: 1, // show the dropdown immediately after the user starts typing
+          enabled: 1,
         },
       });
       tagifyRef.current.on("add", (e) => {
@@ -61,10 +60,18 @@ const QuestionForm = () => {
         language: progLang,
         tags: qTags,
         user: {
+          _id: user._id,
           username: user.username,
+          avatar: user.avatar,
+          online: user.online,
+          email: user.email,
           reputation: user.reputation,
           role: user.role,
+          answers: user.answers,
         },
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+        noOfLikes: 0,
         answered: false,
         answers: [],
       };

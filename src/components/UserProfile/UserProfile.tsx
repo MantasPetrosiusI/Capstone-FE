@@ -6,12 +6,13 @@ import { editAvatar } from "../../redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { SingleQuestion } from "./SingleQuestion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/interfaces";
 
 const UserProfile: React.FC = () => {
+  const location = useLocation();
+  const user = location.state;
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.df.currentUser);
   const userQuestions = useAppSelector(
     (state: RootState) => state.df.userQuestionState
   ).questions;
@@ -95,7 +96,12 @@ const UserProfile: React.FC = () => {
                 <p className="small text-muted mb-0">Reputation</p>
               </div>
               <div className="px-3">
-                <p className="mb-1">[placeholder]</p>
+                {user.answers ? (
+                  <p className="mb-1">{user.answers.length}</p>
+                ) : (
+                  <p className="mb-1">0</p>
+                )}
+
                 <p className="small text-muted mb-0">Answered </p>
               </div>
               <div>
@@ -105,9 +111,12 @@ const UserProfile: React.FC = () => {
             </div>
           </div>
           <Card.Body className="p-4 text-black">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
-            </div>
+            {slicedArray.length > 0 && (
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
+              </div>
+            )}
+
             {slicedArray.map((question, i) => (
               <Row
                 key={i}

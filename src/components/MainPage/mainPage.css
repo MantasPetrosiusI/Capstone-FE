@@ -27,6 +27,29 @@
   text-align: start;
   color: #4c4c58;
 }
+#hero__text2 {
+  position: absolute;
+  width: 31.25rem;
+  height: 12.375rem;
+  top: 5rem;
+  left: 2rem;
+  font-family: "Roboto";
+  font-style: normal;
+  font-size: 2.5rem;
+  line-height: 3.438rem;
+  text-align: start;
+  color: #4c4c58;
+}
+#hero__likes {
+  position: absolute;
+  width: 31.25rem;
+  height: 12.375rem;
+  top: 14rem;
+  left: 11rem;
+  line-height: 3.438rem;
+  text-align: start;
+  color: #4c4c58;
+}
 #hero__button {
   display: flex;
   flex-direction: row;
@@ -58,7 +81,7 @@
   align-items: center;
 }
 .hero__right svg {
-  color: gold;
+  color: gray;
   width: 43.125rem;
   height: 20.75rem;
 }
@@ -188,6 +211,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 .recentQuestions__single span {
   width: 20rem;
@@ -199,8 +223,10 @@
   margin-bottom: 2rem;
 }
 #recentQuestions__left__top__avatar {
+  max-width: 2rem;
+  max-height: 2rem;
   position: absolute;
-  right: 55.5rem;
+  left: 0rem;
   top: 1rem;
 }
 #recentQuestions__left__top__avatar img {
@@ -226,8 +252,9 @@
 }
 
 #recentQuestions__left__top__btn {
+  max-width: 11.5rem;
   position: absolute;
-  right: 25.5rem;
+  left: 30rem;
   top: 9.2rem;
 }
 #recentQuestions__left__top__btn svg {
@@ -263,9 +290,45 @@ div#recentQuestions__right__img svg {
   position: absolute;
   width: 17rem;
   height: 3.188rem;
-  left: 53rem;
-  top: 43rem;
+  left: 50rem;
+  top: 13rem;
   color: black;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(111, 111, 111, 0.25);
+  cursor: pointer;
+  font-size: 14pt;
+  transition: all 0.3s ease-in-out;
+}
+#recentQuestions__btn:hover {
+  color: #fff;
+  background-color: #2c3b56;
+}
+button#hero__button {
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  border: 2px solid black;
+  background-color: white;
+  color: white;
+  position: relative;
+  letter-spacing: 1px;
+}
+
+button#hero__button::before {
+  content: "Go to question";
+  position: absolute;
+  top: -14%;
+  left: 7%;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s ease-in-out;
+  font-weight: bold;
+}
+
+button#hero__button:hover::before {
+  top: 0;
+  left: 0;
 }

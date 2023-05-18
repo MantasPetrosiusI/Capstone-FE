@@ -21,7 +21,7 @@ const Login = () => {
         { username, password }
       );
       Cookies.set("accessToken", data.token, { expires: 1 });
-      await dispatch(setCurrentUser());
+      dispatch(setCurrentUser());
       dispatch(fetchUserQuestions());
       navigate("/");
     } catch (error) {

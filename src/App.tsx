@@ -11,7 +11,6 @@ import { MainPage } from "./components";
 import UserUnanswered from "./components/UserQuestions/UserUnanswered";
 import UserAnswered from "./components/UserQuestions/UserAnswered";
 import Question from "./components/Question";
-import Cookies from "js-cookie";
 import { useAppDispatch } from "./redux/hooks";
 import { useEffect } from "react";
 import {
@@ -28,10 +27,9 @@ function App() {
     dispatch(setQuestions());
     dispatch(fetchUserQuestions());
   }, [dispatch]);
-  const accessToken = Cookies.get("accessToken");
   return (
     <div className="App">
-      <CustomNavbar isLoggedIn={accessToken ? true : false} />
+      <CustomNavbar />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

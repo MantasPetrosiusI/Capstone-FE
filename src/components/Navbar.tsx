@@ -2,24 +2,23 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../css/navbar.css";
-import { Link, useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import { RootState } from "../redux/interfaces";
+import { logoutUser, searchQuestions } from "../redux/actions";
+import { Form, FormControl, Dropdown, DropdownButton } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 
-type CustomNavbarProps = {
-  isLoggedIn: boolean;
-};
-
-const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
-  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
+const CustomNavbar = () => {
   const [brandTextOne, setBrandTextOne] = useState("My");
   const [brandTextTwo, setBrandTextTwo] = useState("Website");
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState<string>("language");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isFocused, setIsFocused] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -32,13 +31,21 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
     document.body.addEventListener("click", closeNav);
     return () => document.body.removeEventListener("click", closeNav);
   }, []);
+  useEffect(() => {
+    dispatch(logoutUser());
+  }, [Cookies]);
   const navigate = useNavigate();
   const user = useAppSelector((state: RootState) => state.df.currentUser);
   function logout() {
-    fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, { method: "POST" })
+    user.online = false;
+    fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, {
+      method: "POST",
+      body: JSON.stringify({ userId: user._id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then(() => {
-        setLoggedIn(false);
-        user.online = false;
         Cookies.remove("accessToken");
         navigate("/login");
       })
@@ -47,9 +54,6 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
       });
   }
 
-  useEffect(() => {
-    setLoggedIn(isLoggedIn);
-  }, [isLoggedIn]);
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth <= 768) {
@@ -68,7 +72,18 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(searchQuestions(searchCategory, searchQuery));
+  }, [searchQuery, searchCategory]);
+  const searchedQuestions = useAppSelector(
+    (state: RootState) => state.df.allSearch
+  );
+  useEffect(() => {
+    if (!isFocused) {
+      setSearchQuery("");
+    }
+  }, [isFocused]);
   return (
     <>
       <Navbar collapseOnSelect expand="sm">
@@ -81,30 +96,92 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
             <FontAwesomeIcon icon={faBars} style={{ fontSize: "3rem" }} />
           </Navbar.Toggle>
 
-          {/* Collapsible wrapper */}
           <Navbar.Collapse id="navbarSupportedContent" in={isNavOpen}>
-            {/* Navbar brand */}
-            <Navbar.Brand className="debugForce" href="/">
+            <Navbar.Brand className="debugForce" as={Link} to="/">
               <span id="one">{brandTextOne}</span>
               <span id="two">{brandTextTwo}</span>
             </Navbar.Brand>
 
-            {/* Left links */}
             <Nav className="me-auto mb-2 mb-lg-0">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/editor">Editor</Nav.Link>
-              <Nav.Link href="/questions">Questions</Nav.Link>
-              <Nav.Link href="/questionForm">New Question</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
+              <Nav.Link as={Link} to="/editor">
+                Editor
+              </Nav.Link>
+              <Nav.Link as={Link} to="/questions">
+                Questions
+              </Nav.Link>
+              <Nav.Link as={Link} to="/questionForm">
+                New Question
+              </Nav.Link>
             </Nav>
+            <Form
+              className="input-container d-flex"
+              onChange={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <FormControl
+                placeholder="Start search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+              <div style={{ display: "inline-block" }}>
+                <DropdownButton
+                  id="dropdown-basic-button"
+                  title={searchCategory}
+                  variant="none"
+                  className="mt-3"
+                  align="end"
+                >
+                  <Dropdown.Item onClick={() => setSearchCategory("language")}>
+                    language
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSearchCategory("title")}>
+                    title
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSearchCategory("tag")}>
+                    tag
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
+            </Form>
+            {searchedQuestions &&
+              searchedQuestions.length > 0 &&
+              searchQuery !== "" && (
+                <div>
+                  <ul className="searchResult">
+                    {searchedQuestions.map((question) => (
+                      <li
+                        className="searchResultLi"
+                        key={question._id}
+                        onClick={() =>
+                          navigate("/Question", { state: { question } })
+                        }
+                      >
+                        {question.title}{" "}
+                        <FontAwesomeIcon
+                          icon={faArrowRight}
+                          fontSize={"1rem"}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
           </Navbar.Collapse>
-          {loggedIn && (
+
+          {user.online && (
             <Dropdown id="profileDown" className="mr-auto" align={"end"}>
               <Dropdown.Toggle id="profileBtn">
                 <img src={user.avatar} alt="userAvatar" id="userAvatar" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item>
-                  <Link to="/profile" className="nav-link">
+                  <Link to="/profile" className="nav-link" state={user}>
                     Profile
                   </Link>
                 </Dropdown.Item>
@@ -139,7 +216,7 @@ const CustomNavbar = ({ isLoggedIn }: CustomNavbarProps) => {
               </Dropdown.Menu>
             </Dropdown>
           )}
-          {!loggedIn && (
+          {!user.online && (
             <>
               <button id="login">
                 <Link

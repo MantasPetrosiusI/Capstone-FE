@@ -74,6 +74,7 @@ const QuestionForm = () => {
         noOfLikes: 0,
         answered: false,
         answers: [],
+        likedBy: [],
       };
       dispatch(newQuestion(question));
       navigate("/");

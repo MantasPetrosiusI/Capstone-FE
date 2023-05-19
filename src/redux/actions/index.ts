@@ -15,7 +15,9 @@ export const FETCH_ANSWER = "FETCH_ANSWER";
 export const RESET_ANSWER = "RESET_ANSWER";
 export const FETCH_USER_ANSWERS = "FETCH_USER_ANSWERS";
 export const SET_SEARCH_QUESTIONS = "SET_SEARCH_QUESTIONS";
+export const SET_SEARCH_USERS = "SET_SEARCH_USERS";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const LIKE_QUESTION = "LIKE_QUESTION";
 
 export const setCurrentUser = () => {
   return async (dispatch: Dispatch) => {
@@ -163,7 +165,37 @@ export const newQuestion = (question: Question) => {
     }
   };
 };
+export const likeQuestion = (questiondId: string) => {
+  return async (dispatch: Dispatch) => {
+    let token = "";
+    if (Cookies.get("accessToken")) {
+      token = Cookies.get("accessToken")!;
+    }
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/questions/${questiondId}/like`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      if (res.ok) {
+        const data = await res.json();
+        dispatch({
+          type: LIKE_QUESTION,
+          payload: data,
+        });
+      } else {
+        console.error("Error", res.statusText);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export const setQuestions = () => {
   return async (dispatch: Dispatch) => {
     try {
@@ -194,6 +226,25 @@ export const searchQuestions = (
         const data = await res.json();
         dispatch({
           type: SET_SEARCH_QUESTIONS,
+          payload: data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const searchUsers = (searchCategory: string, searchQuery: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND}/questions/search?&${searchCategory}=${searchQuery}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        dispatch({
+          type: SET_SEARCH_USERS,
           payload: data,
         });
       }

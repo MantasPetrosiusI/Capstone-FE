@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../css/login.css";
 import "../css/questionForm.css";
 import { Editor } from "@monaco-editor/react";
@@ -16,7 +16,7 @@ const AnswersForm = () => {
   const user = useAppSelector((state: RootState) => state.df.currentUser);
   const location = useLocation();
   const { question } = location.state;
-
+  const navigate = useNavigate();
   const onSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
@@ -38,6 +38,7 @@ const AnswersForm = () => {
         question: question._id,
       };
       dispatch(newAnswer(answer, question._id));
+      navigate("/Question", { state: { question } });
     } catch (error) {
       console.log(error);
     }
@@ -63,11 +64,9 @@ const AnswersForm = () => {
               />
             </Form.Group>
             <hr />
-            <Link to={{ pathname: "/Question" }}>
-              <Button className="mt-1 mb-4 log" type="submit">
-                Submit Answer
-              </Button>
-            </Link>
+            <Button className="mt-1 mb-4 log" type="submit">
+              Submit Answer
+            </Button>
           </Form>
         </Col>
       </Row>

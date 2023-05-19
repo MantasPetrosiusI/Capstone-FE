@@ -35,9 +35,14 @@ const MainPage = () => {
     <Container className="fluid mt-4 mb-3">
       <Hero mostLiked={sortedQuestionsByRep[0]} />
       <MostHelpful user={sortedUsers[0]} />
-      <div>
-        <span id="recentQuestions__titlespan">Recent questions</span>
-      </div>
+      {questions.length > 0 ? (
+        <div>
+          <span id="recentQuestions__titlespan">Recent questions</span>
+        </div>
+      ) : (
+        ""
+      )}
+
       <RecentQuestions byDate={sortedQuestionsByDate} />
     </Container>
   );

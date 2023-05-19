@@ -1,61 +1,106 @@
-.info {
+.bookContainer {
+  left: 15%;
+  margin-top: 10%;
+}
+.book {
+  position: relative;
+  border-radius: 10px;
+  width: 500px;
+  height: 500px;
+  background-color: whitesmoke;
+  -webkit-box-shadow: 1px 1px 12px #000;
+  box-shadow: 1px 1px 12px #000;
+  -webkit-transform: preserve-3d;
+  -ms-transform: preserve-3d;
+  transform: preserve-3d;
+  -webkit-perspective: 2000px;
+  perspective: 2000px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #000;
+}
+
+.cover {
+  top: 0;
+  position: absolute;
+  background-color: lightgray;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform-origin: 0;
+  -ms-transform-origin: 0;
+  transform-origin: 0;
+  -webkit-box-shadow: 1px 1px 12px #000;
+  box-shadow: 1px 1px 12px #000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.book:hover .cover {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: rotatey(-80deg);
+  -ms-transform: rotatey(-80deg);
+  transform: rotatey(-80deg);
+}
+
+p {
+  font-size: 20px;
+  font-weight: bolder;
+}
+.book {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.info {
-  font-size: 2rem;
-  height: 4rem;
+.book p {
+  font-size: small;
 }
-.info p {
-  margin-top: -0.75rem;
-  padding-left: 1.2rem;
-  padding-right: 1.2rem;
+.cover p {
+  font-size: larger;
 }
-.info > div {
-  margin-top: -0.7rem;
+.profile__avatar {
+  max-width: 250px;
+  max-height: 250px;
 }
 #avatarChange {
   opacity: 30%;
   color: #2c3b56;
-  font-size: 3rem;
+  font-size: 2rem;
   position: absolute;
   left: 40%;
-  top: 40%;
+  top: 30%;
   -webkit-text-stroke: 0.5px rgb(182, 155, 0);
   cursor: pointer;
   transition: opacity 0.3s ease-in-out;
 }
+#avatarChange h4 {
+  font-size: 1rem;
+}
 #avatarChange:hover {
   opacity: 100%;
 }
-@media only screen and (max-width: 430px) {
-  .info {
-    font-size: 1rem;
-    height: 2rem;
-  }
-  .info p {
-    margin-top: -1rem;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-  }
-  .info > div {
-    margin-top: -0.7rem;
-  }
-}
-@media only screen and (min-width: 430px) and (max-width: 992px) {
-  .info {
-    font-size: 1.2rem;
-    height: 4rem;
-  }
-  .info p {
-    margin-top: -0.75rem;
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
-  }
-  .info > div {
-    margin-top: -0.7rem;
-  }
+.repAskedAnswered {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: start;
 }

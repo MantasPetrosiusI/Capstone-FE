@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export interface RootState {
   df: dfState;
 }
@@ -43,6 +41,7 @@ export interface dfState {
     rejected: boolean;
   };
   allSearch: Question[];
+  allUsersSearch: User[];
 }
 export interface resetAnswer {
   type: "RESET_ANSWER";
@@ -71,6 +70,10 @@ export interface newQuestion {
   type: "ADD_QUESTION";
   payload: any;
 }
+export interface likeQuestion {
+  type: "LIKE_QUESTION";
+  payload: any;
+}
 export interface newAnswer {
   type: "ADD_ANSWER";
   payload: any;
@@ -78,6 +81,10 @@ export interface newAnswer {
 export interface searchQuestions {
   type: "SET_SEARCH_QUESTIONS";
   payload: Question[];
+}
+export interface searchUsers {
+  type: "SET_SEARCH_USERS";
+  payload: User[];
 }
 export interface setQuestions {
   type: "SET_QUESTIONS";
@@ -121,6 +128,7 @@ export interface Question {
   updatedAt: Date;
   answered: boolean;
   answers: Answer[];
+  likedBy: string[];
 }
 export interface Answer {
   user: User;

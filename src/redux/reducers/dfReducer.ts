@@ -13,6 +13,8 @@ import {
   resetAnswer,
   fetchUsers,
   searchQuestions,
+  searchUsers,
+  likeQuestion,
 } from "../interfaces/index";
 
 type Action =
@@ -28,7 +30,9 @@ type Action =
   | logout
   | fetchUser
   | searchQuestions
-  | resetAnswer;
+  | resetAnswer
+  | searchUsers
+  | likeQuestion;
 
 const initialState: dfState = {
   currentUser: {
@@ -76,6 +80,7 @@ const initialState: dfState = {
       noOfLikes: 0,
       answered: false,
       answers: [],
+      likedBy: [],
     },
   },
   userQuestionState: {
@@ -101,6 +106,7 @@ const initialState: dfState = {
       noOfLikes: 0,
       answered: false,
       answers: [],
+      likedBy: [],
     },
   },
   fetchedUser: {
@@ -131,6 +137,7 @@ const initialState: dfState = {
     rejected: false,
   },
   allSearch: [],
+  allUsersSearch: [],
 };
 
 const dfReducer = (state = initialState, action: Action) => {
@@ -181,10 +188,48 @@ const dfReducer = (state = initialState, action: Action) => {
         },
       };
     }
+    case "LIKE_QUESTION": {
+      const questionId = action.payload;
+      const likedQuestions = state.questionState.questions.map((question) => {
+        if (question._id === questionId) {
+          const isLiked = question.likedBy.includes(state.currentUser._id);
+          if (isLiked) {
+            return {
+              ...question,
+              likedBy: question.likedBy.filter(
+                (userId: string) => userId !== state.currentUser._id
+              ),
+              noOfLikes: question.noOfLikes - 1,
+            };
+          } else {
+            return {
+              ...question,
+              likedBy: [...question.likedBy, state.currentUser._id],
+              noOfLikes: question.noOfLikes + 1,
+            };
+          }
+        } else {
+          return question;
+        }
+      });
+
+      return {
+        ...state,
+        questionState: {
+          ...state.questionState,
+          questions: likedQuestions,
+        },
+      };
+    }
     case "SET_SEARCH_QUESTIONS":
       return {
         ...state,
         allSearch: action.payload,
+      };
+    case "SET_SEARCH_USERS":
+      return {
+        ...state,
+        allUsersSearch: action.payload,
       };
     case "ADD_QUESTION":
       return {

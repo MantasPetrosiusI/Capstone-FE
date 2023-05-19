@@ -7,25 +7,28 @@ import { useAppDispatch } from "../../redux/hooks";
 import { useEffect } from "react";
 import { fetchUserAnswers } from "../../redux/actions";
 
-interface mostHelpful {
+interface MostHelpfulProps {
   user: User;
 }
 
-const MostHelpful = (props: mostHelpful) => {
+const MostHelpful = (props: MostHelpfulProps) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUserAnswers(props.user._id));
-  }, [dispatch]);
+  }, [dispatch, props.user._id]);
+  if (!props.user.answers) {
+    return null;
+  }
+
   return (
     <Row id="mostHelpful">
       <Col className="md-4 mostHelpful__left">
         <div id="mostHelpful__img">
-          <img src={props.user.avatar} alt="user"></img>
+          <img src={props.user.avatar} alt="user" />
         </div>
       </Col>
       <Col className="md-4 mostHelpful__right">
         <span id="mostHelpful_name">{props.user.username}</span>
-
         <p id="mostHelpful_desc">The most helpful person</p>
         <span className="mostHelpful_span">
           <FontAwesomeIcon icon={faLightbulb} /> No. of answered questions:{" "}
@@ -33,11 +36,12 @@ const MostHelpful = (props: mostHelpful) => {
         </span>
         <span className="mostHelpful_span">
           <FontAwesomeIcon icon={faHeart} color="red" /> {props.user.reputation}{" "}
-          users likes them!
+          users like them!
         </span>
-        <Button id="mostHelpful__buton">Profile</Button>
+        <Button id="mostHelpful__button">Profile</Button>
       </Col>
     </Row>
   );
 };
+
 export default MostHelpful;

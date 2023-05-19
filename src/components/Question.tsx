@@ -1,9 +1,15 @@
-import { Button, Card } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
-import { fetchAnswer, fetchUser } from "../redux/actions";
+import { Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { fetchAnswer, fetchUser, likeQuestion } from "../redux/actions";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RootState } from "../redux/interfaces";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+  faHeart as faHeartRegular,
+} from "@fortawesome/free-solid-svg-icons";
+import "../css/question.css";
 
 const Question = () => {
   const location = useLocation();
@@ -17,7 +23,6 @@ const Question = () => {
   let answerState = useAppSelector(
     (state: RootState) => state.df.fetchedAnswer
   );
-  console.log(answerState.body);
   useEffect(() => {
     dispatch(fetchUser(question.user));
     dispatch(fetchAnswer(question._id, question.answers[0]));
@@ -28,64 +33,69 @@ const Question = () => {
     dispatch(fetchAnswer(question._id, question.answers[0]));
   }, [question._id, question.answers, question.user]);
 
+  const tags = question.tags;
+  const [liked, setLiked] = useState(question.likedBy.includes(user?._id));
+  useEffect(() => {
+    if (question.likedBy.includes(user?._id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [question.likedBy, user, dispatch]);
+
+  const handleLike = () => {
+    dispatch(likeQuestion(question._id.toString()));
+  };
+  const navigate = useNavigate();
   return (
-    <div className="container-fluid my-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <Card className="shadow rounded">
-            <Card.Header className="bg-white py-3">
-              <h5 className="mb-0 text-center">{}</h5>
-              <p className="mb-0 small text-muted text-center">
-                Asked by <strong>{user.username}</strong>, Reputation:{" "}
-                <strong>{user.reputation}</strong>, Role:{" "}
-                <strong>{user.role}</strong>
-              </p>
-              <h1>{question.title}</h1>
-              <p className="mb-0 small text-muted text-center">
-                Programming Language: <strong>{question.language}</strong>
-              </p>
-              <p className="mb-0 small text-muted text-center">
-                Tags:{" "}
-                {question &&
-                  question.tags.map((tag: string, i: number) => {
-                    <span key={i}>{tag}</span>;
-                  })}
-              </p>
-            </Card.Header>
-            <Card.Body>
-              <p className="card-text">
-                <strong>Description:</strong> {question.description}
-              </p>
-            </Card.Body>
-          </Card>
+    <>
+      <div className="flip-card">
+        <div className="flip-card-inner">
+          <div className="flip-card-front">
+            <p className="title">{question.title}</p>
+            {question.tags.length > 0 &&
+              tags.map((tag: string, i: number) => {
+                <p className="title" key={i}>
+                  {tag}
+                </p>;
+              })}
+            <p className="flip_description">{question.description}</p>
+          </div>
+          {answerState.body !== "" && answerState.selected ? (
+            <div className="flip-card-back">
+              <p className="title">{answerState.user.username}</p>
+              <p className="flip_description">{answerState.body}</p>
+            </div>
+          ) : (
+            <div className="flip-card-back">
+              <Button
+                onClick={() =>
+                  navigate("/answersForm", { state: { question } })
+                }
+              >
+                Submit your answer
+              </Button>
+            </div>
+          )}
         </div>
       </div>
-      {answerState.body !== "" ? (
-        <div className="row justify-content-center mt-5">
-          <div className="col-md-8">
-            <Card className="shadow rounded">
-              <Card.Header className="bg-white py-3">
-                <hr />
-                <p className="mb-0 small text-muted text-center">
-                  Answered by <strong>{answerState.user.username}</strong>,
-                  Reputation: <strong>{answerState.user.reputation}</strong>,
-                  Role: <strong>{answerState.user.role}</strong>
-                </p>
-              </Card.Header>
-              <Card.Body>
-                <p className="card-text">
-                  <strong>Answer:</strong> {answerState.body}
-                </p>
-              </Card.Body>
-            </Card>
-          </div>
-        </div>
-      ) : (
-        <Link to="/answersForm" state={question}>
-          <Button>Submit your answer</Button>
-        </Link>
-      )}
-    </div>
+      <div>
+        {liked ? (
+          <FontAwesomeIcon
+            icon={faHeart}
+            onClick={handleLike}
+            className="heart-icon liked"
+            color="red"
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faHeartRegular}
+            onClick={handleLike}
+            className="heart-icon"
+          />
+        )}
+      </div>
+    </>
   );
 };
 export default Question;

@@ -46,21 +46,26 @@ const UserProfile: React.FC = () => {
   };
   useEffect(() => {}, [newAvatar]);
   const navigate = useNavigate();
+  let answerLength = 0;
+  if (user.answers) {
+    answerLength = user.answers.length;
+  }
+  let questionLength = 0;
+  if (user.answers) {
+    questionLength = user.questions.length;
+  }
+
   return (
-    <Container className="py-5 h-100">
-      <Row className="d-flex justify-content-center align-items-center h-100">
-        <Col className="col-lg-9 col-xl-7">
-          <Card className="mb-3" style={{ backgroundColor: "#93b9d0" }}>
-            <div
-              className="ms-4 mt-5 d-flex flex-column"
-              style={{ width: "150px" }}
-            />
+    <Container className="bookContainer">
+      <Row>
+        <Col>
+          <div className="book">
             <label>
               <div>
                 <img
                   src={user.avatar}
                   alt="avatar"
-                  className="img-fluid img-thumbnail mt-4 mb-2"
+                  className="profile__avatar"
                   style={{ width: "80%", zIndex: 1 }}
                   onClick={handleAvatarClick}
                 />
@@ -78,55 +83,38 @@ const UserProfile: React.FC = () => {
                 ref={fileInputRef}
               />
             </label>
-            <div className="ms-3">
-              <h1>{user.username}</h1>
-              <h5 style={{ color: "gray" }}>{user.role}</h5>
+            <p>{user.role}</p>
+            <p>{user.email}</p>
+            <div className="repAskedAnswered">
+              <p>Reputation: {user.reputation}</p>
+              <p>Answered: {user.answers ? answerLength : 0} </p>
+              <p>Asked: {user.questions ? questionLength : 0}</p>
             </div>
-          </Card>
-          <div
-            className="info p-4 text-black"
-            style={{
-              backgroundColor: "#f8f9fa",
-              border: "1px solid #e99374",
-            }}
-          >
-            <div className="d-flex justify-content-end text-center py-1">
-              <div>
-                <p className="mb-1">{user.reputation}</p>
-                <p className="small text-muted mb-0">Reputation</p>
-              </div>
-              <div className="px-3">
-                {user.answers ? (
-                  <p className="mb-1">{user.answers.length}</p>
-                ) : (
-                  <p className="mb-1">0</p>
-                )}
-
-                <p className="small text-muted mb-0">Answered </p>
-              </div>
-              <div>
-                <p className="mb-1">{slicedArray.length}</p>
-                <p className="small text-muted mb-0">Asked</p>
-              </div>
+            <div className="cover">
+              <p>{user.username}</p>
             </div>
           </div>
-          <Card.Body className="p-4 text-black">
-            {slicedArray.length > 0 && (
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
-              </div>
-            )}
+        </Col>
+        <Col>
+          <div>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
+            </div>
 
-            {slicedArray.map((question, i) => (
-              <Row
-                key={i}
-                className="g-2 mt-2"
-                onClick={() => navigate("/Question", { state: { question } })}
-              >
-                <SingleQuestion question={question} />
-              </Row>
-            ))}
-          </Card.Body>
+            {slicedArray.length > 0
+              ? slicedArray.map((question, i) => (
+                  <Row
+                    key={i}
+                    className="g-2 mt-2"
+                    onClick={() =>
+                      navigate("/Question", { state: { question } })
+                    }
+                  >
+                    <SingleQuestion question={question} />
+                  </Row>
+                ))
+              : "No questions yet."}
+          </div>
         </Col>
       </Row>
     </Container>

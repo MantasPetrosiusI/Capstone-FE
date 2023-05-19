@@ -5,10 +5,14 @@ import "../css/navbar.css";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faArrowRight,
+  faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import { RootState } from "../redux/interfaces";
-import { logoutUser, searchQuestions } from "../redux/actions";
+import { logoutUser, searchQuestions, searchUsers } from "../redux/actions";
 import { Form, FormControl, Dropdown, DropdownButton } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -73,11 +77,19 @@ const CustomNavbar = () => {
     };
   }, []);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(searchQuestions(searchCategory, searchQuery));
+    if (["tag", "language", "title"].includes(searchCategory)) {
+      dispatch(searchQuestions(searchCategory, searchQuery));
+    } else if (["username"].includes(searchCategory)) {
+      dispatch(searchUsers(searchCategory, searchQuery));
+    }
   }, [searchQuery, searchCategory]);
   const searchedQuestions = useAppSelector(
     (state: RootState) => state.df.allSearch
+  );
+  const searchedUsers = useAppSelector(
+    (state: RootState) => state.df.allUsersSearch
   );
   useEffect(() => {
     if (!isFocused) {
@@ -112,9 +124,6 @@ const CustomNavbar = () => {
               <Nav.Link as={Link} to="/questions">
                 Questions
               </Nav.Link>
-              <Nav.Link as={Link} to="/questionForm">
-                New Question
-              </Nav.Link>
             </Nav>
             <Form
               className="input-container d-flex"
@@ -146,6 +155,9 @@ const CustomNavbar = () => {
                   <Dropdown.Item onClick={() => setSearchCategory("tag")}>
                     tag
                   </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSearchCategory("username")}>
+                    user
+                  </Dropdown.Item>
                 </DropdownButton>
               </div>
             </Form>
@@ -172,49 +184,80 @@ const CustomNavbar = () => {
                   </ul>
                 </div>
               )}
+            {searchedUsers &&
+              searchedUsers.length > 0 &&
+              searchQuery !== "" && (
+                <div>
+                  <ul className="searchResult">
+                    {searchedUsers.map((user) => (
+                      <li
+                        className="searchResultLi"
+                        key={user._id}
+                        onClick={() =>
+                          navigate("/profile", { state: { user } })
+                        }
+                      >
+                        {user.username}{" "}
+                        <FontAwesomeIcon
+                          icon={faArrowRight}
+                          fontSize={"1rem"}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
           </Navbar.Collapse>
 
           {user.online && (
-            <Dropdown id="profileDown" className="mr-auto" align={"end"}>
-              <Dropdown.Toggle id="profileBtn">
-                <img src={user.avatar} alt="userAvatar" id="userAvatar" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Link to="/profile" className="nav-link" state={user}>
-                    Profile
-                  </Link>
-                </Dropdown.Item>
-                <hr />
-                <div id="questionDiv">
-                  <Dropdown>
-                    <Dropdown.Toggle className="nav-link questions">
-                      My questions
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu align="start">
-                      <Dropdown.Item>
-                        <Link to="/myAnswered" className="nav-link">
-                          Answered
-                        </Link>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <Link to="/myUnanswered" className="nav-link">
-                          Unanswered
-                        </Link>
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
+            <>
+              <Link to="/questionForm" className="noselect">
+                <span className="text">New Question</span>
+                <span className="icon">
+                  <FontAwesomeIcon icon={faQuestionCircle} />
+                </span>
+              </Link>
+              <Dropdown id="profileDown" className="mr-auto" align={"end"}>
+                <Dropdown.Toggle id="profileBtn">
+                  <img src={user.avatar} alt="userAvatar" id="userAvatar" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item>
+                    <Link to="/profile" className="nav-link" state={user}>
+                      Profile
+                    </Link>
+                  </Dropdown.Item>
+                  <hr />
+                  <div id="questionDiv">
+                    <Dropdown>
+                      <Dropdown.Toggle className="nav-link questions">
+                        My questions
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu align="start">
+                        <Dropdown.Item>
+                          <Link to="/myAnswered" className="nav-link">
+                            Answered
+                          </Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item>
+                          <Link to="/myUnanswered" className="nav-link">
+                            Unanswered
+                          </Link>
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
 
-                <Dropdown.Item>
-                  <Link to="/myAnswers" className="nav-link">
-                    My answers
-                  </Link>
-                </Dropdown.Item>
-                <hr />
-                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                  <Dropdown.Item>
+                    <Link to="/myAnswers" className="nav-link">
+                      My answers
+                    </Link>
+                  </Dropdown.Item>
+                  <hr />
+                  <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </>
           )}
           {!user.online && (
             <>

@@ -1,1 +1,1 @@
-export { default as MainPage } from "../components/MainPage/MainPage";
+export { default as MainPage } from "./MainPage/MainPage";

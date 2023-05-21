@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect } from "react";
 import { fetchUsers, setQuestions } from "../../redux/actions";
 import { RootState } from "../../redux/interfaces";
-import "./mainPage.css";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +32,7 @@ const MainPage = () => {
 
   const sortedUsers = users.slice().sort((a, b) => b.reputation - a.reputation);
   return (
-    <Container className="main__container fluid mt-4 mb-3">
+    <Container className="fluid mt-4 mb-3">
       <Hero mostLiked={sortedQuestionsByRep[0]} />
       <MostHelpful user={sortedUsers[0]} />
       {questions.length > 0 ? (

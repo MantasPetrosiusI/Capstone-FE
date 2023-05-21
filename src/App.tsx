@@ -7,7 +7,6 @@ import Login from "./components/LoginRegister/Login";
 import EditorPage from "./components/Editor/EditorPage";
 import UserProfile from "./components/UserProfile/UserProfile";
 import QuestionsForm from "./components/QuestionsForm";
-import { MainPage } from "./components";
 import UserUnanswered from "./components/UserQuestions/UserUnanswered";
 import UserAnswered from "./components/UserQuestions/UserAnswered";
 import Question from "./components/Question";
@@ -18,7 +17,8 @@ import {
   fetchUserQuestions,
   setCurrentUser,
 } from "./redux/actions";
-import AnswersForm from "./components/AnswersForm";
+import AnswersForm from "./components/Answers/AnswersForm";
+import { MainPage } from "./components";
 
 function App() {
   const dispatch = useAppDispatch();

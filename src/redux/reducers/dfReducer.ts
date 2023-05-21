@@ -147,6 +147,7 @@ const dfReducer = (state = initialState, action: Action) => {
         ...state,
         currentUser: {
           ...action.payload,
+          online: true,
         },
       };
     case "FETCH_USER":
@@ -165,7 +166,8 @@ const dfReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         currentUser: {
-          initialState,
+          ...state.currentUser,
+          online: false,
         },
       };
     case "EDIT_AVATAR":

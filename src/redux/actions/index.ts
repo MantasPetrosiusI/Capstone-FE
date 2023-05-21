@@ -111,7 +111,7 @@ export const editAvatar = (newAvatar: File) => {
 export const logoutUser = () => {
   return async (dispatch: Dispatch) => {
     try {
-      dispatch({ type: LOGOUT_USER });
+      dispatch({ type: LOGOUT_USER, payload: false });
     } catch (error) {
       console.log(error);
     }

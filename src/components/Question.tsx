@@ -61,7 +61,7 @@ const Question = () => {
               })}
             <p className="flip_description">{question.description}</p>
           </div>
-          {answerState !== undefined && answerState.selected ? (
+          {answerState.body !== "" && answerState.selected ? (
             <div className="flip-card-back">
               <p className="title">{answerState.user.username}</p>
               <p className="flip_description">{answerState.body}</p>

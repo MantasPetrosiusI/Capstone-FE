@@ -41,6 +41,7 @@ const CustomNavbar = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state: RootState) => state.df.currentUser);
   function logout() {
+    user.online = false;
     fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, {
       method: "POST",
       body: JSON.stringify({ userId: user._id }),
@@ -134,6 +135,8 @@ const CustomNavbar = () => {
                 placeholder="Start search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
               />
               <div style={{ display: "inline-block" }}>
                 <DropdownButton
@@ -165,7 +168,6 @@ const CustomNavbar = () => {
                   <ul className="searchResult">
                     {searchedQuestions.map((question) => (
                       <li
-                        style={{ zIndex: 99999 }}
                         className="searchResultLi"
                         key={question._id}
                         onClick={() =>

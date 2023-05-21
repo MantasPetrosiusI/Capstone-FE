@@ -1,13 +1,13 @@
 import { FormEvent, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../../css/login.css";
-import "../../css/questionForm.css";
+import "../css/login.css";
+import "../css/questionForm.css";
 import { Editor } from "@monaco-editor/react";
 
-import { newAnswer } from "../../redux/actions";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Answer, RootState } from "../../redux/interfaces";
+import { newAnswer } from "../redux/actions";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { Answer, RootState } from "../redux/interfaces";
 
 const AnswersForm = () => {
   const [aDesc, setADesc] = useState("");

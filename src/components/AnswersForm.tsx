@@ -16,23 +16,24 @@ const AnswersForm = () => {
   const { question } = location.state;
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const answer: Answer = {
-        _id: "",
-        user: { ...user },
-        body: aDesc,
-        pending: true,
-        accepted: false,
-        question: question._id,
-        updatedAt: new Date(),
-      };
-      dispatch(newAnswer(answer, question._id));
-      navigate("/Question", { state: { question } });
-    } catch (error) {
-      console.log(error);
-    }
+    const answer: Answer = {
+      _id: "",
+      user: { ...user },
+      body: aDesc,
+      pending: true,
+      accepted: false,
+      question: question._id,
+      updatedAt: new Date(),
+    };
+    dispatch(newAnswer(answer, question._id))
+      .then(() => {
+        navigate("/Question", { state: { question } });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onChange = (value: string | undefined) => {

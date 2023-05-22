@@ -1,19 +1,14 @@
 import { Answer } from "../redux/interfaces";
 import "../css/pending.css";
-import moment from "moment";
 import { acceptRejectAnswer } from "../redux/actions";
 import { useAppDispatch } from "../redux/hooks";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Card, Button, Container, Row, Col } from "react-bootstrap";
 
-interface Props {
+interface PendingAnswersProps {
   props: Answer[];
 }
 
-const PendingAnswers = (props: Props) => {
+const PendingAnswers = ({ props }: PendingAnswersProps) => {
   const dispatch = useAppDispatch();
   const handleAccept = (answerId: string) => {
     dispatch(acceptRejectAnswer(answerId, true));
@@ -27,8 +22,8 @@ const PendingAnswers = (props: Props) => {
     <Container>
       <h2>Pending Answers</h2>
       <Row>
-        {Array.isArray(props.props) &&
-          props.props.map((answer, i) => (
+        {Array.isArray(props) &&
+          props.map((answer) => (
             <Col key={answer._id} sm={12} md={6} lg={4}>
               <Card className="pending-card">
                 <Card.Header className="d-flex justify-content-between align-items-start">
@@ -64,7 +59,7 @@ const PendingAnswers = (props: Props) => {
                   </Row>
                 </Card.Body>
                 <Card.Footer className="text-muted fs-6 pending-card-footer">
-                  {moment(answer.updatedAt).fromNow()}
+                  {answer.updatedAt.toLocaleString()}
                 </Card.Footer>
               </Card>
             </Col>

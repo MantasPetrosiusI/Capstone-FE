@@ -11,7 +11,7 @@ import UserUnanswered from "./components/UserQuestions/UserUnanswered";
 import UserAnswered from "./components/UserQuestions/UserAnswered";
 import Question from "./components/AllQuestions/Question";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   setQuestions,
   fetchUserQuestions,
@@ -25,17 +25,27 @@ import { MainPage } from "./components";
 import PendingAnswers from "./components/Pending__Answers";
 import PendingQuestions from "./components/Pending__Questions";
 import Questions from "./components/AllQuestions/Questions";
+import Loader from "react-spinners/ClipLoader";
 
 function App() {
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(setCurrentUser());
-    dispatch(setQuestions());
-    dispatch(fetchUserQuestions());
-    dispatch(fetchUsers());
-    dispatch(fetchPendingQuestions());
-    dispatch(fetchPendingAnswers());
+    const fetchData = async () => {
+      await Promise.all([
+        dispatch(setCurrentUser()),
+        dispatch(setQuestions()),
+        dispatch(fetchUserQuestions()),
+        dispatch(fetchUsers()),
+        dispatch(fetchPendingQuestions()),
+        dispatch(fetchPendingAnswers()),
+      ]);
+
+      setLoading(false);
+    };
+
+    fetchData();
   }, [dispatch]);
   const user = useAppSelector((state) => state.df.user);
   const pendingQuestions = useAppSelector((state) => state.df.pendingQuestions);
@@ -47,41 +57,47 @@ function App() {
   return (
     <div className="App">
       <CustomNavbar />
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/myAnswered" element={<UserAnswered />} />
-        <Route path="/myUnanswered" element={<UserUnanswered />} />
-        <Route path="/editor" element={<EditorPage />} />
-        <Route path="/questionForm" element={<QuestionsForm />} />
-        <Route path="/answersForm" element={<AnswersForm />} />
-        <Route path="/" element={<MainPage />} />
-        <Route path="/Question" element={<Question />} />
-        <Route path="/questions" element={<Questions />} />
-        <Route
-          path="/pending__questions"
-          element={
-            (user.role === "Administrator" || user.role === "Moderator") &&
-            matchPendingQuestions ? (
-              <PendingQuestions props={pendingQuestions} />
-            ) : (
-              <h1>Access Denied</h1>
-            )
-          }
-        />
-        <Route
-          path="/pending__answers"
-          element={
-            (user.role === "Administrator" || user.role === "Moderator") &&
-            matchPendingAnswers ? (
-              <PendingAnswers props={pendingAnswers} />
-            ) : (
-              <h1>Access Denied</h1>
-            )
-          }
-        />
-      </Routes>
+      {loading ? ( // Render loader conditionally based on the loading state
+        <div className="loader-container">
+          <Loader color="#000" loading={loading} size={15} />
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/myAnswered" element={<UserAnswered />} />
+          <Route path="/myUnanswered" element={<UserUnanswered />} />
+          <Route path="/editor" element={<EditorPage />} />
+          <Route path="/questionForm" element={<QuestionsForm />} />
+          <Route path="/answersForm" element={<AnswersForm />} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/Question" element={<Question />} />
+          <Route path="/questions" element={<Questions />} />
+          <Route
+            path="/pending__questions"
+            element={
+              (user.role === "Administrator" || user.role === "Moderator") &&
+              matchPendingQuestions ? (
+                <PendingQuestions props={pendingQuestions} />
+              ) : (
+                <h1>Access Denied</h1>
+              )
+            }
+          />
+          <Route
+            path="/pending__answers"
+            element={
+              (user.role === "Administrator" || user.role === "Moderator") &&
+              matchPendingAnswers ? (
+                <PendingAnswers props={pendingAnswers} />
+              ) : (
+                <h1>Access Denied</h1>
+              )
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 }

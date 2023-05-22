@@ -50,7 +50,7 @@ export function SingleQuestion(props: SingleQuestionProps) {
   };
 
   return (
-    <Card className="border-opacity-25 shadow">
+    <Card className="border-opacity-25 shadow" key={question._id}>
       <Card.Body>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <Card.Title as="h1" className="header-text">

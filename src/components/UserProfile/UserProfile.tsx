@@ -19,7 +19,6 @@ const UserProfile: React.FC = () => {
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
   };

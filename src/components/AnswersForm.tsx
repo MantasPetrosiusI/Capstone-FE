@@ -20,12 +20,13 @@ const AnswersForm = () => {
     e.preventDefault();
     try {
       const answer: Answer = {
+        _id: "",
         user: { ...user },
         body: aDesc,
         pending: true,
-        selected: false,
-        rejected: false,
+        accepted: false,
         question: question._id,
+        updatedAt: new Date(),
       };
       dispatch(newAnswer(answer, question._id));
       navigate("/Question", { state: { question } });

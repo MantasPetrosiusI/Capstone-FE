@@ -2,13 +2,10 @@ import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchAnswer, fetchUser, likeQuestion } from "../redux/actions";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RootState } from "../redux/interfaces";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart,
-  faHeart as faHeartRegular,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import "../css/question.css";
 
 const Question = () => {
@@ -26,6 +23,7 @@ const Question = () => {
     (state: RootState) => state.df.fetchedAnswer
   );
   const [liked, setLiked] = useState(question.likedBy.includes(user?._id));
+  const answer = useMemo(() => Object.values(answerState)[0], [answerState]);
 
   useEffect(() => {
     setLiked(question.likedBy.includes(user?._id));
@@ -43,18 +41,17 @@ const Question = () => {
         <div className="flip-card-inner">
           <div className="flip-card-front">
             <p className="title">{question.title}</p>
-            {question.tags.length > 0 &&
-              question.tags.map((tag: string, i: number) => (
-                <p className="title" key={i}>
-                  {tag}
-                </p>
-              ))}
+            {question.tags.map((tag: string, i: number) => (
+              <p className="title" key={i}>
+                {tag}
+              </p>
+            ))}
             <p className="flip_description">{question.description}</p>
           </div>
-          {answerState.body !== "" && answerState.selected ? (
+          {answer.accepted === true ? (
             <div className="flip-card-back">
-              <p className="title">{answerState.user.username}</p>
-              <p className="flip_description">{answerState.body}</p>
+              <p className="title">{answer.user.username}</p>
+              <p className="flip_description">{answer.body}</p>
             </div>
           ) : (
             <div className="flip-card-back">
@@ -71,7 +68,7 @@ const Question = () => {
       </div>
       <div>
         <FontAwesomeIcon
-          icon={liked ? faHeart : faHeartRegular}
+          icon={liked ? faHeartSolid : faHeartSolid}
           onClick={handleLike}
           className={`heart-icon ${liked ? "liked" : ""}`}
           color={liked ? "red" : undefined}

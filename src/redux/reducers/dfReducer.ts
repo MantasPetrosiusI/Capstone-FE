@@ -1,6 +1,8 @@
 import { dfState } from "../interfaces/index";
 
 type Action =
+  | { type: "PENDING_QUESTIONS"; payload: any }
+  | { type: "PENDING_ANSWERS"; payload: any }
   | { type: "SET_CURRENT_USER"; payload: any }
   | { type: "FETCH_USER"; payload: any }
   | { type: "FETCH_USERS"; payload: any }
@@ -14,6 +16,8 @@ type Action =
   | { type: "FETCH_USER_QUESTIONS"; payload: any }
   | { type: "FETCH_QUESTION_ANSWERS"; payload: any }
   | { type: "FETCH_ANSWER"; payload: any }
+  | { type: "UPDATE_QUESTION"; payload: any }
+  | { type: "UPDATE_ANSWER"; payload: any }
   | { type: "RESET_ANSWER" };
 
 const initialState: dfState = {
@@ -52,6 +56,8 @@ const initialState: dfState = {
       answered: false,
       answers: [],
       likedBy: [],
+      pending: true,
+      accepted: false,
     },
   },
   userQuestionState: {
@@ -78,9 +84,12 @@ const initialState: dfState = {
       answered: false,
       answers: [],
       likedBy: [],
+      pending: true,
+      accepted: false,
     },
   },
   fetchedAnswer: {
+    _id: "",
     user: {
       _id: "",
       username: "",
@@ -91,14 +100,40 @@ const initialState: dfState = {
       online: false,
       answers: [],
     },
-    question: "",
+    question: {
+      _id: "",
+      title: "",
+      description: "",
+      language: "",
+      tags: [],
+      user: {
+        _id: "",
+        username: "",
+        email: "",
+        avatar: "",
+        reputation: 0,
+        role: "",
+        online: false,
+        answers: [],
+      },
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+      noOfLikes: 0,
+      answered: false,
+      answers: [],
+      likedBy: [],
+      pending: true,
+      accepted: false,
+    },
     body: "",
     pending: true,
-    selected: false,
-    rejected: false,
+    accepted: false,
+    updatedAt: new Date(Date.now()),
   },
   allSearch: [],
   allUsersSearch: [],
+  pendingAnswers: [],
+  pendingQuestions: [],
 };
 
 const dfReducer = (state = initialState, action: Action) => {
@@ -144,6 +179,11 @@ const dfReducer = (state = initialState, action: Action) => {
           ...state.questionState,
           questions: action.payload,
         },
+      };
+    case "PENDING_QUESTIONS":
+      return {
+        ...state,
+        pendingQuestions: action.payload,
       };
     case "LIKE_QUESTION":
       const { payload: questionId } = action;
@@ -220,6 +260,56 @@ const dfReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         fetchedAnswer: initialState.fetchedAnswer,
+      };
+    case "PENDING_ANSWERS":
+      return {
+        ...state,
+        pendingAnswers: action.payload,
+      };
+    case "UPDATE_QUESTION":
+      const { payload: updatedCurrentQuestion } = action;
+
+      return {
+        ...state,
+        questionState: {
+          ...state.questionState,
+          currentQuestion: {
+            ...state.questionState.currentQuestion,
+            ...updatedCurrentQuestion,
+          },
+        },
+      };
+    case "UPDATE_ANSWER":
+      const { payload: updatedCurrentAnswer } = action;
+
+      return {
+        ...state,
+        questionState: {
+          ...state.questionState,
+          currentQuestion: {
+            ...state.questionState.currentQuestion,
+            answers: state.questionState.currentQuestion.answers.map(
+              (answer) => {
+                if (answer._id === updatedCurrentAnswer._id) {
+                  return {
+                    ...answer,
+                    ...updatedCurrentAnswer,
+                  };
+                }
+                return answer;
+              }
+            ),
+          },
+        },
+        pendingAnswers: state.pendingAnswers.map((answer) => {
+          if (answer._id === updatedCurrentAnswer._id) {
+            return {
+              ...answer,
+              ...updatedCurrentAnswer,
+            };
+          }
+          return answer;
+        }),
       };
     default:
       return state;

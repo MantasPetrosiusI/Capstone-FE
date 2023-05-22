@@ -13,19 +13,15 @@ export interface dfState {
     questions: Question[];
     currentQuestion: Question;
   };
-  fetchedAnswer: {
-    user: User;
-    question: string;
-    body: string;
-    pending: boolean;
-    selected: boolean;
-    rejected: boolean;
-  };
+  fetchedAnswer: Answer;
   allSearch: Question[];
   allUsersSearch: User[];
+  pendingQuestions: Question[];
+  pendingAnswers: Answer[];
 }
 
 export type DFAction =
+  | { type: "PENDING_QUESTIONS"; payload: Question[] }
   | { type: "RESET_ANSWER"; payload: Answer }
   | { type: "SET_CURRENT_USER"; payload: User }
   | { type: "FETCH_USER"; payload: User & { answers: Answer[] } }
@@ -67,13 +63,16 @@ export interface Question {
   answered: boolean;
   answers: Answer[];
   likedBy: string[];
+  pending: boolean;
+  accepted: boolean;
 }
 
 export interface Answer {
+  _id: string;
   user: User;
-  question: string;
+  question: Question;
   body: string;
   pending: boolean;
-  selected: boolean;
-  rejected: boolean;
+  accepted: boolean;
+  updatedAt: Date;
 }

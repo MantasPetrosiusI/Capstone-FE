@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
-import { Answer, Question, User } from "../interfaces";
+import { Answer, Question } from "../interfaces";
 import { AnyAction } from "@reduxjs/toolkit";
 
 const API_URL = process.env.REACT_APP_BACKEND;
@@ -22,6 +22,10 @@ export const actionTypes = {
   SET_SEARCH_USERS: "SET_SEARCH_USERS",
   LOGOUT_USER: "LOGOUT_USER",
   LIKE_QUESTION: "LIKE_QUESTION",
+  PENDING_QUESTIONS: "PENDING_QUESTIONS",
+  UPDATE_QUESTION: "UPDATE_QUESTION",
+  PENDING_ANSWERS: "PENDING_ANSWERS",
+  UPDATE_ANSWER: "UPDATE_ANSWER",
 };
 
 export const setCurrentUser = () => {
@@ -160,8 +164,6 @@ export const newQuestion = (question: Question) => {
         },
         body: JSON.stringify(question),
       });
-
-      // Handle the response as needed
     } catch (error) {
       console.log(error);
     }
@@ -209,6 +211,97 @@ export const setQuestions = () => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+export const acceptRejectQuestion = (questionId: string, status: boolean) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const token = Cookies.get("accessToken") || "";
+      const response = await fetch(
+        `${API_URL}/questions/${questionId}/status`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedQuestion = await response.json();
+        dispatch({
+          type: actionTypes.UPDATE_QUESTION,
+          payload: updatedQuestion,
+        });
+      }
+    } catch (error) {
+      console.error("Error accepting/rejecting question:", error);
+    }
+  };
+};
+
+export const fetchPendingQuestions = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(`${API_URL}/questions?pending=true`);
+
+      if (res.ok) {
+        const allQuestions = await res.json();
+        dispatch({
+          type: actionTypes.PENDING_QUESTIONS,
+          payload: allQuestions,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const fetchPendingAnswers = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const res = await fetch(`${API_URL}/answers?pending=true`);
+
+      if (res.ok) {
+        const allAnswers = await res.json();
+        dispatch({
+          type: actionTypes.PENDING_ANSWERS,
+          payload: allAnswers,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const acceptRejectAnswer = (answerId: string, status: boolean) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const token = Cookies.get("accessToken") || "";
+      const response = await fetch(`${API_URL}/answers/${answerId}/status`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (response.ok) {
+        const updatedAnswer = await response.json();
+        dispatch({
+          type: actionTypes.UPDATE_QUESTION,
+          payload: updatedAnswer,
+        });
+      }
+    } catch (error) {
+      console.error("Error accepting/rejecting answer:", error);
     }
   };
 };
@@ -271,8 +364,6 @@ export const newAnswer = (answer: Answer, questionId: string) => {
           body: JSON.stringify(answer),
         }
       );
-
-      // Handle the response as needed
     } catch (error) {
       console.log(error);
     }
@@ -297,10 +388,10 @@ export const fetchQuestionAnswers = (questionId: string) => {
   };
 };
 
-export const fetchAnswer = (answerId: string) => {
+export const fetchAnswer = (questionId: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(`${API_URL}/answers/${answerId}`);
+      const res = await fetch(`${API_URL}/answers/${questionId}`);
 
       if (res.ok) {
         const answer = await res.json();

@@ -24,6 +24,8 @@ const QuestionForm = () => {
     answered: false,
     answers: [],
     likedBy: [],
+    pending: true,
+    accepted: false,
   });
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.df.user);

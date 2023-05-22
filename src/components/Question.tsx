@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchAnswer, fetchUser, likeQuestion } from "../redux/actions";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect, useState } from "react";
@@ -15,38 +15,28 @@ const Question = () => {
   const location = useLocation();
   const { question } = location.state;
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchUser(question.user));
-  }, [question.user]);
+    dispatch(fetchAnswer(question._id));
+  }, [dispatch, question.user, question._id]);
 
-  let user = useAppSelector((state: RootState) => state.df.fetchedUser);
-  let answerState = useAppSelector(
+  const user = useAppSelector((state: RootState) => state.df.user);
+  const answerState = useAppSelector(
     (state: RootState) => state.df.fetchedAnswer
   );
-  useEffect(() => {
-    dispatch(fetchUser(question.user));
-    dispatch(fetchAnswer(question._id, question.answers[0]));
-  }, []);
-  useEffect(() => {
-    dispatch(fetchUser(question.user));
-
-    dispatch(fetchAnswer(question._id, question.answers[0]));
-  }, [question._id, question.answers, question.user]);
-
-  const tags = question.tags;
   const [liked, setLiked] = useState(question.likedBy.includes(user?._id));
+
   useEffect(() => {
-    if (question.likedBy.includes(user?._id)) {
-      setLiked(true);
-    } else {
-      setLiked(false);
-    }
-  }, [question.likedBy, user, dispatch]);
+    setLiked(question.likedBy.includes(user?._id));
+  }, [question.likedBy, user]);
 
   const handleLike = () => {
     dispatch(likeQuestion(question._id.toString()));
   };
+
   const navigate = useNavigate();
+
   return (
     <>
       <div className="flip-card">
@@ -54,11 +44,11 @@ const Question = () => {
           <div className="flip-card-front">
             <p className="title">{question.title}</p>
             {question.tags.length > 0 &&
-              tags.map((tag: string, i: number) => {
+              question.tags.map((tag: string, i: number) => (
                 <p className="title" key={i}>
                   {tag}
-                </p>;
-              })}
+                </p>
+              ))}
             <p className="flip_description">{question.description}</p>
           </div>
           {answerState.body !== "" && answerState.selected ? (
@@ -80,22 +70,15 @@ const Question = () => {
         </div>
       </div>
       <div>
-        {liked ? (
-          <FontAwesomeIcon
-            icon={faHeart}
-            onClick={handleLike}
-            className="heart-icon liked"
-            color="red"
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faHeartRegular}
-            onClick={handleLike}
-            className="heart-icon"
-          />
-        )}
+        <FontAwesomeIcon
+          icon={liked ? faHeart : faHeartRegular}
+          onClick={handleLike}
+          className={`heart-icon ${liked ? "liked" : ""}`}
+          color={liked ? "red" : undefined}
+        />
       </div>
     </>
   );
 };
+
 export default Question;

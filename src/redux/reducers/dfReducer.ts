@@ -1,41 +1,23 @@
-import {
-  dfState,
-  setCurrentUser,
-  editAvatar,
-  newQuestion,
-  newAnswer,
-  setQuestions,
-  fetchUserQuestions,
-  logout,
-  fetchUser,
-  questionAnswers,
-  fetchAnswer,
-  resetAnswer,
-  fetchUsers,
-  searchQuestions,
-  searchUsers,
-  likeQuestion,
-} from "../interfaces/index";
+import { dfState } from "../interfaces/index";
 
 type Action =
-  | setCurrentUser
-  | fetchUsers
-  | editAvatar
-  | newQuestion
-  | newAnswer
-  | fetchAnswer
-  | setQuestions
-  | fetchUserQuestions
-  | questionAnswers
-  | logout
-  | fetchUser
-  | searchQuestions
-  | resetAnswer
-  | searchUsers
-  | likeQuestion;
+  | { type: "SET_CURRENT_USER"; payload: any }
+  | { type: "FETCH_USER"; payload: any }
+  | { type: "FETCH_USERS"; payload: any }
+  | { type: "LOGOUT_USER" }
+  | { type: "EDIT_AVATAR"; payload: string }
+  | { type: "SET_QUESTIONS"; payload: any }
+  | { type: "LIKE_QUESTION"; payload: string }
+  | { type: "SET_SEARCH_QUESTIONS"; payload: any }
+  | { type: "SET_SEARCH_USERS"; payload: any }
+  | { type: "ADD_QUESTION"; payload: any }
+  | { type: "FETCH_USER_QUESTIONS"; payload: any }
+  | { type: "FETCH_QUESTION_ANSWERS"; payload: any }
+  | { type: "FETCH_ANSWER"; payload: any }
+  | { type: "RESET_ANSWER" };
 
 const initialState: dfState = {
-  currentUser: {
+  user: {
     _id: "",
     username: "",
     email: "",
@@ -45,18 +27,7 @@ const initialState: dfState = {
     online: false,
     answers: [],
   },
-  allUsers: [
-    {
-      _id: "",
-      username: "",
-      email: "",
-      avatar: "",
-      reputation: 0,
-      role: "",
-      online: false,
-      answers: [],
-    },
-  ],
+  allUsers: [],
   questionState: {
     questions: [],
     currentQuestion: {
@@ -109,16 +80,6 @@ const initialState: dfState = {
       likedBy: [],
     },
   },
-  fetchedUser: {
-    _id: "",
-    username: "",
-    email: "",
-    avatar: "",
-    reputation: 0,
-    role: "",
-    online: false,
-    answers: [],
-  },
   fetchedAnswer: {
     user: {
       _id: "",
@@ -145,7 +106,7 @@ const dfReducer = (state = initialState, action: Action) => {
     case "SET_CURRENT_USER":
       return {
         ...state,
-        currentUser: {
+        user: {
           ...action.payload,
           online: true,
         },
@@ -153,9 +114,7 @@ const dfReducer = (state = initialState, action: Action) => {
     case "FETCH_USER":
       return {
         ...state,
-        fetchedUser: {
-          ...action.payload,
-        },
+        fetchedUser: action.payload,
       };
     case "FETCH_USERS":
       return {
@@ -165,52 +124,44 @@ const dfReducer = (state = initialState, action: Action) => {
     case "LOGOUT_USER":
       return {
         ...state,
-        currentUser: {
-          ...state.currentUser,
+        user: {
+          ...state.user,
           online: false,
         },
       };
     case "EDIT_AVATAR":
       return {
         ...state,
-        currentUser: {
-          ...state.currentUser,
+        user: {
+          ...state.user,
           avatar: action.payload,
         },
       };
-    case "SET_QUESTIONS": {
+    case "SET_QUESTIONS":
       return {
         ...state,
         questionState: {
           ...state.questionState,
           questions: action.payload,
-          hasFetched: true,
         },
       };
-    }
-    case "LIKE_QUESTION": {
-      const questionId = action.payload;
+    case "LIKE_QUESTION":
+      const { payload: questionId } = action;
       const likedQuestions = state.questionState.questions.map((question) => {
         if (question._id === questionId) {
-          const isLiked = question.likedBy.includes(state.currentUser._id);
-          if (isLiked) {
-            return {
-              ...question,
-              likedBy: question.likedBy.filter(
-                (userId: string) => userId !== state.currentUser._id
-              ),
-              noOfLikes: question.noOfLikes - 1,
-            };
-          } else {
-            return {
-              ...question,
-              likedBy: [...question.likedBy, state.currentUser._id],
-              noOfLikes: question.noOfLikes + 1,
-            };
-          }
-        } else {
-          return question;
+          const isLiked = question.likedBy.includes(state.user._id);
+          const likedBy = isLiked
+            ? question.likedBy.filter(
+                (userId: string) => userId !== state.user._id
+              )
+            : [...question.likedBy, state.user._id];
+          return {
+            ...question,
+            likedBy,
+            noOfLikes: likedBy.length,
+          };
         }
+        return question;
       });
 
       return {
@@ -220,7 +171,6 @@ const dfReducer = (state = initialState, action: Action) => {
           questions: likedQuestions,
         },
       };
-    }
     case "SET_SEARCH_QUESTIONS":
       return {
         ...state,
@@ -264,29 +214,12 @@ const dfReducer = (state = initialState, action: Action) => {
     case "FETCH_ANSWER":
       return {
         ...state,
-        fetchedAnswer: {
-          ...action.payload,
-        },
+        fetchedAnswer: action.payload,
       };
     case "RESET_ANSWER":
       return {
         ...state,
-        fetchedAnswer: {
-          user: {
-            _id: "",
-            username: "",
-            email: "",
-            avatar: "",
-            reputation: 0,
-            role: "",
-            online: false,
-          },
-          question: "",
-          body: "",
-          pending: true,
-          selected: false,
-          rejected: false,
-        },
+        fetchedAnswer: initialState.fetchedAnswer,
       };
     default:
       return state;

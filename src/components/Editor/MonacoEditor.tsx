@@ -5,7 +5,7 @@ interface MonacoEditorProps {
   onResultChange: (result: string) => void;
 }
 
-function MonacoEditor(props: MonacoEditorProps) {
+const MonacoEditor = (props: MonacoEditorProps) => {
   const editorRef = useRef<any>();
 
   const handleEditorDidMount = (editor: any) => {
@@ -39,6 +39,6 @@ function MonacoEditor(props: MonacoEditorProps) {
       </button>
     </div>
   );
-}
+};
 
 export default MonacoEditor;

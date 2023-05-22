@@ -5,14 +5,16 @@ import "../../css/editor.css";
 
 const EditorPage = () => {
   const [result, setResult] = useState("");
-  const hanldeResultChange = (newResult: string) => {
+
+  const handleResultChange = (newResult: string) => {
     setResult(newResult);
   };
+
   return (
     <Container className="editor">
       <Row>
         <Col>
-          <MonacoEditor onResultChange={hanldeResultChange}></MonacoEditor>
+          <MonacoEditor onResultChange={handleResultChange} />
         </Col>
         <Col>
           <div>{result}</div>
@@ -21,4 +23,5 @@ const EditorPage = () => {
     </Container>
   );
 };
+
 export default EditorPage;

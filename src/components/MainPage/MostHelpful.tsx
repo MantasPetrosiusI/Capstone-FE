@@ -14,7 +14,7 @@ interface MostHelpfulProps {
 const MostHelpful = (props: MostHelpfulProps) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchUserAnswers(props.user._id));
+    dispatch(fetchUserAnswers());
   }, [dispatch, props.user._id]);
   if (!props.user.answers) {
     return null;

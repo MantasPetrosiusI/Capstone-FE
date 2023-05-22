@@ -16,8 +16,9 @@ import {
   setQuestions,
   fetchUserQuestions,
   setCurrentUser,
+  fetchUsers,
 } from "./redux/actions";
-import AnswersForm from "./components/Answers/AnswersForm";
+import AnswersForm from "./components/AnswersForm";
 import { MainPage } from "./components";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
     dispatch(setCurrentUser());
     dispatch(setQuestions());
     dispatch(fetchUserQuestions());
+    dispatch(fetchUsers());
   }, [dispatch]);
   return (
     <div className="App">

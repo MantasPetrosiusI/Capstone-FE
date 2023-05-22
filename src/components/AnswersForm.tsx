@@ -1,8 +1,6 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../css/login.css";
-import "../css/questionForm.css";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Editor } from "@monaco-editor/react";
 
 import { newAnswer } from "../redux/actions";
@@ -13,24 +11,16 @@ const AnswersForm = () => {
   const [aDesc, setADesc] = useState("");
 
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.df.currentUser);
+  const user = useAppSelector((state: RootState) => state.df.user);
   const location = useLocation();
   const { question } = location.state;
   const navigate = useNavigate();
-  const onSubmit = async (e: FormEvent) => {
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const answer: Answer = {
-        user: {
-          _id: user._id,
-          username: user.username,
-          avatar: user.avatar,
-          online: user.online,
-          email: user.email,
-          reputation: user.reputation,
-          role: user.role,
-          answers: user.answers,
-        },
+        user: { ...user },
         body: aDesc,
         pending: true,
         selected: false,
@@ -43,7 +33,8 @@ const AnswersForm = () => {
       console.log(error);
     }
   };
-  const onChange = (value?: string) => {
+
+  const onChange = (value: string | undefined) => {
     setADesc(value || "");
   };
 
@@ -73,4 +64,5 @@ const AnswersForm = () => {
     </Container>
   );
 };
+
 export default AnswersForm;

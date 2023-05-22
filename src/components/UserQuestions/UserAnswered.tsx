@@ -1,40 +1,38 @@
 import { useState } from "react";
 import { Container, Row } from "react-bootstrap";
-import { useAppSelector } from "../../redux/hooks";
-import { SingleQuestion } from "../UserProfile/SingleQuestion";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
 import { RootState } from "../../redux/interfaces";
+import { SingleQuestion } from "../UserProfile/SingleQuestion";
 
 const UserAnswered = () => {
   const navigate = useNavigate();
   const allUserQuestions = useAppSelector(
     (state: RootState) => state.df.userQuestionState.questions
   );
-  const answeredQuestions = allUserQuestions.filter(
-    (question) => question.answered
-  );
-  const sortedAnsweredQuestions = [...answeredQuestions];
-  sortedAnsweredQuestions.sort(
-    (a, b) =>
-      new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
-  );
-
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 5;
-  const pageCount = Math.ceil(sortedAnsweredQuestions.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const filteredQuestions = sortedAnsweredQuestions.filter(
+  const filteredQuestions = allUserQuestions.filter(
     (question) =>
-      !searchQuery ||
-      question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      question.tags.some((tag: string) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      question.language.toLowerCase().includes(searchQuery.toLowerCase())
+      question.answered &&
+      (!searchQuery ||
+        question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        question.tags.some((tag: string) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        question.language.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  const currentQuestions = filteredQuestions.slice(startIndex, endIndex);
+  const sortedQuestions = [...filteredQuestions].sort(
+    (a, b) =>
+      new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
+  );
+  const pageCount = Math.ceil(sortedQuestions.length / pageSize);
+  const currentQuestions = sortedQuestions.slice(
+    startIndex,
+    startIndex + pageSize
+  );
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -59,12 +57,12 @@ const UserAnswered = () => {
           onChange={handleSearchChange}
         />
       </div>
-      {filteredQuestions.length > 0 ? (
+      {sortedQuestions.length > 0 ? (
         <>
           <h1>Answered Questions</h1>
-          {currentQuestions.map((question, i) => (
+          {currentQuestions.map((question) => (
             <Row
-              key={i}
+              key={question._id}
               className="mt-2"
               onClick={() => navigate("/Question", { state: { question } })}
             >

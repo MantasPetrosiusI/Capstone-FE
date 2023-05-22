@@ -14,13 +14,21 @@ interface RecentQuestionsProps {
 
 const RecentQuestions = (props: RecentQuestionsProps) => {
   const navigate = useNavigate();
+  const { byDate } = props;
 
-  if (!props.byDate || props.byDate.length === 0) {
+  if (!byDate || byDate.length === 0) {
     return null;
   }
 
-  const question = props.byDate[0];
-  const allQuestions = props.byDate;
+  const question = byDate[0];
+
+  const goToQuestion = (question: Question) => {
+    navigate("/Question", { state: { question } });
+  };
+
+  const goToAllQuestions = () => {
+    navigate("/unansweredQuestions", { state: { allQuestions: byDate } });
+  };
 
   return (
     <Row id="recentQuestions">
@@ -38,17 +46,17 @@ const RecentQuestions = (props: RecentQuestionsProps) => {
           </div>
           <div
             id="recentQuestions__left__top__btn"
-            onClick={() => navigate("/Question", { state: { question } })}
+            onClick={() => goToQuestion(question)}
           >
             Go to question <FontAwesomeIcon icon={faAnglesRight} />
           </div>
         </Row>
         <Row id="recentQuestions__left__bottom">
-          {props.byDate.map((question, i) => (
+          {byDate.map((question, i) => (
             <Row
               key={i}
               className="recentQuestions__single"
-              onClick={() => navigate("/Question", { state: { question } })}
+              onClick={() => goToQuestion(question)}
             >
               <span>{question.user.username}</span>
               <span>{question.title}</span>
@@ -56,12 +64,7 @@ const RecentQuestions = (props: RecentQuestionsProps) => {
             </Row>
           ))}
         </Row>
-        <div
-          id="recentQuestions__btn"
-          onClick={() =>
-            navigate("/unansweredQuestions", { state: { allQuestions } })
-          }
-        >
+        <div id="recentQuestions__btn" onClick={goToAllQuestions}>
           Show All Questions
         </div>
       </Col>

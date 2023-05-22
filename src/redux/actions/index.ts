@@ -1,41 +1,44 @@
 import { Dispatch } from "redux";
 import Cookies from "js-cookie";
-import { Answer, Question } from "../interfaces";
+import { Answer, Question, User } from "../interfaces";
+import { AnyAction } from "@reduxjs/toolkit";
 
-export const SET_CURRENT_USER = "SET_CURRENT_USER";
-export const EDIT_AVATAR = "EDIT_AVATAR";
-export const FETCH_USER_QUESTIONS = "FETCH_USER_QUESTIONS";
-export const ADD_QUESTION = "ADD_QUESTION";
-export const ADD_ANSWER = "ADD_ANSWER";
-export const SET_QUESTIONS = "SET_QUESTIONS";
-export const FETCH_USER = "FETCH_USER";
-export const FETCH_USERS = "FETCH_USERS";
-export const FETCH_QUESTION_ANSWERS = "FETCH_QUESTION_ANSWERS";
-export const FETCH_ANSWER = "FETCH_ANSWER";
-export const RESET_ANSWER = "RESET_ANSWER";
-export const FETCH_USER_ANSWERS = "FETCH_USER_ANSWERS";
-export const SET_SEARCH_QUESTIONS = "SET_SEARCH_QUESTIONS";
-export const SET_SEARCH_USERS = "SET_SEARCH_USERS";
-export const LOGOUT_USER = "LOGOUT_USER";
-export const LIKE_QUESTION = "LIKE_QUESTION";
+const API_URL = process.env.REACT_APP_BACKEND;
+
+export const actionTypes = {
+  SET_CURRENT_USER: "SET_CURRENT_USER",
+  EDIT_AVATAR: "EDIT_AVATAR",
+  FETCH_USER_QUESTIONS: "FETCH_USER_QUESTIONS",
+  ADD_QUESTION: "ADD_QUESTION",
+  ADD_ANSWER: "ADD_ANSWER",
+  SET_QUESTIONS: "SET_QUESTIONS",
+  FETCH_USER: "FETCH_USER",
+  FETCH_USERS: "FETCH_USERS",
+  FETCH_QUESTION_ANSWERS: "FETCH_QUESTION_ANSWERS",
+  FETCH_ANSWER: "FETCH_ANSWER",
+  RESET_ANSWER: "RESET_ANSWER",
+  FETCH_USER_ANSWERS: "FETCH_USER_ANSWERS",
+  SET_SEARCH_QUESTIONS: "SET_SEARCH_QUESTIONS",
+  SET_SEARCH_USERS: "SET_SEARCH_USERS",
+  LOGOUT_USER: "LOGOUT_USER",
+  LIKE_QUESTION: "LIKE_QUESTION",
+};
 
 export const setCurrentUser = () => {
   return async (dispatch: Dispatch) => {
     try {
-      let token = "";
-      if (Cookies.get("accessToken")) {
-        token = Cookies.get("accessToken")!;
-      }
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/me`, {
+      const token = Cookies.get("accessToken") || "";
+      const res = await fetch(`${API_URL}/users/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (res.ok) {
         const user = await res.json();
         dispatch({
-          type: SET_CURRENT_USER,
+          type: actionTypes.SET_CURRENT_USER,
           payload: user,
         });
       }
@@ -44,16 +47,18 @@ export const setCurrentUser = () => {
     }
   };
 };
+
 export const fetchUsers = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/`, {
+      const res = await fetch(`${API_URL}/users`, {
         method: "GET",
       });
+
       if (res.ok) {
         const users = await res.json();
         dispatch({
-          type: "FETCH_USERS",
+          type: actionTypes.FETCH_USERS,
           payload: users,
         });
       }
@@ -62,16 +67,18 @@ export const fetchUsers = () => {
     }
   };
 };
+
 export const fetchUser = (id: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/${id}`, {
+      const res = await fetch(`${API_URL}/users/${id}`, {
         method: "GET",
       });
+
       if (res.ok) {
         const user = await res.json();
         dispatch({
-          type: "FETCH_USER",
+          type: actionTypes.FETCH_USER,
           payload: user,
         });
       }
@@ -80,27 +87,25 @@ export const fetchUser = (id: string) => {
     }
   };
 };
+
 export const editAvatar = (newAvatar: File) => {
   return async (dispatch: Dispatch) => {
     try {
-      console.log(newAvatar);
-      let token = "";
-      if (Cookies.get("accessToken")) {
-        token = Cookies.get("accessToken")!;
-      }
+      const token = Cookies.get("accessToken") || "";
       const formData = new FormData();
       formData.append("avatar", newAvatar);
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/users/avatar`, {
+
+      const res = await fetch(`${API_URL}/users/avatar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
+
       const data = await res.json();
-      console.log(data);
       dispatch({
-        type: EDIT_AVATAR,
+        type: actionTypes.EDIT_AVATAR,
         payload: data.avatar,
       });
     } catch (error) {
@@ -108,32 +113,32 @@ export const editAvatar = (newAvatar: File) => {
     }
   };
 };
+
 export const logoutUser = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<AnyAction>) => {
     try {
-      dispatch({ type: LOGOUT_USER, payload: false });
+      dispatch({ type: actionTypes.LOGOUT_USER });
     } catch (error) {
       console.log(error);
     }
   };
 };
+
 export const fetchUserQuestions = () => {
   return async (dispatch: Dispatch) => {
     try {
-      let token = "";
-      if (Cookies.get("accessToken")) {
-        token = Cookies.get("accessToken")!;
-      }
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/questions/me`, {
+      const token = Cookies.get("accessToken") || "";
+      const res = await fetch(`${API_URL}/questions/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (res.ok) {
         const questions = await res.json();
         dispatch({
-          type: FETCH_USER_QUESTIONS,
+          type: actionTypes.FETCH_USER_QUESTIONS,
           payload: questions,
         });
       }
@@ -142,50 +147,43 @@ export const fetchUserQuestions = () => {
     }
   };
 };
+
 export const newQuestion = (question: Question) => {
   return async () => {
     try {
-      let token = "";
-      if (Cookies.get("accessToken")) {
-        token = Cookies.get("accessToken")!;
-      }
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/questions/me/newQuestion`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(question),
-        }
-      );
+      const token = Cookies.get("accessToken") || "";
+      const res = await fetch(`${API_URL}/questions/me/newQuestion`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(question),
+      });
+
+      // Handle the response as needed
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const likeQuestion = (questiondId: string) => {
+
+export const likeQuestion = (questionId: string) => {
   return async (dispatch: Dispatch) => {
-    let token = "";
-    if (Cookies.get("accessToken")) {
-      token = Cookies.get("accessToken")!;
-    }
+    const token = Cookies.get("accessToken") || "";
+
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/questions/${questiondId}/like`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_URL}/questions/${questionId}/like`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (res.ok) {
         const data = await res.json();
         dispatch({
-          type: LIKE_QUESTION,
+          type: actionTypes.LIKE_QUESTION,
           payload: data,
         });
       } else {
@@ -196,14 +194,16 @@ export const likeQuestion = (questiondId: string) => {
     }
   };
 };
+
 export const setQuestions = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND}/questions`);
+      const res = await fetch(`${API_URL}/questions`);
+
       if (res.ok) {
         const allQuestions = await res.json();
         dispatch({
-          type: SET_QUESTIONS,
+          type: actionTypes.SET_QUESTIONS,
           payload: allQuestions,
         });
       }
@@ -212,6 +212,7 @@ export const setQuestions = () => {
     }
   };
 };
+
 export const searchQuestions = (
   searchCategory: string,
   searchQuery: string
@@ -219,13 +220,13 @@ export const searchQuestions = (
   return async (dispatch: Dispatch) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/questions/search?&${searchCategory}=${searchQuery}`
+        `${API_URL}/questions/search?&${searchCategory}=${searchQuery}`
       );
 
       if (res.ok) {
         const data = await res.json();
         dispatch({
-          type: SET_SEARCH_QUESTIONS,
+          type: actionTypes.SET_SEARCH_QUESTIONS,
           payload: data,
         });
       }
@@ -234,17 +235,18 @@ export const searchQuestions = (
     }
   };
 };
+
 export const searchUsers = (searchCategory: string, searchQuery: string) => {
   return async (dispatch: Dispatch) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/questions/search?&${searchCategory}=${searchQuery}`
+        `${API_URL}/users/search?&${searchCategory}=${searchQuery}`
       );
 
       if (res.ok) {
         const data = await res.json();
         dispatch({
-          type: SET_SEARCH_USERS,
+          type: actionTypes.SET_SEARCH_USERS,
           payload: data,
         });
       }
@@ -253,17 +255,13 @@ export const searchUsers = (searchCategory: string, searchQuery: string) => {
     }
   };
 };
+
 export const newAnswer = (answer: Answer, questionId: string) => {
   return async () => {
     try {
-      console.log(questionId);
-      let token = "";
-      if (Cookies.get("accessToken")) {
-        token = Cookies.get("accessToken")!;
-      }
-      console.log(questionId);
+      const token = Cookies.get("accessToken") || "";
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}/newAnswer`,
+        `${API_URL}/answers/questions/${questionId}/newAnswer`,
         {
           method: "POST",
           headers: {
@@ -273,43 +271,24 @@ export const newAnswer = (answer: Answer, questionId: string) => {
           body: JSON.stringify(answer),
         }
       );
+
+      // Handle the response as needed
     } catch (error) {
       console.log(error);
     }
   };
 };
-export const questionAnswers = (questionId: string) => {
+
+export const fetchQuestionAnswers = (questionId: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}`
-      );
+      const res = await fetch(`${API_URL}/answers/questions/${questionId}`);
+
       if (res.ok) {
         const answers = await res.json();
         dispatch({
-          type: FETCH_QUESTION_ANSWERS,
+          type: actionTypes.FETCH_QUESTION_ANSWERS,
           payload: answers,
-        });
-      }
-    } catch (error) {}
-  };
-};
-export const fetchAnswer = (questionId: string, answerId: string) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/answers/questions/${questionId}/${answerId}`
-      );
-      console.log(res);
-      if (res.ok) {
-        const answer = await res.json();
-        dispatch({
-          type: FETCH_ANSWER,
-          payload: answer,
-        });
-      } else {
-        dispatch({
-          type: RESET_ANSWER,
         });
       }
     } catch (error) {
@@ -317,17 +296,51 @@ export const fetchAnswer = (questionId: string, answerId: string) => {
     }
   };
 };
-export const fetchUserAnswers = (userId: string) => {
+
+export const fetchAnswer = (answerId: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/answers/${userId}/answers`
-      );
+      const res = await fetch(`${API_URL}/answers/${answerId}`);
+
       if (res.ok) {
-        const userAnswers = res.json();
+        const answer = await res.json();
         dispatch({
-          type: FETCH_USER_ANSWERS,
-          payload: userAnswers,
+          type: actionTypes.FETCH_ANSWER,
+          payload: answer,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const resetAnswer = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: actionTypes.RESET_ANSWER });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const fetchUserAnswers = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const token = Cookies.get("accessToken") || "";
+      const res = await fetch(`${API_URL}/answers/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const answers = await res.json();
+        dispatch({
+          type: actionTypes.FETCH_USER_ANSWERS,
+          payload: answers,
         });
       }
     } catch (error) {

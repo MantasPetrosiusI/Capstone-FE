@@ -1,40 +1,38 @@
 import { useState } from "react";
 import { Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
-import { SingleQuestion } from "../UserProfile/SingleQuestion";
-import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/interfaces";
+import { SingleQuestion } from "../UserProfile/SingleQuestion";
 
 const UserUnanswered = () => {
   const navigate = useNavigate();
   const allUserQuestions = useAppSelector(
     (state: RootState) => state.df.userQuestionState.questions
   );
-  const unansweredQuestions = allUserQuestions.filter(
-    (question) => !question.answered
-  );
-  const sortedUnansweredQuestions = [...unansweredQuestions];
-  sortedUnansweredQuestions.sort(
-    (a, b) =>
-      new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
-  );
-
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 5;
-  const pageCount = Math.ceil(sortedUnansweredQuestions.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const filteredQuestions = sortedUnansweredQuestions.filter(
+  const filteredQuestions = allUserQuestions.filter(
     (question) =>
-      !searchQuery ||
-      question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      question.tags.some((tag: string) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      question.language.toLowerCase().includes(searchQuery.toLowerCase())
+      !question.answered &&
+      (!searchQuery ||
+        question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        question.tags.some((tag: string) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        question.language.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  const currentQuestions = filteredQuestions.slice(startIndex, endIndex);
+  const sortedQuestions = [...filteredQuestions].sort(
+    (a, b) =>
+      new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
+  );
+  const pageCount = Math.ceil(sortedQuestions.length / pageSize);
+  const currentQuestions = sortedQuestions.slice(
+    startIndex,
+    startIndex + pageSize
+  );
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -59,12 +57,12 @@ const UserUnanswered = () => {
           onChange={handleSearchChange}
         />
       </div>
-      {filteredQuestions.length > 0 ? (
+      {sortedQuestions.length > 0 ? (
         <>
           <h1>Unanswered Questions</h1>
-          {currentQuestions.map((question, i) => (
+          {currentQuestions.map((question) => (
             <Row
-              key={i}
+              key={question._id}
               className="mt-3"
               onClick={() => navigate("/Question", { state: { question } })}
             >

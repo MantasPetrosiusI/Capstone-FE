@@ -1,34 +1,21 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import "../../css/profile.css";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { editAvatar } from "../../redux/actions";
+import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import { SingleQuestion } from "./SingleQuestion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/interfaces";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { editAvatar } from "../../redux/actions";
+import { SingleQuestion } from "./SingleQuestion";
+import "../../css/profile.css";
 
 const UserProfile: React.FC = () => {
   const location = useLocation();
   const user = location.state;
   const dispatch = useAppDispatch();
   const userQuestions = useAppSelector(
-    (state: RootState) => state.df.userQuestionState
-  ).questions;
-  let slicedArray = [];
-  if (userQuestions.length > 1) {
-    const sortedQuestions = [...userQuestions];
-
-    sortedQuestions.sort(
-      (a, b) =>
-        new Date(b.updatedAt!)?.getTime() - new Date(a.updatedAt!).getTime()
-    );
-    slicedArray = sortedQuestions.slice(0, 3);
-  } else {
-    const sortedQuestions = [...userQuestions];
-    slicedArray = sortedQuestions.slice(0, 1);
-  }
+    (state: RootState) => state.df.userQuestionState.questions
+  );
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,16 +31,21 @@ const UserProfile: React.FC = () => {
       dispatch(editAvatar(file));
     }
   };
+
   useEffect(() => {}, [newAvatar]);
+
   const navigate = useNavigate();
-  let answerLength = 0;
-  if (user.answers) {
-    answerLength = user.answers.length;
-  }
-  let questionLength = 0;
-  if (user.answers) {
-    questionLength = user.questions.length;
-  }
+  const answerLength = user.answers ? user.answers.length : 0;
+  const questionLength = user.questions ? user.questions.length : 0;
+
+  const sortedQuestions = [...userQuestions].sort(
+    (a, b) =>
+      new Date(b.updatedAt!)?.getTime() - new Date(a.updatedAt!).getTime()
+  );
+  const slicedArray = sortedQuestions.slice(
+    0,
+    Math.min(sortedQuestions.length, 3)
+  );
 
   return (
     <Container className="bookContainer">
@@ -87,8 +79,8 @@ const UserProfile: React.FC = () => {
             <p>{user.email}</p>
             <div className="repAskedAnswered">
               <p>Reputation: {user.reputation}</p>
-              <p>Answered: {user.answers ? answerLength : 0} </p>
-              <p>Asked: {user.questions ? questionLength : 0}</p>
+              <p>Answered: {answerLength}</p>
+              <p>Asked: {questionLength}</p>
             </div>
             <div className="cover">
               <p>{user.username}</p>
@@ -101,19 +93,19 @@ const UserProfile: React.FC = () => {
               <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
             </div>
 
-            {slicedArray.length > 0
-              ? slicedArray.map((question, i) => (
-                  <Row
-                    key={i}
-                    className="g-2 mt-2"
-                    onClick={() =>
-                      navigate("/Question", { state: { question } })
-                    }
-                  >
-                    <SingleQuestion question={question} />
-                  </Row>
-                ))
-              : "No questions yet."}
+            {slicedArray.length > 0 ? (
+              slicedArray.map((question) => (
+                <Row
+                  key={question._id}
+                  className="g-2 mt-2"
+                  onClick={() => navigate("/Question", { state: { question } })}
+                >
+                  <SingleQuestion question={question} />
+                </Row>
+              ))
+            ) : (
+              <p>No questions yet.</p>
+            )}
           </div>
         </Col>
       </Row>

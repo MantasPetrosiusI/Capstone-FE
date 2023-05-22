@@ -39,9 +39,8 @@ const CustomNavbar = () => {
     dispatch(logoutUser());
   }, [Cookies]);
   const navigate = useNavigate();
-  const user = useAppSelector((state: RootState) => state.df.currentUser);
+  const user = useAppSelector((state: RootState) => state.df.user);
   function logout() {
-    user.online = false;
     fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, {
       method: "POST",
       body: JSON.stringify({ userId: user._id }),
@@ -209,7 +208,7 @@ const CustomNavbar = () => {
               )}
           </Navbar.Collapse>
 
-          {user.online && (
+          {user && user.online && (
             <>
               <Link to="/questionForm" className="noselect">
                 <span className="text">New Question</span>
@@ -247,12 +246,27 @@ const CustomNavbar = () => {
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
-
                   <Dropdown.Item>
                     <Link to="/myAnswers" className="nav-link">
                       My answers
                     </Link>
                   </Dropdown.Item>
+                  {(user.role === "Administrator" ||
+                    user.role === "Moderator") && (
+                    <Dropdown.Item>
+                      <Link to="/pending__answers" className="nav-link">
+                        Pending Answers
+                      </Link>
+                    </Dropdown.Item>
+                  )}
+                  {(user.role === "Administrator" ||
+                    user.role === "Moderator") && (
+                    <Dropdown.Item>
+                      <Link to="/pending__questions" className="nav-link">
+                        Pending Questions
+                      </Link>
+                    </Dropdown.Item>
+                  )}
                   <hr />
                   <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>

@@ -31,7 +31,18 @@ const initialState: dfState = {
     online: false,
     answers: [],
   },
-  allUsers: [],
+  allUsers: [
+    {
+      _id: "",
+      username: "",
+      email: "",
+      avatar: "",
+      reputation: 0,
+      role: "",
+      online: false,
+      answers: [],
+    },
+  ],
   questionState: {
     questions: [],
     currentQuestion: {

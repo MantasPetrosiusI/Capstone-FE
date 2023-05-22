@@ -1,12 +1,12 @@
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchAnswer, fetchUser, likeQuestion } from "../redux/actions";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { fetchAnswer, fetchUser, likeQuestion } from "../../redux/actions";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useMemo, useState } from "react";
-import { RootState } from "../redux/interfaces";
+import { RootState } from "../../redux/interfaces";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
-import "../css/question.css";
+import "../../css/question.css";
 
 const Question = () => {
   const location = useLocation();
@@ -48,7 +48,7 @@ const Question = () => {
             ))}
             <p className="flip_description">{question.description}</p>
           </div>
-          {answer.accepted === true ? (
+          {answer && answer.accepted === true ? (
             <div className="flip-card-back">
               <p className="title">{answer.user.username}</p>
               <p className="flip_description">{answer.body}</p>

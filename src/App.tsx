@@ -9,7 +9,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import QuestionsForm from "./components/QuestionsForm";
 import UserUnanswered from "./components/UserQuestions/UserUnanswered";
 import UserAnswered from "./components/UserQuestions/UserAnswered";
-import Question from "./components/Question";
+import Question from "./components/AllQuestions/Question";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { useEffect } from "react";
 import {
@@ -24,6 +24,7 @@ import AnswersForm from "./components/AnswersForm";
 import { MainPage } from "./components";
 import PendingAnswers from "./components/Pending__Answers";
 import PendingQuestions from "./components/Pending__Questions";
+import Questions from "./components/AllQuestions/Questions";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -56,6 +57,7 @@ function App() {
         <Route path="/answersForm" element={<AnswersForm />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/Question" element={<Question />} />
+        <Route path="/questions" element={<Questions />} />
         <Route
           path="/pending__questions"
           element={

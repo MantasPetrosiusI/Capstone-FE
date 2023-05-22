@@ -22,8 +22,8 @@ import {
 } from "./redux/actions";
 import AnswersForm from "./components/AnswersForm";
 import { MainPage } from "./components";
-import Pending__Answers from "./components/Pending__Answers";
-import Pending__Questions from "./components/Pending__Questions";
+import PendingAnswers from "./components/Pending__Answers";
+import PendingQuestions from "./components/Pending__Questions";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -61,7 +61,7 @@ function App() {
           element={
             (user.role === "Administrator" || user.role === "Moderator") &&
             matchPendingQuestions ? (
-              <Pending__Questions props={pendingQuestions} />
+              <PendingQuestions props={pendingQuestions} />
             ) : (
               <h1>Access Denied</h1>
             )
@@ -72,7 +72,7 @@ function App() {
           element={
             (user.role === "Administrator" || user.role === "Moderator") &&
             matchPendingAnswers ? (
-              <Pending__Answers props={pendingAnswers} />
+              <PendingAnswers props={pendingAnswers} />
             ) : (
               <h1>Access Denied</h1>
             )

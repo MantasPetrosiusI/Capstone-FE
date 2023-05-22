@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Tagify from "@yaireo/tagify";
@@ -31,7 +31,19 @@ const QuestionForm = () => {
   const user = useAppSelector((state: RootState) => state.df.user);
   const tagsRef = useRef<HTMLInputElement>(null);
   const tagifyRef = useRef<Tagify>();
-
+  const programmingLanguages = useMemo(
+    () => [
+      "Javascript",
+      "TypeScript",
+      "Python",
+      "Java",
+      "Kotlin",
+      "PHP",
+      "C#",
+      "Swift",
+    ],
+    []
+  );
   useEffect(() => {
     if (tagsRef.current) {
       tagifyRef.current = new Tagify(tagsRef.current, {
@@ -54,18 +66,7 @@ const QuestionForm = () => {
         }));
       });
     }
-  }, []);
-
-  const programmingLanguages = [
-    "Javascript",
-    "TypeScript",
-    "Python",
-    "Java",
-    "Kotlin",
-    "PHP",
-    "C#",
-    "Swift",
-  ];
+  }, [programmingLanguages]);
 
   const onSubmit = async (e: FormEvent) => {
     try {

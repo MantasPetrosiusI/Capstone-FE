@@ -3,8 +3,8 @@ import {
   faPersonCircleQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Col, Row } from "react-bootstrap";
-import { Question, User } from "../../redux/interfaces";
+import { Col, Row } from "react-bootstrap";
+import { Question } from "../../redux/interfaces";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 

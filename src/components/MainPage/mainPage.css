@@ -24,7 +24,7 @@
   font-weight: 700;
   font-size: 3.5rem;
   line-height: 3.438rem;
-  text-align: start;
+  text-align: flex-start;
   color: #4c4c58;
 }
 
@@ -37,7 +37,7 @@
   font-family: "Roboto";
   font-size: 2.5rem;
   line-height: 3.438rem;
-  text-align: start;
+  text-align: flex-start;
   color: #4c4c58;
 }
 
@@ -48,7 +48,7 @@
   top: 14rem;
   left: 11rem;
   line-height: 3.438rem;
-  text-align: start;
+  text-align: flex-start;
   color: #4c4c58;
 }
 
@@ -130,7 +130,7 @@
 .mostHelpful__right {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 #mostHelpful_name {
@@ -161,7 +161,7 @@
   margin-top: 1rem;
   width: 25.5rem;
   height: 2.5rem;
-  text-align: start;
+  text-align: flex-start;
 }
 
 #mostHelpful__button {

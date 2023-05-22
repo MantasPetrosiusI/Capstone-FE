@@ -150,7 +150,7 @@ button.questions {
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   border-radius: 0.5rem;
 }
 ul.searchResult > li.searchResultLi {

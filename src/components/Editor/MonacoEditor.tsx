@@ -16,7 +16,8 @@ const MonacoEditor = (props: MonacoEditorProps) => {
     try {
       const code = editorRef.current?.getValue();
       if (code) {
-        const result = eval(code);
+        const executeCode = new Function(code);
+        const result = executeCode();
         props.onResultChange(result);
       }
     } catch (error) {

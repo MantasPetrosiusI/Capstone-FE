@@ -24,7 +24,7 @@ const CustomNavbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isFocused, setIsFocused] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const closeNav = (e: MouseEvent) => {
       const path = e.composedPath() as HTMLElement[];
@@ -37,7 +37,7 @@ const CustomNavbar = () => {
   }, []);
   useEffect(() => {
     dispatch(logoutUser());
-  }, [Cookies]);
+  }, [dispatch]);
   const navigate = useNavigate();
   const user = useAppSelector((state: RootState) => state.df.user);
   function logout() {
@@ -75,7 +75,6 @@ const CustomNavbar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (["tag", "language", "title"].includes(searchCategory)) {
@@ -83,7 +82,7 @@ const CustomNavbar = () => {
     } else if (["username"].includes(searchCategory)) {
       dispatch(searchUsers(searchCategory, searchQuery));
     }
-  }, [searchQuery, searchCategory]);
+  }, [searchQuery, searchCategory, dispatch]);
   const searchedQuestions = useAppSelector(
     (state: RootState) => state.df.allSearch
   );

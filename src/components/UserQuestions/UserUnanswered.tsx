@@ -91,7 +91,7 @@ const UserUnanswered = () => {
       ) : (
         <div>
           <hr />
-          <span>No questions have been answered!</span>
+          <span>All questions have been answered!</span>
           <hr />
         </div>
       )}

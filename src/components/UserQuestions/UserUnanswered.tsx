@@ -11,10 +11,9 @@ const UserUnanswered = () => {
     (state: RootState) => state.df.userQuestionState.questions
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 5;
   const startIndex = (currentPage - 1) * pageSize;
-
   const filteredQuestions = allUserQuestions.filter(
     (question) =>
       !question.answered &&
@@ -25,12 +24,10 @@ const UserUnanswered = () => {
         ) ||
         question.language.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-
   const sortedQuestions = [...filteredQuestions].sort(
     (a, b) =>
       new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
   );
-
   const pageCount = Math.ceil(sortedQuestions.length / pageSize);
   const currentQuestions = sortedQuestions.slice(
     startIndex,
@@ -42,8 +39,7 @@ const UserUnanswered = () => {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.trim();
-    setSearchQuery(value || null);
+    setSearchQuery(event.target.value);
     setCurrentPage(1);
   };
 
@@ -57,7 +53,7 @@ const UserUnanswered = () => {
           type="text"
           className="form-control"
           id="search"
-          value={searchQuery || ""}
+          value={searchQuery}
           onChange={handleSearchChange}
         />
       </div>

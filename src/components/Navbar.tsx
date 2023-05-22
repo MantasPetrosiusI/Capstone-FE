@@ -68,7 +68,6 @@ const CustomNavbar = () => {
         console.error("Error during logout: ", error);
       });
   }
-
   return (
     <>
       <Navbar collapseOnSelect expand="md">
@@ -112,7 +111,7 @@ const CustomNavbar = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item>
-                    <Link to="/profile" className="nav-link">
+                    <Link to="/profile" className="nav-link" state={user}>
                       Profile
                     </Link>
                   </Dropdown.Item>
@@ -153,7 +152,7 @@ const CustomNavbar = () => {
             <>
               <button id="login">
                 <Link
-                  to="/login"
+                  to={"/login"}
                   style={{ color: "#000000", textDecoration: "none" }}
                 >
                   Login
@@ -161,7 +160,7 @@ const CustomNavbar = () => {
               </button>
               <button id="register">
                 <Link
-                  to="/register"
+                  to={"register"}
                   style={{ color: "#000000", textDecoration: "none" }}
                 >
                   Register

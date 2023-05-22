@@ -10,7 +10,6 @@ interface HeroProps {
   mostLiked: Question;
 }
 
-const MAX_TITLE_LENGTH = 40;
 const MAX_DESCRIPTION_LENGTH = 60;
 
 const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
@@ -21,10 +20,6 @@ const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
   }
 
   const { title, description, noOfLikes } = mostLiked;
-  const truncatedTitle =
-    title.length > MAX_TITLE_LENGTH
-      ? `${title.substring(0, MAX_TITLE_LENGTH)}...`
-      : title;
   const truncatedDescription = description.substring(0, MAX_DESCRIPTION_LENGTH);
   const showEllipsis = description.length > MAX_DESCRIPTION_LENGTH;
 
@@ -38,7 +33,7 @@ const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
         <span id="hero__title">
           Most liked question <FontAwesomeIcon icon={faTrophy} stroke="black" />
         </span>
-        <p id="hero__text">{truncatedTitle}</p>
+        <p id="hero__text">{title}</p>
         <p id="hero__text2">
           {truncatedDescription}
           {showEllipsis && <span className="text-muted"> ...</span>}

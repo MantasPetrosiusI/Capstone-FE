@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Tagify from "@yaireo/tagify";
@@ -9,17 +9,6 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Question, RootState, User } from "../redux/interfaces";
 import { Editor } from "@monaco-editor/react";
 import "../css/questionForm.css";
-
-const programmingLanguages = [
-  "Javascript",
-  "TypeScript",
-  "Python",
-  "Java",
-  "Kotlin",
-  "PHP",
-  "C#",
-  "Swift",
-];
 
 const QuestionForm = () => {
   const [question, setQuestion] = useState<Question>({
@@ -42,7 +31,42 @@ const QuestionForm = () => {
   const user = useAppSelector((state: RootState) => state.df.user);
   const tagsRef = useRef<HTMLInputElement>(null);
   const tagifyRef = useRef<Tagify>();
-  const navigate = useNavigate();
+  const programmingLanguages = useMemo(
+    () => [
+      "Javascript",
+      "TypeScript",
+      "Python",
+      "Java",
+      "Kotlin",
+      "PHP",
+      "C#",
+      "Swift",
+    ],
+    []
+  );
+  useEffect(() => {
+    if (tagsRef.current) {
+      tagifyRef.current = new Tagify(tagsRef.current, {
+        enforceWhitelist: true,
+        whitelist: programmingLanguages,
+        dropdown: {
+          enabled: 1,
+        },
+      });
+      tagifyRef.current.on("add", (e) => {
+        setQuestion((prevQuestion) => ({
+          ...prevQuestion,
+          tags: tagifyRef.current!.value.map((tag) => tag.value),
+        }));
+      });
+      tagifyRef.current.on("remove", (e) => {
+        setQuestion((prevQuestion) => ({
+          ...prevQuestion,
+          tags: tagifyRef.current!.value.map((tag) => tag.value),
+        }));
+      });
+    }
+  }, [programmingLanguages]);
 
   const onSubmit = async (e: FormEvent) => {
     try {
@@ -71,29 +95,7 @@ const QuestionForm = () => {
     }));
   };
 
-  useEffect(() => {
-    if (tagsRef.current) {
-      tagifyRef.current = new Tagify(tagsRef.current, {
-        enforceWhitelist: true,
-        whitelist: programmingLanguages,
-        dropdown: {
-          enabled: 1,
-        },
-      });
-      tagifyRef.current.on("add", (e) => {
-        setQuestion((prevQuestion) => ({
-          ...prevQuestion,
-          tags: tagifyRef.current!.value.map((tag) => tag.value),
-        }));
-      });
-      tagifyRef.current.on("remove", (e) => {
-        setQuestion((prevQuestion) => ({
-          ...prevQuestion,
-          tags: tagifyRef.current!.value.map((tag) => tag.value),
-        }));
-      });
-    }
-  }, []);
+  const navigate = useNavigate();
 
   return (
     <Container className="regLog" style={{ border: "1px solid #2c3b56" }}>
@@ -132,8 +134,8 @@ const QuestionForm = () => {
                 }
               >
                 <option value="">Select one</option>
-                {programmingLanguages.map((lang) => (
-                  <option key={lang} value={lang}>
+                {programmingLanguages.map((lang, i) => (
+                  <option key={i} value={lang}>
                     {lang}
                   </option>
                 ))}

@@ -59,8 +59,7 @@ const UserAnswered = () => {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setSearchQuery(value);
+    setSearchQuery(event.target.value);
     setCurrentPage(1);
   };
 

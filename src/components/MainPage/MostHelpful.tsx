@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faLightbulb } from "@fortawesome/free-solid-svg-icons";
@@ -14,22 +13,6 @@ const MostHelpful: React.FC<MostHelpfulProps> = ({ user }) => {
     return null;
   }
 
-  const renderUserInfo = () => (
-    <React.Fragment>
-      <span id="mostHelpful_name">{user.username}</span>
-      <p id="mostHelpful_desc">The most helpful person</p>
-      <span className="mostHelpful_span">
-        <FontAwesomeIcon icon={faLightbulb} /> No. of answered questions:{" "}
-        {user.answers.length}
-      </span>
-      <span className="mostHelpful_span">
-        <FontAwesomeIcon icon={faHeart} color="red" /> {user.reputation} users
-        like them!
-      </span>
-      <Button id="mostHelpful__button">Profile</Button>
-    </React.Fragment>
-  );
-
   return (
     <Row id="mostHelpful">
       <Col md={4} className="mostHelpful__left">
@@ -38,7 +21,17 @@ const MostHelpful: React.FC<MostHelpfulProps> = ({ user }) => {
         </div>
       </Col>
       <Col md={4} className="mostHelpful__right">
-        {renderUserInfo()}
+        <span id="mostHelpful_name">{user.username}</span>
+        <p id="mostHelpful_desc">The most helpful person</p>
+        <span className="mostHelpful_span">
+          <FontAwesomeIcon icon={faLightbulb} /> No. of answered questions:{" "}
+          {user.answers.length}
+        </span>
+        <span className="mostHelpful_span">
+          <FontAwesomeIcon icon={faHeart} color="red" /> {user.reputation} users
+          like them!
+        </span>
+        <Button id="mostHelpful__button">Profile</Button>
       </Col>
     </Row>
   );

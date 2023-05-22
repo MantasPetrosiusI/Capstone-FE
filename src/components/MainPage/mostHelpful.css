@@ -1,0 +1,173 @@
+/* Mobile First Styles */
+
+/* General Styles */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1920px; /* Adjust this value as needed */
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Most Helpful Section */
+
+#mostHelpful {
+  background-color: #93b9d07e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+
+.mostHelpful__left {
+  width: 10.438rem;
+  height: 10.438rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1.5rem;
+}
+
+#mostHelpful__img {
+  border-radius: 50%;
+  width: 20.876rem;
+  aspect-ratio: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#mostHelpful__img img {
+  border-radius: 5px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.mostHelpful__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+#mostHelpful_name {
+  width: 17rem;
+  height: auto;
+  font-family: "Roboto";
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: #4c4c58;
+}
+
+#mostHelpful_desc {
+  width: 100%;
+  max-width: 17.438rem;
+  height: auto;
+  margin-top: 1rem;
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: #4c4c58;
+}
+
+.mostHelpful_span {
+  margin-top: 1rem;
+  width: 100% !important;
+  height: 2.5rem;
+  text-align: left;
+}
+
+#mostHelpful__button {
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  background: #333648;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#mostHelpful__button:hover {
+  background: #1c1f2a;
+}
+
+/* Responsive Styles */
+
+@media (min-width: 768px) {
+  /* Tablets and Desktops */
+
+  #mostHelpful {
+    height: 33.063rem;
+  }
+
+  #mostHelpful_name {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
+
+  #mostHelpful_desc {
+    font-size: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .mostHelpful_span {
+    width: 30rem;
+    height: 3rem;
+  }
+
+  #mostHelpful__button {
+    padding: 1.5rem 4rem;
+    font-size: 1.5rem;
+    width: 20rem;
+    height: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Large Screens */
+
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1281px) {
+  /* Desktop Displays */
+
+  #mostHelpful {
+    height: 35rem;
+  }
+
+  #mostHelpful_name {
+    font-size: 3rem;
+    line-height: 3.5rem;
+  }
+
+  #mostHelpful_desc {
+    font-size: 1.75rem;
+    line-height: 2;
+  }
+
+  .mostHelpful_span {
+    width: 35rem;
+    height: 3.5rem;
+  }
+
+  #mostHelpful__button {
+    padding: 2rem 4.5rem;
+    font-size: 1.75rem;
+    width: 22.5rem;
+    height: 5rem;
+  }
+}

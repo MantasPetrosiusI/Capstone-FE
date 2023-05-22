@@ -8,18 +8,18 @@ import React from "react";
 
 const UserAnswered = () => {
   const navigate = useNavigate();
-  const allUserQuestions = useAppSelector(
-    (state: RootState) => state.df.userQuestionState.questions
+  const allQuestions = useAppSelector(
+    (state: RootState) => state.df.questionState.questions
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("Answered");
   const pageSize = 5;
   const startIndex = (currentPage - 1) * pageSize;
-  const answeredQuestions = allUserQuestions.filter(
+  const answeredQuestions = allQuestions.filter(
     (question) => question.answered
   );
-  const unAnsweredQuestions = allUserQuestions.filter(
+  const unAnsweredQuestions = allQuestions.filter(
     (question) => !question.answered
   );
   let filteredQuestions;

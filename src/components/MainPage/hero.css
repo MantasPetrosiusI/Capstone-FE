@@ -1,0 +1,174 @@
+#hero {
+  position: relative;
+  height: 35rem;
+  width: 100%;
+  display: flex;
+  margin: 0;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+#hero__title {
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 1;
+  left: 1.25rem;
+  font-weight: 700;
+  font-size: 1.188rem;
+  line-height: 1.875rem;
+  color: #72727a;
+}
+
+#hero__text {
+  position: absolute;
+  width: 31.25rem;
+  height: 12.375rem;
+  top: 2rem;
+  font-family: "Roboto";
+  font-weight: 700;
+  font-size: 3.5rem;
+  line-height: 3.438rem;
+  text-align: flex-start;
+  color: #4c4c58;
+}
+
+#hero__text2 {
+  position: absolute;
+  width: 31.25rem;
+  height: 12.375rem;
+  top: 5rem;
+  left: 2rem;
+  font-family: "Roboto";
+  font-size: 2.5rem;
+  line-height: 3.438rem;
+  text-align: flex-start;
+  color: #4c4c58;
+}
+
+#hero__likes {
+  position: absolute;
+  width: 31.25rem;
+  height: 12.375rem;
+  top: 14rem;
+  left: -3rem;
+  line-height: 3.438rem;
+  text-align: flex-start;
+  color: #4c4c58;
+}
+
+#hero__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  top: 14rem;
+  position: absolute;
+  width: 14.375rem;
+  height: 3.188rem;
+  left: 14.875rem;
+  background: #546bff;
+}
+
+.hero__left {
+  position: absolute;
+  width: 28.063rem;
+  aspect-ratio: 1;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 414px) {
+  /* Mobile Displays */
+  #hero {
+    height: auto;
+    padding: 2rem 0;
+    flex-direction: column;
+  }
+
+  #hero__title,
+  #hero__text,
+  #hero__text2,
+  #hero__likes,
+  #hero__button {
+    position: static;
+    width: auto;
+    height: auto;
+    top: auto;
+    left: auto;
+  }
+
+  .hero__left {
+    position: relative;
+    width: 100%;
+    aspect-ratio: auto;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 1280px) {
+  /* Tablet Displays */
+  #hero {
+    padding: 3rem;
+  }
+
+  #hero__title {
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+  }
+
+  #hero__text {
+    font-size: 3rem;
+    line-height: 3.5rem;
+  }
+
+  #hero__text2 {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+  }
+
+  #hero__likes {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    bottom: 0;
+    margin-top: 1rem;
+  }
+
+  #hero__button {
+    width: 16.875rem;
+    height: 3.688rem;
+    left: 15.875rem;
+  }
+}
+
+@media (min-width: 1281px) {
+  /* Desktop Displays */
+  #hero {
+    padding: 4rem;
+  }
+
+  #hero__title {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+  }
+
+  #hero__text {
+    font-size: 4rem;
+    line-height: 4.5rem;
+  }
+
+  #hero__text2 {
+    font-size: 3rem;
+    line-height: 3.5rem;
+  }
+
+  #hero__likes {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
+
+  #hero__button {
+    width: 18.75rem;
+    height: 4.188rem;
+    left: 16.875rem;
+  }
+}

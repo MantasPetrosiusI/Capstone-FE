@@ -4,7 +4,10 @@ body {
   font-weight: 400;
   font-size: 26px;
   line-height: 31px;
+  margin: 0;
+  width: 100%;
 }
+
 .navbar {
   position: relative;
   width: 100%;
@@ -13,41 +16,50 @@ body {
   height: 5.063rem;
   box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
 }
+.navbar > .container-fluid {
+  justify-content: normal;
+}
 .navbar-toggler {
   border: none;
 }
+
 .navbar-toggler:focus {
   box-shadow: none;
 }
+
 .navbar-toggler-icon {
   position: absolute;
   left: 4rem;
   top: 35%;
 }
+
 #login {
   position: absolute;
   width: 10.061rem;
   height: 2.938rem;
-  right: 18rem;
+  right: 13rem;
   top: 1rem;
   border: none;
   background: #e9e1df;
 }
+
 #register {
   position: absolute;
   width: 10.061rem;
   height: 2.938rem;
-  right: 3.35rem;
+  right: 1.35rem;
   top: 1rem;
   border: none;
   background: #e99374;
 }
+
 .debugForce {
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 39px;
   line-height: 47px;
+  z-index: 1;
 }
 
 .navbar-nav {
@@ -61,11 +73,13 @@ body {
   padding-right: 1rem;
   z-index: 1;
 }
+
 #profileDown {
   right: 2%;
   top: 6%;
   position: absolute;
 }
+
 #profileBtn {
   height: 4.5rem;
   width: 4.5rem;
@@ -77,6 +91,7 @@ body {
   align-items: center;
   flex-direction: row;
 }
+
 .dropdown-toggle::after {
   display: none;
 }
@@ -86,104 +101,50 @@ body {
   width: 4.5rem;
   border-radius: 50%;
 }
+
 .debugForce #one {
   color: #2c3b56;
 }
+
 .debugForce #two {
   color: #e99374;
 }
+
 button.questions {
   background-color: transparent !important;
   border: none !important;
   color: black !important;
   margin-left: 1rem;
 }
+
 #questionDiv {
   height: 38.98px;
   display: flex;
   align-items: center;
 }
+
 #questionDiv:hover {
   background-color: #e9ecef;
 }
+
 #navbarSupportedContent > form > input {
   display: flex;
   flex-direction: row;
   margin: 15px 0;
-  margin-left: 9rem;
-  margin-bottom: 4.5rem;
   justify-content: center;
-  max-width: 290px;
+  max-width: 10rem;
   border-radius: 10px 0 0 10px;
   border-right: none;
   border-color: #2c3b56;
 }
 
-#dropdown-basic-button {
-  font-size: 17px;
-  padding: 0.49em 2em;
-  border: transparent;
-  background: #2c3b56;
-  color: #e9e1df;
-  border-radius: 0 10px 10px 0;
-  transition: 0.3s;
-}
-
-#dropdown-basic-button:hover {
-  transition: 0.3s;
-  background: linear-gradient(90deg, #2c3b56 0%, #e99374 100%);
-  cursor: pointer;
-}
-
-#dropdown-basic-button:active {
-  transform: translate(0em, 0.2em);
-}
-.searchResult {
-  position: absolute;
-  border: 1px solid #2c3b56;
-  background-color: #93b9d070;
-  width: 17vw;
-  left: 34%;
-  top: 90%;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border-radius: 0.5rem;
-}
-ul.searchResult > li.searchResultLi {
-  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-ul.searchResult > li.searchResultLi > svg {
-  margin-left: auto;
-}
-#input-field {
-  background-color: #2e2e2e;
-  border-radius: 10px 0 0 10px;
-  border: none;
-  width: 300px;
-  padding-left: 8px;
-  color: white;
-  font-size: 14px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
 .noselect {
   text-decoration: none;
-  position: absolute;
-  right: 8rem;
   width: 150px;
   height: 50px;
   cursor: pointer;
   display: flex;
+  margin-right: 12%;
   align-items: center;
   background: #e99374;
   border: none;
@@ -243,22 +204,24 @@ ul.searchResult > li.searchResultLi > svg {
   transform: scale(0.8);
 }
 
+/* Responsive Styles */
+
 @media only screen and (max-width: 430px) {
   #login {
-    width: 3.75rem;
-    height: 1.938rem;
-    right: 7rem;
-    top: 0.75rem;
+    width: 5rem;
+    height: 2.5rem;
+    right: 6rem;
+    top: 25%;
   }
   #register {
-    width: 3.75rem;
-    height: 1.938rem;
-    right: 1.55rem;
-    top: 0.75rem;
+    width: 5rem;
+    height: 2.5rem;
+    right: 0.5rem;
+    top: 25%;
   }
   #login,
   #register {
-    font-size: 12px;
+    font-size: 20px;
     line-height: 15px;
   }
   .navbar-nav {
@@ -266,21 +229,19 @@ ul.searchResult > li.searchResultLi > svg {
     top: 2rem;
     background-color: rgba(255, 255, 255, 0.652);
   }
-  .debugForce {
-    display: none;
-  }
 }
+
 @media only screen and (min-width: 430px) and (max-width: 660px) {
   #login {
     width: 5.848rem;
     height: 2.938rem;
-    right: 12rem;
+    right: 8rem;
     top: 1rem;
   }
   #register {
     width: 5.848rem;
     height: 2.938rem;
-    right: 2.7rem;
+    right: 1rem;
     top: 1rem;
   }
   #login,
@@ -302,29 +263,39 @@ ul.searchResult > li.searchResultLi > svg {
   #midScreen {
     display: none;
   }
+  .navbar-nav {
+    top: 5.5rem;
+    left: 2rem;
+  }
+  button.questions {
+    margin-left: 3rem;
+  }
 }
+
 @media only screen and (max-width: 992px) and (min-width: 660px) {
   #login {
-    width: 5.848rem;
-    height: 2.938rem;
-    right: 12rem;
+    width: 7rem;
+    height: 3rem;
+    right: 9rem;
     top: 1rem;
   }
   #register {
-    width: 5.848rem;
-    height: 2.938rem;
-    right: 2.7rem;
+    width: 7rem;
+    height: 3rem;
+    right: 1rem;
     top: 1rem;
   }
   #login,
   #register {
-    font-size: 18px;
+    font-size: 25px;
     line-height: 22px;
   }
   .navbar-nav {
     top: 1.2rem;
+    left: 3rem;
   }
 }
+
 @media only screen and (min-width: 992px) {
   .navbar-nav {
     top: 1.3rem;

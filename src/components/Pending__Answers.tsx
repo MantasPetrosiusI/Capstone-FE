@@ -14,7 +14,6 @@ interface Props {
 }
 
 const PendingAnswers = (props: Props) => {
-  console.log(props);
   const dispatch = useAppDispatch();
   const handleAccept = (answerId: string) => {
     dispatch(acceptRejectAnswer(answerId, true));

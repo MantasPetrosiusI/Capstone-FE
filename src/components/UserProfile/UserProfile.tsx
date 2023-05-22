@@ -44,7 +44,11 @@ const UserProfile: React.FC = () => {
   );
   const slicedArray = sortedQuestions.slice(
     0,
-    Math.min(sortedQuestions.length, 3)
+    Math.min(sortedQuestions.length, 2)
+  );
+
+  const acceptedQuestions = slicedArray.filter(
+    (question) => question.accepted === true
   );
 
   return (
@@ -89,22 +93,22 @@ const UserProfile: React.FC = () => {
         </Col>
         <Col>
           <div>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <p className="lead fs-4 fw-normal mb-0">Recent questions</p>
-            </div>
-
-            {slicedArray.length > 0 ? (
-              slicedArray.map((question) => (
-                <Row
-                  key={question._id}
-                  className="g-2 mt-2"
-                  onClick={() => navigate("/Question", { state: { question } })}
-                >
-                  <SingleQuestion question={question} />
-                </Row>
-              ))
+            {acceptedQuestions.length > 0 ? (
+              <Row className=" g-2 mt-2">
+                {acceptedQuestions.map((question) => (
+                  <Col
+                    key={question._id}
+                    className="questions__profile"
+                    onClick={() =>
+                      navigate("/Question", { state: { question } })
+                    }
+                  >
+                    <SingleQuestion question={question} />
+                  </Col>
+                ))}
+              </Row>
             ) : (
-              <p>No questions yet.</p>
+              <p>No accepted questions yet.</p>
             )}
           </div>
         </Col>

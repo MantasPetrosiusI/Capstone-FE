@@ -1,6 +1,7 @@
 #userFormDetails {
   margin-right: 1.5rem;
 }
+
 .form-select {
   margin-left: 0.7rem;
   width: 90%;
@@ -9,6 +10,7 @@
   background-color: #e9e1df;
   margin-bottom: 0.3rem;
 }
+
 .container.regLog {
   height: 100%;
   margin-bottom: 4rem;

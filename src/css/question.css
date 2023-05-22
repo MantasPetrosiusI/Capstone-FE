@@ -1,6 +1,5 @@
 .flip-card {
-  margin-left: 35%;
-  margin-top: 5%;
+  margin: 5% auto;
   background-color: transparent;
   width: 40rem;
   aspect-ratio: 1;
@@ -13,18 +12,20 @@
   text-align: center;
   display: flex;
 }
+
 .title-admin {
   font-size: 1.5em;
   font-weight: 900;
   display: flex;
   justify-content: center;
 }
+
 .tags {
   font-weight: 900;
   text-align: center;
-  top: 15%;
-  left: 40%;
+  margin-top: 15%;
 }
+
 .flip_description {
   justify-content: flex-start;
   align-items: center;
@@ -82,4 +83,23 @@
   );
   color: white;
   transform: rotateY(180deg);
+}
+
+/* Responsive Changes */
+
+@media (max-width: 768px) {
+  .flip-card {
+    width: 80%;
+    margin: 5% auto;
+  }
+
+  .tags {
+    margin-top: 10%;
+    text-align: center;
+  }
+
+  .flip_description {
+    margin-left: 1rem;
+    margin-bottom: 5rem;
+  }
 }

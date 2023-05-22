@@ -7,6 +7,7 @@
   -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
+
 .form-control {
   margin-left: 0.7rem;
   width: 90%;
@@ -15,9 +16,11 @@
   background-color: #e9e1df;
   margin-bottom: 0.3rem;
 }
+
 .form-label {
   font-size: 17px;
 }
+
 .btn.reg {
   margin-top: 15%;
   background-color: #e99374;
@@ -29,6 +32,7 @@
   font-weight: bold;
   color: #e9e1df;
 }
+
 .btn.auth {
   position: relative;
   background-color: #e9e1df;
@@ -39,13 +43,16 @@
   margin-left: -0.7rem;
   margin-top: 1.4rem;
 }
+
 .authCol {
   margin-top: 2.3rem;
 }
+
 .btn.auth > a {
   text-decoration: none;
   color: rgb(0, 0, 0);
 }
+
 .authLogo {
   width: 26px;
   height: 26px;
@@ -53,26 +60,34 @@
   top: 2px;
   left: 11%;
 }
+
+/* Media Queries */
+
 @media only screen and (max-width: 430px) {
   .container.regLog {
     width: 16.25rem;
     height: 21.125rem;
     margin-top: 3.5rem;
   }
+
   .form-label {
     display: flex;
     font-size: 13px;
     margin-left: 1rem;
   }
+
   form {
     margin-top: 1.5rem;
   }
+
   #regLogSpan {
     font-size: 14px;
   }
+
   #regHero {
     display: none;
   }
+
   #regP {
     display: none;
   }
@@ -82,27 +97,33 @@
   .container.regLog {
     margin-top: 10.625rem;
   }
+
   .btn.reg {
     font-size: 26px;
     width: 232.86px;
     height: 53.28px;
   }
+
   .form-label {
     display: flex;
     font-size: 20px;
     margin-left: 1rem;
   }
+
   form {
     margin-top: 2.5rem;
   }
+
   .form-control {
     margin-top: 1rem;
     margin-bottom: 1rem;
     height: 2.7rem;
   }
+
   #regLogSpan {
     font-size: 19px;
   }
+
   .btn.auth {
     height: 54px;
     width: 364px;
@@ -111,14 +132,17 @@
     font-size: 22px;
     padding-left: 2rem;
   }
+
   .authCol {
     margin-top: 3rem;
   }
+
   .authLogo {
     width: 44px;
     height: 44px;
     top: 4px;
   }
+
   #regHero {
     display: block;
     position: absolute;
@@ -127,6 +151,7 @@
     top: 14%;
     left: 22%;
   }
+
   #regP {
     display: none;
   }
@@ -137,27 +162,33 @@
     margin-top: 3.5rem;
     margin-left: 2.875rem;
   }
+
   .btn.reg {
     font-size: 26px;
     width: 232.86px;
     height: 53.28px;
   }
+
   .form-label {
     display: flex;
     font-size: 20px;
     margin-left: 1rem;
   }
+
   form {
     margin-top: 2.5rem;
   }
+
   .form-control {
     margin-top: 1rem;
     margin-bottom: 1rem;
     height: 2.7rem;
   }
+
   #regLogSpan {
     font-size: 19px;
   }
+
   .btn.auth {
     height: 54px;
     width: 364px;
@@ -170,6 +201,7 @@
     height: 44px;
     top: 4px;
   }
+
   #regHero {
     display: block;
     position: absolute;
@@ -178,18 +210,22 @@
     top: 12%;
     left: 31%;
   }
+
   #regP {
     margin-top: 24%;
     margin-left: 34%;
   }
+
   #regP > pre.d-flex {
     display: flex !important;
     flex-direction: column;
     align-items: flex-start;
   }
+
   #regP span:nth-child(odd) {
     font-weight: bold;
   }
+
   #regP span:nth-child(2n-1) {
     margin-top: 1.5rem;
   }

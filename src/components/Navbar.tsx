@@ -1,30 +1,23 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import "../css/navbar.css";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faArrowRight,
-  faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import Cookies from "js-cookie";
+import { faBars, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../redux/interfaces";
-import { logoutUser, searchQuestions, searchUsers } from "../redux/actions";
-import { Form, FormControl, Dropdown, DropdownButton } from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
+import { logoutUser } from "../redux/actions";
+import Cookies from "js-cookie";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 const CustomNavbar = () => {
   const [brandTextOne, setBrandTextOne] = useState("My");
   const [brandTextTwo, setBrandTextTwo] = useState("Website");
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [searchCategory, setSearchCategory] = useState<string>("language");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isFocused, setIsFocused] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const user = useAppSelector((state: RootState) => state.df.user);
+
   useEffect(() => {
     const closeNav = (e: MouseEvent) => {
       const path = e.composedPath() as HTMLElement[];
@@ -35,27 +28,10 @@ const CustomNavbar = () => {
     document.body.addEventListener("click", closeNav);
     return () => document.body.removeEventListener("click", closeNav);
   }, []);
+
   useEffect(() => {
     dispatch(logoutUser());
   }, [dispatch]);
-  const navigate = useNavigate();
-  const user = useAppSelector((state: RootState) => state.df.user);
-  function logout() {
-    fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, {
-      method: "POST",
-      body: JSON.stringify({ userId: user._id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(() => {
-        Cookies.remove("accessToken");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Error during logout: ", error);
-      });
-  }
 
   useEffect(() => {
     function handleResize() {
@@ -76,28 +52,30 @@ const CustomNavbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (["tag", "language", "title"].includes(searchCategory)) {
-      dispatch(searchQuestions(searchCategory, searchQuery));
-    } else if (["username"].includes(searchCategory)) {
-      dispatch(searchUsers(searchCategory, searchQuery));
-    }
-  }, [searchQuery, searchCategory, dispatch]);
-  const searchedQuestions = useAppSelector(
-    (state: RootState) => state.df.allSearch
-  );
-  const searchedUsers = useAppSelector(
-    (state: RootState) => state.df.allUsersSearch
-  );
-  useEffect(() => {
-    if (!isFocused) {
-      setSearchQuery("");
-    }
-  }, [isFocused]);
+  function logout() {
+    fetch(`${process.env.REACT_APP_BACKEND}/users/logout`, {
+      method: "POST",
+      body: JSON.stringify({ userId: user._id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => {
+        Cookies.remove("accessToken");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error during logout: ", error);
+      });
+  }
   return (
     <>
-      <Navbar collapseOnSelect expand="sm">
-        <Container className="fluid">
+      <Navbar collapseOnSelect expand="md">
+        <Container fluid>
+          <div className="debugForce">
+            <span id="one">{brandTextOne}</span>
+            <span id="two">{brandTextTwo}</span>
+          </div>
           <Navbar.Toggle
             ref={btnRef}
             aria-controls="navbarSupportedContent"
@@ -107,11 +85,6 @@ const CustomNavbar = () => {
           </Navbar.Toggle>
 
           <Navbar.Collapse id="navbarSupportedContent" in={isNavOpen}>
-            <Navbar.Brand className="debugForce" as={Link} to="/">
-              <span id="one">{brandTextOne}</span>
-              <span id="two">{brandTextTwo}</span>
-            </Navbar.Brand>
-
             <Nav className="me-auto mb-2 mb-lg-0">
               <Nav.Link as={Link} to="/">
                 Home
@@ -123,90 +96,7 @@ const CustomNavbar = () => {
                 Questions
               </Nav.Link>
             </Nav>
-            <Form
-              className="input-container d-flex"
-              onChange={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <FormControl
-                placeholder="Start search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-              />
-              <div style={{ display: "inline-block" }}>
-                <DropdownButton
-                  id="dropdown-basic-button"
-                  title={searchCategory}
-                  variant="none"
-                  className="mt-3"
-                  align="end"
-                >
-                  <Dropdown.Item onClick={() => setSearchCategory("language")}>
-                    language
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => setSearchCategory("title")}>
-                    title
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => setSearchCategory("tag")}>
-                    tag
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => setSearchCategory("username")}>
-                    user
-                  </Dropdown.Item>
-                </DropdownButton>
-              </div>
-            </Form>
-            {searchedQuestions &&
-              searchedQuestions.length > 0 &&
-              searchQuery !== "" && (
-                <div>
-                  <ul className="searchResult">
-                    {searchedQuestions.map((question) => (
-                      <li
-                        className="searchResultLi"
-                        key={question._id}
-                        onClick={() =>
-                          navigate("/Question", { state: { question } })
-                        }
-                      >
-                        {question.title}{" "}
-                        <FontAwesomeIcon
-                          icon={faArrowRight}
-                          fontSize={"1rem"}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            {searchedUsers &&
-              searchedUsers.length > 0 &&
-              searchQuery !== "" && (
-                <div>
-                  <ul className="searchResult">
-                    {searchedUsers.map((user) => (
-                      <li
-                        className="searchResultLi"
-                        key={user._id}
-                        onClick={() =>
-                          navigate("/profile", { state: { user } })
-                        }
-                      >
-                        {user.username}{" "}
-                        <FontAwesomeIcon
-                          icon={faArrowRight}
-                          fontSize={"1rem"}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
           </Navbar.Collapse>
-
           {user && user.online && (
             <>
               <Link to="/questionForm" className="noselect">
@@ -226,45 +116,30 @@ const CustomNavbar = () => {
                     </Link>
                   </Dropdown.Item>
                   <hr />
-                  <div id="questionDiv">
-                    <Dropdown>
-                      <Dropdown.Toggle className="nav-link questions">
-                        My questions
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu align="start">
-                        <Dropdown.Item>
-                          <Link to="/myAnswered" className="nav-link">
-                            Answered
-                          </Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item>
-                          <Link to="/myUnanswered" className="nav-link">
-                            Unanswered
-                          </Link>
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </div>
                   <Dropdown.Item>
-                    <Link to="/myAnswers" className="nav-link">
-                      My answers
+                    <Link to="/myUnanswered" className="nav-link">
+                      Unanswered Questions
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Link to="/myAnswered" className="nav-link">
+                      Answered Questions
                     </Link>
                   </Dropdown.Item>
                   {(user.role === "Administrator" ||
                     user.role === "Moderator") && (
-                    <Dropdown.Item>
-                      <Link to="/pending__answers" className="nav-link">
-                        Pending Answers
-                      </Link>
-                    </Dropdown.Item>
-                  )}
-                  {(user.role === "Administrator" ||
-                    user.role === "Moderator") && (
-                    <Dropdown.Item>
-                      <Link to="/pending__questions" className="nav-link">
-                        Pending Questions
-                      </Link>
-                    </Dropdown.Item>
+                    <>
+                      <Dropdown.Item>
+                        <Link to="/pending__answers" className="nav-link">
+                          Pending Answers
+                        </Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <Link to="/pending__questions" className="nav-link">
+                          Pending Questions
+                        </Link>
+                      </Dropdown.Item>
+                    </>
                   )}
                   <hr />
                   <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
@@ -272,6 +147,7 @@ const CustomNavbar = () => {
               </Dropdown>
             </>
           )}
+
           {!user.online && (
             <>
               <button id="login">
@@ -289,7 +165,7 @@ const CustomNavbar = () => {
                 >
                   Register
                 </Link>
-              </button>{" "}
+              </button>
             </>
           )}
         </Container>
@@ -297,4 +173,5 @@ const CustomNavbar = () => {
     </>
   );
 };
+
 export default CustomNavbar;

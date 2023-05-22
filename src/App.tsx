@@ -28,6 +28,7 @@ import Questions from "./components/AllQuestions/Questions";
 
 function App() {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(setCurrentUser());
     dispatch(setQuestions());

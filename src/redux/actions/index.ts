@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import Cookies from "js-cookie";
 import { Answer, Question } from "../interfaces";
 import { AnyAction } from "@reduxjs/toolkit";
+import "../../css/navbar.css";
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -155,7 +156,7 @@ export const fetchUserQuestions = () => {
 export const newQuestion = (question: Question) => {
   return async () => {
     try {
-      const token = Cookies.get("accessToken") || "";
+      const token = Cookies.get("accessToken") || ""; // eslint-disable-next-line
       const res = await fetch(`${API_URL}/questions/me/newQuestion`, {
         method: "POST",
         headers: {
@@ -219,20 +220,17 @@ export const acceptRejectQuestion = (questionId: string, status: boolean) => {
   return async (dispatch: Dispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
-      const response = await fetch(
-        `${API_URL}/questions/${questionId}/status`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status }),
-        }
-      );
+      const res = await fetch(`${API_URL}/questions/${questionId}/status`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
 
-      if (response.ok) {
-        const updatedQuestion = await response.json();
+      if (res.ok) {
+        const updatedQuestion = await res.json();
         dispatch({
           type: actionTypes.UPDATE_QUESTION,
           payload: updatedQuestion,
@@ -243,7 +241,6 @@ export const acceptRejectQuestion = (questionId: string, status: boolean) => {
     }
   };
 };
-
 export const fetchPendingQuestions = () => {
   return async (dispatch: Dispatch) => {
     try {
@@ -284,7 +281,7 @@ export const acceptRejectAnswer = (answerId: string, status: boolean) => {
   return async (dispatch: Dispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
-      const response = await fetch(`${API_URL}/answers/${answerId}/status`, {
+      const res = await fetch(`${API_URL}/answers/${answerId}/status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -293,8 +290,8 @@ export const acceptRejectAnswer = (answerId: string, status: boolean) => {
         body: JSON.stringify({ status }),
       });
 
-      if (response.ok) {
-        const updatedAnswer = await response.json();
+      if (res.ok) {
+        const updatedAnswer = await res.json();
         dispatch({
           type: actionTypes.UPDATE_QUESTION,
           payload: updatedAnswer,
@@ -333,7 +330,7 @@ export const searchUsers = (searchCategory: string, searchQuery: string) => {
   return async (dispatch: Dispatch) => {
     try {
       const res = await fetch(
-        `${API_URL}/users/search?&${searchCategory}=${searchQuery}`
+        `${API_URL}/questions/search?&${searchCategory}=${searchQuery}`
       );
 
       if (res.ok) {
@@ -352,7 +349,7 @@ export const searchUsers = (searchCategory: string, searchQuery: string) => {
 export const newAnswer = (answer: Answer, questionId: string) => {
   return async () => {
     try {
-      const token = Cookies.get("accessToken") || "";
+      const token = Cookies.get("accessToken") || ""; // eslint-disable-next-line
       const res = await fetch(
         `${API_URL}/answers/questions/${questionId}/newAnswer`,
         {

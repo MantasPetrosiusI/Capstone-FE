@@ -9,7 +9,7 @@ interface SingleQuestionProps {
 export function SingleQuestion(props: SingleQuestionProps) {
   const MAX_DESCRIPTION_LENGTH = 160;
   const { question } = props;
-  const { title, language, tags, description, answered, updatedAt } = question;
+  const { title, language, tags, description, updatedAt } = question;
 
   const getDescriptionPreview = () => {
     const truncatedDescription = description.substring(
@@ -71,9 +71,6 @@ export function SingleQuestion(props: SingleQuestionProps) {
           {getDescriptionPreview()}
         </Card.Text>
         <Card.Footer className="d-flex justify-content-end align-items-center">
-          {answered && (
-            <span className="badge rounded-pill text-bg-success">Answered</span>
-          )}
           <small className="footer-text">{formatUpdatedAt()}</small>
         </Card.Footer>
       </Card.Body>

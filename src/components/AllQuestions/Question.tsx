@@ -14,7 +14,7 @@ const Question = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchUser(question.user));
+    dispatch(fetchUser(question.user._id));
     dispatch(fetchAnswer(question._id));
   }, [dispatch, question.user, question._id]);
 
@@ -40,17 +40,19 @@ const Question = () => {
       <div className="flip-card">
         <div className="flip-card-inner">
           <div className="flip-card-front">
-            <p className="title">{question.title}</p>
+            <p className="title fs-2 justify-content-center">
+              {question.title}
+            </p>
             {question.tags.map((tag: string, i: number) => (
-              <p className="title" key={i}>
+              <span className="tags fs-4 " key={i}>
                 {tag}
-              </p>
+              </span>
             ))}
             <p className="flip_description">{question.description}</p>
           </div>
           {answer && answer.accepted === true ? (
             <div className="flip-card-back">
-              <p className="title">{answer.user.username}</p>
+              <p className="title-admin">{answer.user.username}</p>
               <p className="flip_description">{answer.body}</p>
             </div>
           ) : (

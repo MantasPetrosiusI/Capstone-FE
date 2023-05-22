@@ -22,16 +22,29 @@ const UserAnswered = () => {
   const unAnsweredQuestions = allUserQuestions.filter(
     (question) => !question.answered
   );
-  const filteredAnsweredQuestions = answeredQuestions.filter(
-    (question) =>
-      !searchQuery ||
-      question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      question.tags.some((tag: string) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      question.language.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  const sortedQuestions = [...filteredAnsweredQuestions].sort(
+  let filteredQuestions;
+  if (category === "Answered") {
+    filteredQuestions = answeredQuestions.filter(
+      (question) =>
+        !searchQuery ||
+        question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        question.tags.some((tag: string) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        question.language.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  } else if (category === "Unanswered") {
+    filteredQuestions = unAnsweredQuestions.filter(
+      (question) =>
+        !searchQuery ||
+        question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        question.tags.some((tag: string) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        question.language.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  const sortedQuestions = [...(filteredQuestions ?? [])].sort(
     (a, b) =>
       new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
   );
@@ -64,15 +77,13 @@ const UserAnswered = () => {
           onChange={handleSearchChange}
         />
       </div>
+      <h1>{category} Questions</h1>
+      <div className="buttons">
+        <Button onClick={() => setCategory("Answered")}>Answered</Button>
+        <Button onClick={() => setCategory("Unanswered")}>Unsnswered</Button>
+      </div>
       {sortedQuestions.length > 0 ? (
         <>
-          <h1>{category} Questions</h1>
-          <div className="buttons">
-            <Button onClick={() => setCategory("Answered")}>Answered</Button>
-            <Button onClick={() => setCategory("Unanswered")}>
-              Unsnswered
-            </Button>
-          </div>
           <Row className="mt-2">
             {currentQuestions.map((question, index) => (
               <React.Fragment key={question._id}>
@@ -112,7 +123,11 @@ const UserAnswered = () => {
       ) : (
         <div>
           <hr />
-          <span>No questions have been answered!</span>
+          <span>
+            {category === "Answered" ? "All" : ""}
+            {category === "Unanswered" ? "No" : ""} questions have been
+            answered!
+          </span>
           <hr />
         </div>
       )}

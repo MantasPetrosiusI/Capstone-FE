@@ -8,19 +8,28 @@
 }
 
 .title {
-  position: absolute;
   font-size: 1.5em;
   font-weight: 900;
   text-align: center;
-  top: 5%;
+  display: flex;
+}
+.title-admin {
+  font-size: 1.5em;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+}
+.tags {
+  font-weight: 900;
+  text-align: center;
+  top: 15%;
   left: 40%;
 }
-
 .flip_description {
   justify-content: flex-start;
   align-items: center;
   display: flex;
-  margin-left: 1rem;
+  margin-left: 3rem;
   margin-bottom: 10rem;
 }
 

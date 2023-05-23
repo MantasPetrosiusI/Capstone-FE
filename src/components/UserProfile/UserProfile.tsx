@@ -108,7 +108,11 @@ const UserProfile: React.FC = () => {
                 ))}
               </Row>
             ) : (
-              <p>No accepted questions yet.</p>
+              <Row className="g-2 mt-5">
+                <Col className="mt-5">
+                  <p>No accepted questions yet.</p>
+                </Col>
+              </Row>
             )}
           </div>
         </Col>

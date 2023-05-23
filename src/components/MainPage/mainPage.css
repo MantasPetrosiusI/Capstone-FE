@@ -23,9 +23,10 @@
   border-radius: 0.5rem;
 }
 
-ul.searchResult > li.searchResultLi {
+ul.searchResult li.searchResultLi {
   margin: 0.5rem 0.5rem 0.5rem 0.5rem;
   cursor: pointer;
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   align-items: center;

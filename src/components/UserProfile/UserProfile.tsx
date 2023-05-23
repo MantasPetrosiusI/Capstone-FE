@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from "react";
+import React, { useState, useRef, ChangeEvent } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { editAvatar } from "../../redux/actions";
 import { SingleQuestion } from "./SingleQuestion";
 import "../../css/profile.css";
+import Loader from "../Loader";
 
 const UserProfile: React.FC = () => {
   const location = useLocation();
@@ -20,20 +21,24 @@ const UserProfile: React.FC = () => {
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
+
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
   };
 
   const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
+    const file = newAvatar ? newAvatar : event.target.files![0];
     setNewAvatar(file);
     if (file) {
-      dispatch(editAvatar(file));
+      setLoadingAvatar(true);
+      dispatch(editAvatar(file, user._id)).then(() => {
+        setLoadingAvatar(false);
+      });
     }
   };
 
-  useEffect(() => {}, [newAvatar]);
-
+  const avatar = useAppSelector((state: RootState) => state.df.user.avatar);
   const navigate = useNavigate();
   const answerLength = user.answers ? user.answers.length : 0;
   const questionLength = user.questions ? user.questions.length : 0;
@@ -58,17 +63,23 @@ const UserProfile: React.FC = () => {
           <div className="book">
             <label>
               <div>
-                <img
-                  src={user.avatar}
-                  alt="avatar"
-                  className="profile__avatar"
-                  style={{ width: "80%", zIndex: 1 }}
-                  onClick={handleAvatarClick}
-                />
-                <div id="avatarChange">
-                  <FontAwesomeIcon icon={faCamera} />
-                  <h4 style={{ fontWeight: "800" }}>Change Avatar</h4>
-                </div>
+                {loadingAvatar ? (
+                  <Loader />
+                ) : (
+                  <>
+                    <img
+                      src={avatar}
+                      alt="avatar"
+                      className="profile__avatar"
+                      style={{ width: "80%", zIndex: 1 }}
+                      onClick={handleAvatarClick}
+                    />
+                    <div id="avatarChange">
+                      <FontAwesomeIcon icon={faCamera} />
+                      <h4 style={{ fontWeight: "800" }}>Change Avatar</h4>
+                    </div>
+                  </>
+                )}
               </div>
 
               <input

@@ -9,8 +9,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Question, RootState, User } from "../redux/interfaces";
 import { Editor } from "@monaco-editor/react";
 import "../css/questionForm.css";
+import Loader from "./Loader";
 
 const QuestionForm = () => {
+  const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState<Question>({
     _id: "",
     title: "",
@@ -71,6 +73,7 @@ const QuestionForm = () => {
   const onSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
+      setLoading(true);
       question.user = {
         _id: user._id,
         username: user.username,
@@ -85,6 +88,8 @@ const QuestionForm = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,6 +104,7 @@ const QuestionForm = () => {
 
   return (
     <Container className="regLog" style={{ border: "1px solid #2c3b56" }}>
+      {loading && <Loader />}
       <Row className="d-flex fluid">
         <Col>
           <Form onSubmit={onSubmit}>

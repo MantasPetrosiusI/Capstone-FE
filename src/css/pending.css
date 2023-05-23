@@ -85,3 +85,8 @@
   margin-top: auto;
   text-align: right;
 }
+.title-card {
+  position: absolute;
+  margin-top: 1.5rem;
+  left: 5rem;
+}

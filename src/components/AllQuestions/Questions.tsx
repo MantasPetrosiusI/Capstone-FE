@@ -5,6 +5,8 @@ import { useAppSelector } from "../../redux/hooks";
 import { RootState } from "../../redux/interfaces";
 import { SingleQuestion } from "../UserProfile/SingleQuestion";
 import React from "react";
+import "../../css/questions.css";
+import Loader from "../Loader";
 
 const UserAnswered = () => {
   const navigate = useNavigate();
@@ -17,10 +19,10 @@ const UserAnswered = () => {
   const pageSize = 5;
   const startIndex = (currentPage - 1) * pageSize;
   const answeredQuestions = allQuestions.filter(
-    (question) => question.answered
+    (question) => question.answered && question.accepted
   );
   const unAnsweredQuestions = allQuestions.filter(
-    (question) => !question.answered
+    (question) => !question.answered && question.accepted
   );
   let filteredQuestions;
   if (category === "Answered") {
@@ -86,18 +88,16 @@ const UserAnswered = () => {
         <>
           <Row className="mt-2">
             {currentQuestions.map((question, index) => (
-              <React.Fragment key={question._id}>
-                {index > 0 && index % 2 === 0 && <div className="w-100"></div>}
-                <Col
-                  onClick={() => navigate("/Question", { state: { question } })}
-                  md={6}
-                  lg={6}
-                  xl={6}
-                  className="mb-4"
-                >
-                  <SingleQuestion question={question} />
-                </Col>
-              </React.Fragment>
+              <Col
+                key={question._id}
+                onClick={() => navigate("/Question", { state: { question } })}
+                md={3}
+                lg={3}
+                xl={3}
+                className="mb-4 card-col"
+              >
+                <SingleQuestion question={question} />
+              </Col>
             ))}
           </Row>
 
@@ -131,6 +131,8 @@ const UserAnswered = () => {
           <hr />
         </div>
       )}
+
+      {filteredQuestions === undefined && <Loader />}
     </Container>
   );
 };

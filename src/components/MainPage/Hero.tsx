@@ -39,7 +39,7 @@ const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
           {showEllipsis && <span className="text-muted"> ...</span>}
         </p>
         <span id="hero__likes">
-          {noOfLikes} <FontAwesomeIcon icon={faHeart} color="red" />
+          {noOfLikes} <FontAwesomeIcon icon={faHeart} color="maroon" />
         </span>
         <Button id="hero__button" onClick={handleButtonClick}>
           Go to question

@@ -1,5 +1,4 @@
 body {
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 26px;
@@ -7,7 +6,6 @@ body {
   margin: 0;
   width: 100%;
 }
-
 .navbar {
   position: relative;
   width: 100%;
@@ -289,10 +287,6 @@ button.questions {
   #register {
     font-size: 25px;
     line-height: 22px;
-  }
-  .navbar-nav {
-    top: 1.2rem;
-    left: 3rem;
   }
 }
 

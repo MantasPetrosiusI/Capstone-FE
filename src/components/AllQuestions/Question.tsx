@@ -31,6 +31,7 @@ const Question = () => {
 
   const handleLike = () => {
     dispatch(likeQuestion(question._id.toString()));
+    setLiked(!liked);
   };
 
   const navigate = useNavigate();

@@ -1,8 +1,7 @@
-import { Dispatch } from "redux";
 import Cookies from "js-cookie";
 import { Answer, Question } from "../interfaces";
-import { AnyAction } from "@reduxjs/toolkit";
 import "../../css/navbar.css";
+import { AppDispatch } from "../store";
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -30,7 +29,7 @@ export const actionTypes = {
 };
 
 export const setCurrentUser = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const res = await fetch(`${API_URL}/users/me`, {
@@ -54,7 +53,7 @@ export const setCurrentUser = () => {
 };
 
 export const fetchUsers = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/users`, {
         method: "GET",
@@ -74,7 +73,7 @@ export const fetchUsers = () => {
 };
 
 export const fetchUser = (id: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/users/${id}`, {
         method: "GET",
@@ -93,8 +92,8 @@ export const fetchUser = (id: string) => {
   };
 };
 
-export const editAvatar = (newAvatar: File) => {
-  return async (dispatch: Dispatch) => {
+export const editAvatar = (newAvatar: File, userId: string) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const formData = new FormData();
@@ -107,12 +106,15 @@ export const editAvatar = (newAvatar: File) => {
         },
         body: formData,
       });
-
-      const data = await res.json();
-      dispatch({
-        type: actionTypes.EDIT_AVATAR,
-        payload: data.avatar,
-      });
+      if (res.ok) {
+        const data = await res.json();
+        dispatch({
+          type: actionTypes.EDIT_AVATAR,
+          payload: data.avatar,
+        });
+        console.log(1);
+        dispatch(fetchUsers());
+      }
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +122,7 @@ export const editAvatar = (newAvatar: File) => {
 };
 
 export const logoutUser = () => {
-  return async (dispatch: Dispatch<AnyAction>) => {
+  return async (dispatch: AppDispatch) => {
     try {
       dispatch({ type: actionTypes.LOGOUT_USER });
     } catch (error) {
@@ -130,7 +132,7 @@ export const logoutUser = () => {
 };
 
 export const fetchUserQuestions = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const res = await fetch(`${API_URL}/questions/me`, {
@@ -154,7 +156,7 @@ export const fetchUserQuestions = () => {
 };
 
 export const newQuestion = (question: Question) => {
-  return async () => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || ""; // eslint-disable-next-line
       const res = await fetch(`${API_URL}/questions/me/newQuestion`, {
@@ -165,6 +167,9 @@ export const newQuestion = (question: Question) => {
         },
         body: JSON.stringify(question),
       });
+      if (res.ok) {
+        dispatch(setQuestions());
+      }
     } catch (error) {
       console.log(error);
     }
@@ -172,7 +177,7 @@ export const newQuestion = (question: Question) => {
 };
 
 export const likeQuestion = (questionId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     const token = Cookies.get("accessToken") || "";
 
     try {
@@ -199,7 +204,7 @@ export const likeQuestion = (questionId: string) => {
 };
 
 export const setQuestions = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/questions`);
 
@@ -217,7 +222,7 @@ export const setQuestions = () => {
 };
 
 export const acceptRejectQuestion = (questionId: string, status: boolean) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const res = await fetch(`${API_URL}/questions/${questionId}/status`, {
@@ -242,7 +247,7 @@ export const acceptRejectQuestion = (questionId: string, status: boolean) => {
   };
 };
 export const fetchPendingQuestions = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/questions?pending=true`);
 
@@ -260,7 +265,7 @@ export const fetchPendingQuestions = () => {
 };
 
 export const fetchPendingAnswers = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/answers?pending=true`);
 
@@ -278,7 +283,7 @@ export const fetchPendingAnswers = () => {
 };
 
 export const acceptRejectAnswer = (answerId: string, status: boolean) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const res = await fetch(`${API_URL}/answers/${answerId}/status`, {
@@ -307,7 +312,7 @@ export const searchQuestions = (
   searchCategory: string,
   searchQuery: string
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(
         `${API_URL}/questions/search?&${searchCategory}=${searchQuery}`
@@ -327,7 +332,7 @@ export const searchQuestions = (
 };
 
 export const searchUsers = (searchCategory: string, searchQuery: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(
         `${API_URL}/questions/search?&${searchCategory}=${searchQuery}`
@@ -368,7 +373,7 @@ export const newAnswer = (answer: Answer, questionId: string) => {
 };
 
 export const fetchQuestionAnswers = (questionId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/answers/questions/${questionId}`);
 
@@ -386,7 +391,7 @@ export const fetchQuestionAnswers = (questionId: string) => {
 };
 
 export const fetchAnswer = (questionId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetch(`${API_URL}/answers/${questionId}`);
 
@@ -404,7 +409,7 @@ export const fetchAnswer = (questionId: string) => {
 };
 
 export const resetAnswer = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       dispatch({ type: actionTypes.RESET_ANSWER });
     } catch (error) {
@@ -414,7 +419,7 @@ export const resetAnswer = () => {
 };
 
 export const fetchUserAnswers = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const token = Cookies.get("accessToken") || "";
       const res = await fetch(`${API_URL}/answers/me`, {

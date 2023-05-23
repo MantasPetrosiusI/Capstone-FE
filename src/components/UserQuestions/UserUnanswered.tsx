@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { RootState } from "../../redux/interfaces";
 import { SingleQuestion } from "../UserProfile/SingleQuestion";
+import Loader from "../Loader";
 
 const UserUnanswered = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const UserUnanswered = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const pageSize = 5;
   const startIndex = (currentPage - 1) * pageSize;
   const filteredQuestions = allUserQuestions.filter(
@@ -43,6 +45,14 @@ const UserUnanswered = () => {
     setCurrentPage(1);
   };
 
+  const handleDataFetched = () => {
+    setLoading(false);
+  };
+
+  setTimeout(() => {
+    handleDataFetched();
+  }, 1000);
+
   return (
     <Container className="mt-4">
       <div className="mb-3">
@@ -57,7 +67,9 @@ const UserUnanswered = () => {
           onChange={handleSearchChange}
         />
       </div>
-      {sortedQuestions.length > 0 ? (
+      {loading ? ( // Display the Loader component when loading is true
+        <Loader />
+      ) : sortedQuestions.length > 0 ? (
         <>
           <h1>Unanswered Questions</h1>
           {currentQuestions.map((question) => (

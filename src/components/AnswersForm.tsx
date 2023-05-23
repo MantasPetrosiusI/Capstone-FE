@@ -6,18 +6,20 @@ import { Editor } from "@monaco-editor/react";
 import { newAnswer } from "../redux/actions";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Answer, RootState } from "../redux/interfaces";
+import Loader from "./Loader";
 
 const AnswersForm = () => {
   const [aDesc, setADesc] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.df.user);
   const location = useLocation();
   const { question } = location.state;
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const answer: Answer = {
         _id: "",
@@ -32,6 +34,8 @@ const AnswersForm = () => {
       navigate("/Question", { state: { question } });
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,27 +45,33 @@ const AnswersForm = () => {
 
   return (
     <Container className="regLog" style={{ border: "1px solid #2c3b56" }}>
-      <Row className="d-flex fluid">
-        <Col>
-          <Form onSubmit={onSubmit}>
-            <hr />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Row className="d-flex fluid">
+            <Col>
+              <Form onSubmit={onSubmit}>
+                <hr />
 
-            <Form.Group>
-              <Form.Label>Answer</Form.Label>
-              <Editor
-                onChange={onChange}
-                value={aDesc}
-                language="text"
-                height={"25vh"}
-              />
-            </Form.Group>
-            <hr />
-            <Button className="mt-1 mb-4 log" type="submit">
-              Submit Answer
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+                <Form.Group>
+                  <Form.Label>Answer</Form.Label>
+                  <Editor
+                    onChange={onChange}
+                    value={aDesc}
+                    language="text"
+                    height={"25vh"}
+                  />
+                </Form.Group>
+                <hr />
+                <Button className="mt-1 mb-4 log" type="submit">
+                  Submit Answer
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+        </>
+      )}
     </Container>
   );
 };

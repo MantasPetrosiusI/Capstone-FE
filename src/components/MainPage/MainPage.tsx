@@ -9,7 +9,7 @@ import Hero from "./Hero";
 import MostHelpful from "./MostHelpful";
 import RecentQuestions from "./RecentQuestions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   fetchUsers,
   searchQuestions,
@@ -36,12 +36,18 @@ const MainPage = () => {
   const { questionState, allUsers } = useAppSelector(
     (state: RootState) => state.df
   );
-
+  const searchedQuestions = useAppSelector((state: RootState) => {
+    const allSearchArray = Object.values(state.df.allSearch);
+    return allSearchArray.filter((question) => question.accepted === true);
+  });
+  const searchedUsers = useAppSelector(
+    (state: RootState) => state.df.allUsersSearch
+  );
   const { questions } = questionState;
+
   const sortedQuestionsByRep = useMemo(() => {
     return [...questions].sort((a, b) => b.noOfLikes - a.noOfLikes);
   }, [questions]);
-
   const sortedQuestionsByDate = useMemo(() => {
     return [...questions].sort(
       (a, b) =>
@@ -59,43 +65,38 @@ const MainPage = () => {
     </div>
   );
 
-  const searchedQuestions = useAppSelector(
-    (state: RootState) => state.df.allSearch
-  );
-  const searchedUsers = useAppSelector(
-    (state: RootState) => state.df.allUsersSearch
-  );
+  const handleClickQuestion = (question: Question) => {
+    navigate("/Question", { state: { question } });
+  };
+  const searchRef = useRef<HTMLDivElement>(null);
+  const handleClickUser = (user: User) => {
+    navigate("/profile", { state: { user } });
+  };
   useEffect(() => {
     if (["tag", "language", "title"].includes(searchCategory)) {
       dispatch(searchQuestions(searchCategory, searchQuery));
     } else if (["username"].includes(searchCategory)) {
       dispatch(searchUsers(searchCategory, searchQuery));
     }
+    if (searchRef) {
+      searchRef.current?.focus();
+    }
   }, [searchQuery, searchCategory, dispatch]);
 
-  useEffect(() => {
-    if (!isFocused) {
-      setSearchQuery("");
-    }
-  }, [isFocused]);
-  const handleClickQuestion = (question: Question) => {
-    navigate("/Question", { state: { question } });
-  };
-
-  const handleClickUser = (user: User) => {
-    navigate("/profile", { state: { user } });
-  };
   return (
     <Container className="main__container fluid mb-3">
-      <div id="search">
+      <div
+        id="search"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        ref={searchRef}
+      >
         <Form className="input-container d-flex">
           <FormControl
             placeholder="Start search"
             id="search__input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
           />
           <DropdownButton
             id="dropdown-basic-button"
@@ -120,7 +121,8 @@ const MainPage = () => {
 
         {searchedQuestions &&
           searchedQuestions.length > 0 &&
-          searchQuery !== "" && (
+          searchQuery !== "" &&
+          isFocused && (
             <div>
               <ul className="searchResult">
                 {searchedQuestions.map((question) => (
@@ -137,22 +139,25 @@ const MainPage = () => {
             </div>
           )}
 
-        {searchedUsers && searchedUsers.length > 0 && searchQuery !== "" && (
-          <div>
-            <ul className="searchResult">
-              {searchedUsers.map((user) => (
-                <li
-                  className="searchResultLi"
-                  key={user._id}
-                  onClick={() => handleClickUser(user)}
-                >
-                  {user.username}{" "}
-                  <FontAwesomeIcon icon={faArrowRight} fontSize={"1rem"} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {searchedUsers &&
+          searchedUsers.length > 0 &&
+          searchQuery !== "" &&
+          isFocused && (
+            <div>
+              <ul className="searchResult">
+                {searchedUsers.map((user) => (
+                  <li
+                    className="searchResultLi"
+                    key={user._id}
+                    onClick={() => handleClickUser(user)}
+                  >
+                    {user.username}{" "}
+                    <FontAwesomeIcon icon={faArrowRight} fontSize={"1rem"} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </div>
       <Hero mostLiked={sortedQuestionsByRep[0]} />
       <MostHelpful user={sortedUsers[0]} />

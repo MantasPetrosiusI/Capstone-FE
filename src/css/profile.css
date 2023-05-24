@@ -1,4 +1,5 @@
-.bookContainer {
+.container.bookContainer {
+  max-width: none;
   left: 15%;
   margin-top: 10%;
 }
@@ -92,5 +93,5 @@ p {
   align-items: flex-start;
 }
 .questions__profile {
-  margin-top: 33%;
+  margin-top: 25%;
 }

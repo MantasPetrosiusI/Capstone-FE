@@ -50,7 +50,7 @@ const Question = () => {
 
   return (
     <>
-      {question.user._id === user?._id ? (
+      {question.accepted ? (
         <div className="mb-4">
           <div className="flip-card">
             <div className="flip-card-inner">

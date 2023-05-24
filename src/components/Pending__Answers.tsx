@@ -13,7 +13,7 @@ interface Props {
   props: Answer[];
 }
 
-const PendingAnswers = (props: Props) => {
+const PendingAnswers = ({ props }: Props) => {
   const dispatch = useAppDispatch();
   const handleAccept = (answerId: string) => {
     dispatch(acceptRejectAnswer(answerId, true));
@@ -22,13 +22,13 @@ const PendingAnswers = (props: Props) => {
   const handleReject = (answerId: string) => {
     dispatch(acceptRejectAnswer(answerId, false));
   };
-
+  console.log(props);
   return (
     <Container>
       <h2>Pending Answers</h2>
       <Row>
-        {Array.isArray(props.props) &&
-          props.props.map((answer, i) => (
+        {props &&
+          props.map((answer, i) => (
             <Col key={answer._id} sm={12} md={6} lg={4}>
               <Card className="pending-card">
                 <Card.Header className="d-flex justify-content-between align-items-start">
@@ -41,7 +41,7 @@ const PendingAnswers = (props: Props) => {
                 </Card.Header>
                 <Card.Body>
                   <Card.Text className="mb-2 text-muted">Answer:</Card.Text>
-                  <Card.Text>{answer.body}</Card.Text>
+                  <Card.Text>{answer.body.slice(0, 100)}</Card.Text>
                   <Row className="justify-content-center mt-3">
                     <Col>
                       <Button

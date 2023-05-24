@@ -1,14 +1,19 @@
 .container.regLog {
-  width: 23.438rem;
-  height: 25rem;
+  margin-top: 10%;
+  width: 50%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
   background-color: #93b9d0;
   border-radius: 14px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: relative;
 }
+
 .form-control {
-  margin-left: 0.7rem;
+  margin-left: 5%;
   width: 90%;
   border: 1px solid #000000;
   border-radius: 5px;
@@ -22,36 +27,42 @@
   margin-top: 9%;
   background-color: #2c3b56;
   border: 1px solid #000000;
-  width: 166.4px;
-  height: 38.07px;
+  width: 50%;
+  height: 30%;
+  margin-left: 0%;
   border-radius: 0;
-  font-size: 18px;
+  font-size: 90%;
   font-weight: bold;
   color: #e9e1df;
+  margin-bottom: 2.5rem;
+}
+.authCol {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  height: 40%;
 }
 .btn.auth {
   position: relative;
   background-color: #e9e1df;
   border-radius: 10px;
   border: 1px solid #000000;
-  height: 32px;
-  width: 260px;
-  margin-left: -0.7rem;
-  margin-top: 1.4rem;
-}
-.authCol {
-  margin-top: 2.3rem;
+  height: 20%;
+  width: 70%;
+  margin-bottom: 1%;
 }
 .btn.auth > a {
   text-decoration: none;
   color: rgb(0, 0, 0);
 }
-.authLogo {
-  width: 26px;
-  height: 26px;
-  position: absolute;
-  top: 2px;
-  left: 11%;
+.btn .authLogo {
+  width: 7%;
+  height: 90%;
+  top: 5%;
+  left: 25%;
+}
+#regLogSpan {
+  margin-top: 1%;
+  margin-bottom: 3%;
 }
 @media only screen and (max-width: 430px) {
   .container.regLog {
@@ -67,9 +78,7 @@
   form {
     margin-top: 1.5rem;
   }
-  #regLogSpan {
-    font-size: 14px;
-  }
+
   #regHero {
     display: none;
   }
@@ -79,11 +88,6 @@
   .container.regLog {
     margin-top: 10.625rem;
   }
-  .btn.log {
-    font-size: 26px;
-    width: 232.86px;
-    height: 53.28px;
-  }
   .form-label {
     display: flex;
     font-size: 20px;
@@ -91,33 +95,14 @@
   }
   form {
     margin-top: 3rem;
-    padding-bottom: 2.5rem;
+    padding-bottom: 0.5rem;
   }
   .form-control {
     margin-top: 1rem;
     margin-bottom: 1rem;
     height: 2.7rem;
   }
-  #regLogSpan {
-    font-size: 19px;
-    margin-top: 1.5rem;
-  }
-  .btn.auth {
-    height: 54px;
-    width: 364px;
-    margin-left: -0.7rem;
-    margin-top: 2rem;
-    font-size: 22px;
-    padding-left: 2rem;
-  }
-  .authCol {
-    margin-top: 3rem;
-  }
-  .authLogo {
-    width: 44px;
-    height: 44px;
-    top: 4px;
-  }
+
   #regHero {
     display: block;
     position: absolute;
@@ -130,14 +115,11 @@
 
 @media only screen and (min-width: 992px) {
   .container.regLog {
-    margin-top: 4rem;
-    margin-left: 28.25rem;
+    margin-top: 10%;
+    margin-left: 40%;
+    scale: 1;
   }
-  .btn.log {
-    font-size: 26px;
-    width: 232.86px;
-    height: 53.28px;
-  }
+
   .form-label {
     display: flex;
     font-size: 20px;
@@ -146,29 +128,10 @@
   form {
     margin-top: 3.5rem;
   }
-  .authCol {
-    margin-top: 4rem;
-  }
   .form-control {
     margin-top: 1rem;
     margin-bottom: 1rem;
     height: 2.7rem;
-  }
-  #regLogSpan {
-    font-size: 19px;
-    margin-top: 1rem;
-  }
-  .btn.auth {
-    height: 54px;
-    width: 364px;
-    font-size: 22px;
-    padding-left: 2rem;
-  }
-
-  .authLogo {
-    width: 44px;
-    height: 44px;
-    top: 4px;
   }
   #regHero {
     display: block;

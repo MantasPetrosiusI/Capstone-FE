@@ -17,7 +17,7 @@ const EditorPage = () => {
           <MonacoEditor onResultChange={handleResultChange} />
         </Col>
         <Col>
-          <div>{result}</div>
+          <div id="output">{result}</div>
         </Col>
       </Row>
     </Container>

@@ -82,7 +82,7 @@ const UserAnswered = () => {
       <h1>{category} Questions</h1>
       <div className="buttons">
         <Button onClick={() => setCategory("Answered")}>Answered</Button>
-        <Button onClick={() => setCategory("Unanswered")}>Unsnswered</Button>
+        <Button onClick={() => setCategory("Unanswered")}>Unanswered</Button>
       </div>
       {sortedQuestions.length > 0 ? (
         <>
@@ -91,12 +91,11 @@ const UserAnswered = () => {
               <Col
                 key={question._id}
                 onClick={() => navigate("/Question", { state: { question } })}
-                md={3}
-                lg={3}
-                xl={3}
-                className="mb-4 card-col"
+                md={4}
               >
-                <SingleQuestion question={question} />
+                <div className="col-md">
+                  <SingleQuestion question={question} />
+                </div>
               </Col>
             ))}
           </Row>

@@ -126,13 +126,16 @@ const MainPage = () => {
             <div>
               <ul className="searchResult">
                 {searchedQuestions.map((question) => (
-                  <li
-                    className="searchResultLi"
-                    key={question._id}
-                    onClick={() => handleClickQuestion(question)}
-                  >
-                    {question.title}{" "}
-                    <FontAwesomeIcon icon={faArrowRight} fontSize={"1rem"} />
+                  <li className="searchResultLi" key={question._id}>
+                    <div
+                      onClick={() => {
+                        console.log(1);
+                        handleClickQuestion(question);
+                      }}
+                    >
+                      {question.title}{" "}
+                      <FontAwesomeIcon icon={faArrowRight} fontSize={"1rem"} />
+                    </div>
                   </li>
                 ))}
               </ul>

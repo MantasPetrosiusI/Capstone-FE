@@ -1,6 +1,11 @@
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchAnswer, fetchUser, likeQuestion } from "../../redux/actions";
+import {
+  fetchAnswer,
+  fetchUser,
+  likeQuestion,
+  setQuestions,
+} from "../../redux/actions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { RootState } from "../../redux/interfaces";
@@ -32,51 +37,87 @@ const Question = () => {
   const handleLike = () => {
     dispatch(likeQuestion(question._id.toString()));
     setLiked(!liked);
+    dispatch(setQuestions());
   };
+  const MAX_DESCRIPTION_LENGTH = 350;
+  const truncatedDescription = question.description.substring(
+    0,
+    MAX_DESCRIPTION_LENGTH
+  );
+  const showEllipsis = question.description.length > MAX_DESCRIPTION_LENGTH;
 
   const navigate = useNavigate();
 
   return (
     <>
-      <div className="flip-card">
-        <div className="flip-card-inner">
-          <div className="flip-card-front">
-            <p className="title fs-2 justify-content-center">
-              {question.title}
-            </p>
-            {question.tags.map((tag: string, i: number) => (
-              <span className="tags fs-4 " key={i}>
-                {tag}
-              </span>
-            ))}
-            <p className="flip_description">{question.description}</p>
+      {question.user._id === user?._id ? (
+        <div>
+          <div className="flip-card">
+            <div className="flip-card-inner">
+              <div className="flip-card-front">
+                <p className="title fs-2 justify-content-center">
+                  {question.title}
+                </p>
+                {question.tags.map((tag: string, i: number) => (
+                  <span className="tags fs-4 " key={i}>
+                    {tag}
+                  </span>
+                ))}
+                <p className="flip_description">
+                  {truncatedDescription}
+                  {showEllipsis && <span className="text-muted"> ...</span>}
+                </p>
+              </div>
+              {answer && answer.accepted === true ? (
+                <div className="flip-card-back">
+                  <p className="title-admin">{answer.user.username}</p>
+                  <p className="flip_description">{answer.body}</p>
+                </div>
+              ) : (
+                <div className="flip-card-back">No answer yet</div>
+              )}
+            </div>
           </div>
-          {answer && answer.accepted === true ? (
-            <div className="flip-card-back">
-              <p className="title-admin">{answer.user.username}</p>
-              <p className="flip_description">{answer.body}</p>
+          {user?._id === question.user._id ? (
+            <div className="question__bottom">
+              {!question.answered ? (
+                <Button
+                  onClick={() =>
+                    navigate("/answersForm", { state: { question } })
+                  }
+                >
+                  Submit your answer
+                </Button>
+              ) : null}
             </div>
           ) : (
-            <div className="flip-card-back">
-              <Button
-                onClick={() =>
-                  navigate("/answersForm", { state: { question } })
-                }
-              >
-                Submit your answer
-              </Button>
+            <div className="question__bottom">
+              {liked ? (
+                <Button onClick={handleLike}>
+                  <span>Dislike</span>{" "}
+                  <FontAwesomeIcon icon={faHeartSolid} color={"red"} />
+                </Button>
+              ) : (
+                <Button onClick={handleLike}>
+                  <span>Like </span>
+                  <FontAwesomeIcon icon={faHeartSolid} color={undefined} />
+                </Button>
+              )}
+              {!question.answered ? (
+                <Button
+                  onClick={() =>
+                    navigate("/answersForm", { state: { question } })
+                  }
+                >
+                  Submit your answer
+                </Button>
+              ) : null}
             </div>
           )}
         </div>
-      </div>
-      <div>
-        <FontAwesomeIcon
-          icon={liked ? faHeartSolid : faHeartSolid}
-          onClick={handleLike}
-          className={`heart-icon ${liked ? "liked" : ""}`}
-          color={liked ? "red" : undefined}
-        />
-      </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

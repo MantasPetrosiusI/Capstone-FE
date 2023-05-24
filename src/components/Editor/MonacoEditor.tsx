@@ -29,7 +29,7 @@ const MonacoEditor = (props: MonacoEditorProps) => {
     <div>
       <Editor
         onMount={handleEditorDidMount}
-        language="typescript"
+        language="javascript"
         theme="vs-dark"
         defaultValue="// TypeScript and JavaScript only. More languages will be implemented in the future"
         height="50vh"

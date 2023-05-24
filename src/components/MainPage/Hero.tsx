@@ -10,7 +10,7 @@ interface HeroProps {
   mostLiked: Question;
 }
 
-const MAX_DESCRIPTION_LENGTH = 60;
+const MAX_DESCRIPTION_LENGTH = 350;
 
 const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
   const navigate = useNavigate();
@@ -19,6 +19,9 @@ const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
     return null;
   }
 
+  if (!mostLiked.accepted) {
+    return null;
+  }
   const { title, description, noOfLikes } = mostLiked;
   const truncatedDescription = description.substring(0, MAX_DESCRIPTION_LENGTH);
   const showEllipsis = description.length > MAX_DESCRIPTION_LENGTH;
@@ -38,12 +41,14 @@ const Hero: React.FC<HeroProps> = ({ mostLiked }) => {
           {truncatedDescription}
           {showEllipsis && <span className="text-muted"> ...</span>}
         </p>
-        <span id="hero__likes">
-          {noOfLikes} <FontAwesomeIcon icon={faHeart} color="maroon" />
-        </span>
-        <Button id="hero__button" onClick={handleButtonClick}>
-          Go to question
-        </Button>
+        <div className="hero__left__bottom">
+          <span id="hero__likes">
+            {noOfLikes} <FontAwesomeIcon icon={faHeart} color="maroon" />
+          </span>
+          <Button id="hero__button" onClick={handleButtonClick}>
+            Go to question
+          </Button>
+        </div>
       </Col>
     </Row>
   );

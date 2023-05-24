@@ -62,6 +62,7 @@ const CustomNavbar = () => {
     })
       .then(() => {
         Cookies.remove("accessToken");
+        dispatch(logoutUser());
         navigate("/login");
       })
       .catch((error) => {

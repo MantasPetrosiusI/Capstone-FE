@@ -27,12 +27,12 @@ body {
 }
 
 .mostHelpful__left {
-  width: 10.438rem;
-  height: 10.438rem;
+  width: 15.438rem;
+  height: 15.438rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 1.5rem;
+  margin-right: 13rem;
 }
 
 #mostHelpful__img {
@@ -46,9 +46,9 @@ body {
 }
 
 #mostHelpful__img img {
-  border-radius: 5px;
+  border-radius: 50%;
   max-width: 100%;
-  max-height: 100%;
+  aspect-ratio: 1;
 }
 
 .mostHelpful__right {

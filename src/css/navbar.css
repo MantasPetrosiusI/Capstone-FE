@@ -62,8 +62,7 @@ body {
 
 .navbar-nav {
   position: absolute;
-  top: 1rem;
-  left: 6rem;
+  top: 1.5rem;
   border-radius: 0% 5% 5% 0%;
   padding-left: 1rem;
   border-top: none;

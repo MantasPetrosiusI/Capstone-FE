@@ -28,8 +28,8 @@ const MostHelpful: React.FC<MostHelpfulProps> = ({ user }) => {
           {user.answers.length}
         </span>
         <span className="mostHelpful_span">
-          <FontAwesomeIcon icon={faHeart} color="red" /> {user.reputation} users
-          like them!
+          <FontAwesomeIcon icon={faHeart} color="maroon" /> {user.reputation}{" "}
+          users like them!
         </span>
         <Button id="mostHelpful__button">Profile</Button>
       </Col>

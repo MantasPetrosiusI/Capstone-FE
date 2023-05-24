@@ -194,6 +194,7 @@ export const likeQuestion = (questionId: string) => {
           type: actionTypes.LIKE_QUESTION,
           payload: data,
         });
+        dispatch(setCurrentUser());
       } else {
         console.error("Error", res.statusText);
       }

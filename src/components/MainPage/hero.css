@@ -46,9 +46,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
 }
-
+.hero__left__bottom #hero__button {
+  margin-left: 10%;
+}
 .hero__left {
   width: 100%;
   aspect-ratio: 1;

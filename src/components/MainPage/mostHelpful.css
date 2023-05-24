@@ -1,7 +1,3 @@
-/* Mobile First Styles */
-
-/* General Styles */
-
 body {
   margin: 0;
   padding: 0;
@@ -9,7 +5,7 @@ body {
 
 .container {
   width: 100%;
-  max-width: 1920px; /* Adjust this value as needed */
+  max-width: 3000px;
   margin: 0 auto;
   padding: 0 1rem;
   box-sizing: border-box;

@@ -1,5 +1,5 @@
 .container.regLog {
-  margin-top: 10%;
+  margin-top: 3%;
   width: 50%;
   height: 90%;
   display: flex;
@@ -85,9 +85,6 @@
 }
 
 @media only screen and (max-width: 992px) and (min-width: 430px) {
-  .container.regLog {
-    margin-top: 10.625rem;
-  }
   .form-label {
     display: flex;
     font-size: 20px;
@@ -115,8 +112,6 @@
 
 @media only screen and (min-width: 992px) {
   .container.regLog {
-    margin-top: 10%;
-    margin-left: 40%;
     scale: 1;
   }
 

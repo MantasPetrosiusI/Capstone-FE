@@ -51,7 +51,7 @@ const Question = () => {
   return (
     <>
       {question.user._id === user?._id ? (
-        <div>
+        <div className="mb-4">
           <div className="flip-card">
             <div className="flip-card-inner">
               <div className="flip-card-front">
